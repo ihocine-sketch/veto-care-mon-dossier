@@ -2,25 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:wght@500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:wght@500;600;700;800&display=swap');
 
-/* Veto-Care Design System — calm green & white veterinary clinic */
+/* Veto-Care Design System — premium green & white veterinary clinic */
 
 @layer base {
   :root {
     --background: 140 30% 98%;
-    --foreground: 160 30% 12%;
+    --foreground: 160 35% 10%;
 
     --card: 0 0% 100%;
-    --card-foreground: 160 30% 12%;
+    --card-foreground: 160 35% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 160 30% 12%;
+    --popover-foreground: 160 35% 10%;
 
-    /* Primary: deep clinic green */
-    --primary: 158 55% 32%;
+    --primary: 158 60% 28%;
     --primary-foreground: 140 30% 98%;
-    --primary-glow: 158 60% 45%;
+    --primary-glow: 158 70% 48%;
+    --primary-deep: 162 70% 18%;
 
     --secondary: 145 40% 94%;
     --secondary-foreground: 158 55% 22%;
@@ -28,7 +28,7 @@
     --muted: 145 25% 95%;
     --muted-foreground: 160 12% 42%;
 
-    --accent: 152 50% 90%;
+    --accent: 152 55% 88%;
     --accent-foreground: 158 55% 22%;
 
     --destructive: 0 70% 50%;
@@ -41,15 +41,23 @@
     --input: 145 25% 90%;
     --ring: 158 55% 32%;
 
-    --radius: 0.75rem;
+    --radius: 1rem;
 
-    --gradient-primary: linear-gradient(135deg, hsl(158 55% 32%), hsl(158 60% 45%));
-    --gradient-soft: linear-gradient(180deg, hsl(140 40% 97%), hsl(140 30% 98%));
-    --shadow-soft: 0 4px 20px -8px hsl(158 55% 32% / 0.15);
-    --shadow-card: 0 2px 12px -4px hsl(158 30% 30% / 0.08);
-    --shadow-elegant: 0 10px 40px -12px hsl(158 55% 32% / 0.25);
+    --gradient-primary: linear-gradient(135deg, hsl(162 70% 22%), hsl(158 65% 38%) 60%, hsl(170 75% 55%));
+    --gradient-soft: radial-gradient(ellipse 80% 50% at 50% -10%, hsl(158 60% 90% / 0.6), transparent 70%), linear-gradient(180deg, hsl(140 40% 98%), hsl(140 30% 99%));
+    --gradient-mesh: radial-gradient(at 20% 10%, hsl(158 70% 75% / 0.4) 0px, transparent 50%),
+                     radial-gradient(at 80% 0%, hsl(170 80% 70% / 0.35) 0px, transparent 50%),
+                     radial-gradient(at 60% 100%, hsl(150 65% 80% / 0.3) 0px, transparent 50%),
+                     radial-gradient(at 0% 80%, hsl(180 60% 75% / 0.3) 0px, transparent 50%);
+    --gradient-glow: radial-gradient(circle at 50% 50%, hsl(158 70% 50% / 0.25), transparent 70%);
 
-    --transition-smooth: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    --shadow-soft: 0 4px 20px -8px hsl(158 55% 32% / 0.18);
+    --shadow-card: 0 1px 3px hsl(160 30% 10% / 0.04), 0 8px 24px -8px hsl(160 30% 20% / 0.08);
+    --shadow-elegant: 0 20px 60px -20px hsl(158 55% 28% / 0.3), 0 8px 24px -12px hsl(158 55% 28% / 0.15);
+    --shadow-glow: 0 0 40px hsl(158 70% 50% / 0.35);
+
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-spring: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
   .dark {
@@ -78,9 +86,72 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-family: 'Inter', system-ui, sans-serif;
+    font-feature-settings: "ss01", "cv11";
   }
   h1, h2, h3, .font-display {
     font-family: 'Fraunces', Georgia, serif;
     letter-spacing: -0.02em;
   }
 }
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary-glow)) 100%);
+  }
+
+  .bg-mesh {
+    background-image: var(--gradient-mesh);
+  }
+
+  .glass {
+    background: hsl(0 0% 100% / 0.7);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+  }
+
+  .card-hover {
+    @apply transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-elegant;
+  }
+}
+
+/* Animated gradient blob background */
+@keyframes blob-float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -40px) scale(1.1); }
+  66% { transform: translate(-20px, 30px) scale(0.95); }
+}
+@keyframes blob-float-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-40px, -30px) scale(1.15); }
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes float-y {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 hsl(158 70% 50% / 0.4); }
+  70% { box-shadow: 0 0 0 16px hsl(158 70% 50% / 0); }
+  100% { box-shadow: 0 0 0 0 hsl(158 70% 50% / 0); }
+}
+
+.animate-blob { animation: blob-float 18s ease-in-out infinite; }
+.animate-blob-2 { animation: blob-float-2 22s ease-in-out infinite; }
+.animate-float { animation: float-y 6s ease-in-out infinite; }
+.animate-pulse-ring { animation: pulse-ring 2.5s cubic-bezier(0.66, 0, 0, 1) infinite; }
+
+.shimmer {
+  background: linear-gradient(90deg, transparent, hsl(0 0% 100% / 0.15), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: hsl(var(--background)); }
+::-webkit-scrollbar-thumb { background: hsl(var(--border)); border-radius: 8px; }
+::-webkit-scrollbar-thumb:hover { background: hsl(var(--muted-foreground) / 0.4); }
