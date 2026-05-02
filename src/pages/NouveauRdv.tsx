@@ -105,8 +105,8 @@ const NouveauRdv = () => {
         });
       }
 
-      toast.success("Rendez-vous créé avec succès !");
-      navigate(animalId && animalId !== "manual" ? `/animaux/${animalId}` : "/dashboard");
+      toast.success("Rendez-vous créé ! Effectuez le paiement pour confirmer.");
+      navigate(`/payment?appointment=${(data as any).id}`);
     } catch (e: any) {
       toast.error(e.message || "Erreur lors de la création");
     } finally {

@@ -9,7 +9,7 @@ import { PageTransition } from "@/components/PageTransition";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, FileText, Plus, PawPrint, Sparkles } from "lucide-react";
+import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, Download, FileText, Plus, PawPrint, Sparkles, Clock, CheckCircle2 } from "lucide-react";
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { toast } from "sonner";
 
@@ -367,16 +367,54 @@ const Dashboard = () => {
                           </div>
                         </div>
                         <div className="flex flex-col items-start gap-2 sm:items-end">
-                          <Badge variant="outline" className={st.cls}>{st.label}</Badge>
+                          <div className="flex flex-wrap items-center gap-2">
+                            <Badge variant="outline" className={st.cls}>{st.label}</Badge>
+                            {(r as any).payment_status === "paid" ? (
+                              <Badge variant="secondary" className="gap-1.5 bg-success/15 text-success border-success/30">
+                                <CheckCircle2 className="h-3.5 w-3.5" /> Payé
+                              </Badge>
+                            ) : (
+                              <Badge variant="secondary" className="gap-1.5 bg-warning/15 text-warning border-warning/30">
+                                <Clock className="h-3.5 w-3.5" /> En attente
+                              </Badge>
+                            )}
+                          </div>
                           <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
-                            <Calendar className="h-4 w-4" />
+                            <CalendarIcon className="h-4 w-4" />
                             {date.toLocaleString("fr-FR", { dateStyle: "long", timeStyle: "short" })}
                           </div>
-                          {r.carnet_sante_url && (
-                            <Button variant="ghost" size="sm" className="gap-1.5 transition-transform hover:scale-105" onClick={() => downloadCarnet(r.carnet_sante_url!)}>
-                              <FileText className="h-4 w-4" /> Carnet de santé
-                            </Button>
-                          )}
+                          <div className="flex flex-wrap gap-1.5">
+                            {(r as any).payment_status === "paid" && (
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="gap-1.5 h-7 px-2 text-xs transition-transform hover:scale-105"
+                                onClick={async () => {
+                                  try {
+                                    const { data, error } = await supabase.functions.invoke("generate-invoice", {
+                                      body: JSON.stringify({ appointmentId: r.id }),
+                                    });
+                                    if (error) throw error;
+                                    const blob = new Blob([data], { type: "text/html" });
+                                    const url = window.URL.createObjectURL(blob);
+                                    const a = document.createElement("a");
+                                    a.href = url;
+                                    a.download = `facture_${r.id.substring(0, 8)}.html`;
+                                    a.click();
+                                  } catch (err) {
+                                    toast.error("Erreur lors du téléchargement de la facture");
+                                  }
+                                }}
+                              >
+                                <Download className="h-3.5 w-3.5" /> Facture
+                              </Button>
+                            )}
+                            {r.carnet_sante_url && (
+                              <Button variant="ghost" size="sm" className="gap-1.5 h-7 px-2 text-xs transition-transform hover:scale-105" onClick={() => downloadCarnet(r.carnet_sante_url!)}>
+                                <FileText className="h-3.5 w-3.5" /> Carnet
+                              </Button>
+                            )}
+                          </div>
                         </div>
                       </CardContent>
                     </Card>
