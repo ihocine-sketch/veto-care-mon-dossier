@@ -14,7 +14,77 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      rendez_vous: {
+        Row: {
+          carnet_sante_url: string | null
+          created_at: string
+          date_rdv: string
+          espece: string
+          id: string
+          maitre_id: string
+          motif: string
+          nom_animal: string
+          statut: string
+          veterinaire_id: string
+        }
+        Insert: {
+          carnet_sante_url?: string | null
+          created_at?: string
+          date_rdv: string
+          espece: string
+          id?: string
+          maitre_id: string
+          motif: string
+          nom_animal: string
+          statut?: string
+          veterinaire_id: string
+        }
+        Update: {
+          carnet_sante_url?: string | null
+          created_at?: string
+          date_rdv?: string
+          espece?: string
+          id?: string
+          maitre_id?: string
+          motif?: string
+          nom_animal?: string
+          statut?: string
+          veterinaire_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rendez_vous_veterinaire_id_fkey"
+            columns: ["veterinaire_id"]
+            isOneToOne: false
+            referencedRelation: "veterinaires"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      veterinaires: {
+        Row: {
+          created_at: string
+          id: string
+          nom: string
+          prenom: string
+          specialite: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          nom: string
+          prenom: string
+          specialite: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          nom?: string
+          prenom?: string
+          specialite?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
