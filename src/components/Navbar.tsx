@@ -34,7 +34,8 @@ export const Navbar = () => {
 
   const links = user
     ? [
-        { to: "/dashboard", label: "Mes rendez-vous" },
+        { to: "/dashboard", label: "Mes RDV" },
+        { to: "/animaux", label: "Mes animaux" },
         { to: "/veterinaires", label: "Vétérinaires" },
         { to: "/nouveau-rdv", label: "Nouveau RDV" },
       ]

@@ -22,6 +22,7 @@ export const Footer = () => {
             <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-foreground">Espace</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li><Link to="/dashboard" className="transition-colors hover:text-primary">Mes rendez-vous</Link></li>
+              <li><Link to="/animaux" className="transition-colors hover:text-primary">Mes animaux</Link></li>
               <li><Link to="/veterinaires" className="transition-colors hover:text-primary">Vétérinaires</Link></li>
               <li><Link to="/nouveau-rdv" className="transition-colors hover:text-primary">Nouveau RDV</Link></li>
             </ul>
