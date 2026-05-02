@@ -138,11 +138,22 @@
   70% { box-shadow: 0 0 0 16px hsl(158 70% 50% / 0); }
   100% { box-shadow: 0 0 0 0 hsl(158 70% 50% / 0); }
 }
+@keyframes animate-gradient-x {
+  0%, 100% {
+    background-size: 200% 200%;
+    background-position: left center;
+  }
+  50% {
+    background-size: 200% 200%;
+    background-position: right center;
+  }
+}
 
 .animate-blob { animation: blob-float 18s ease-in-out infinite; }
 .animate-blob-2 { animation: blob-float-2 22s ease-in-out infinite; }
 .animate-float { animation: float-y 6s ease-in-out infinite; }
 .animate-pulse-ring { animation: pulse-ring 2.5s cubic-bezier(0.66, 0, 0, 1) infinite; }
+.animate-gradient-x { animation: animate-gradient-x 15s ease infinite; }
 
 .shimmer {
   background: linear-gradient(90deg, transparent, hsl(0 0% 100% / 0.15), transparent);

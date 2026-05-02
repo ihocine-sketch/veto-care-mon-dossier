@@ -57,12 +57,12 @@ const Index = () => {
   const { user } = useAuth();
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gradient-to-b from-[#e8f5e9] via-[#f0f9f0] to-white animate-gradient-x">
       <Navbar />
       <PageTransition>
         <main>
           {/* Hero */}
-          <section className="relative overflow-hidden">
+          <section className="relative overflow-hidden bg-gradient-to-br from-[#e8f5e9] via-[#f0f9f0] to-white">
             <AnimatedBackground />
             
             {/* Floating animal icons */}
@@ -107,7 +107,7 @@ const Index = () => {
                   Extranet vétérinaire · nouvelle génération
                 </motion.div>
 
-                <motion.h1 variants={item} className="font-display text-5xl font-semibold leading-[1.05] text-foreground sm:text-7xl">
+                <motion.h1 variants={item} className="font-display text-6xl font-bold leading-[1.05] text-foreground sm:text-8xl">
                   Le suivi santé de vos animaux,{" "}
                   <span className="relative inline-block">
                     <span className="text-gradient">en toute simplicité.</span>
@@ -185,6 +185,88 @@ const Index = () => {
                 </div>
               </motion.div>
             </div>
+          </section>
+
+          {/* Feature Cards */}
+          <section className="container mx-auto px-4 py-16">
+            <motion.div
+              variants={stagger}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, margin: "-80px" }}
+              className="mx-auto grid max-w-5xl gap-6 sm:grid-cols-3"
+            >
+              <motion.div
+                variants={item}
+                whileHover={{ y: -6 }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className="group relative overflow-hidden rounded-2xl border border-border/60 bg-card p-8 shadow-card hover:shadow-elegant"
+              >
+                <div className="absolute -right-12 -top-12 h-32 w-32 rounded-full bg-gradient-primary opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-30" />
+                <div className="relative mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-100 to-blue-200 shadow-soft transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
+                  <Calendar className="h-7 w-7 text-blue-600" />
+                </div>
+                <h3 className="relative font-display text-xl font-bold mb-3">Rendez-vous en ligne</h3>
+                <p className="relative text-sm leading-relaxed text-muted-foreground">Prenez rendez-vous 24/7 avec nos vétérinaires certifiés depuis votre téléphone ou ordinateur.</p>
+              </motion.div>
+
+              <motion.div
+                variants={item}
+                whileHover={{ y: -6 }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className="group relative overflow-hidden rounded-2xl border border-border/60 bg-card p-8 shadow-card hover:shadow-elegant"
+              >
+                <div className="absolute -right-12 -top-12 h-32 w-32 rounded-full bg-gradient-primary opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-30" />
+                <div className="relative mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-red-100 to-pink-200 shadow-soft transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
+                  <Sparkles className="h-7 w-7 text-red-600" />
+                </div>
+                <h3 className="relative font-display text-xl font-bold mb-3">Carnet de santé digital</h3>
+                <p className="relative text-sm leading-relaxed text-muted-foreground">Tous les vaccins, traitements et visites médicales de vos animaux centralisés et sécurisés.</p>
+              </motion.div>
+
+              <motion.div
+                variants={item}
+                whileHover={{ y: -6 }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className="group relative overflow-hidden rounded-2xl border border-border/60 bg-card p-8 shadow-card hover:shadow-elegant"
+              >
+                <div className="absolute -right-12 -top-12 h-32 w-32 rounded-full bg-gradient-primary opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-30" />
+                <div className="relative mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-green-100 to-emerald-200 shadow-soft transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
+                  <ShieldCheck className="h-7 w-7 text-green-600" />
+                </div>
+                <h3 className="relative font-display text-xl font-bold mb-3">Vétérinaires certifiés</h3>
+                <p className="relative text-sm leading-relaxed text-muted-foreground">Une équipe de professionnels qualifiés et passionnés, disponibles pour prendre soin de vos compagnons.</p>
+              </motion.div>
+            </motion.div>
+          </section>
+
+          {/* Stats Section */}
+          <section className="container mx-auto px-4 py-16">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="mx-auto max-w-4xl rounded-3xl bg-gradient-to-r from-green-50 via-blue-50 to-purple-50 p-8 shadow-lg border border-green-100/50"
+            >
+              <div className="text-center">
+                <h3 className="font-display text-2xl font-bold text-gray-900 mb-6">Veto-Care en chiffres</h3>
+                <div className="flex flex-wrap justify-center items-center gap-8 text-lg font-semibold text-gray-700">
+                  <div className="flex items-center gap-2">
+                    <span className="text-3xl">🐾</span>
+                    <span>500+ animaux suivis</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-3xl">👨‍⚕️</span>
+                    <span>50+ vétérinaires</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-3xl">⭐</span>
+                    <span>4.9/5 étoiles</span>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
           </section>
 
           {/* Features */}
