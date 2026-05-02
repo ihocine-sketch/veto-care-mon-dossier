@@ -5,7 +5,7 @@ import { Footer } from "@/components/Footer";
 import { AnimatedBackground } from "@/components/AnimatedBackground";
 import { PageTransition } from "@/components/PageTransition";
 import { Button } from "@/components/ui/button";
-import { PawPrint, Calendar, Stethoscope, ShieldCheck, ArrowRight, Sparkles, Clock, FileText } from "lucide-react";
+import { PawPrint, Calendar, Stethoscope, ShieldCheck, ArrowRight, Sparkles, Clock, FileText, Star, CheckCircle2 } from "lucide-react";
 import { motion, type Variants } from "framer-motion";
 
 const stagger: Variants = {
@@ -16,6 +16,42 @@ const item: Variants = {
   hidden: { opacity: 0, y: 20 },
   show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.4, 0, 0.2, 1] } },
 };
+
+// Floating animal animation
+const floatingAnimal: Variants = {
+  animate: {
+    y: [0, -30, 0],
+    rotate: [0, 5, -5, 0],
+    transition: { duration: 4, repeat: Infinity, ease: "easeInOut" },
+  },
+};
+
+const testimonials = [
+  {
+    name: "Marie Dupont",
+    role: "Propriétaire de Médor",
+    content: "Veto-Care m'a sauvé la vie ! Plus besoin de mémoriser les rendez-vous, tout est organisé.",
+    rating: 5,
+  },
+  {
+    name: "Jean Moreau",
+    role: "Vétérinaire",
+    content: "Plateforme magnifique et très intuitive. Mes clients adorent le design et la simplicité.",
+    rating: 5,
+  },
+  {
+    name: "Sophie Bernard",
+    role: "Propriétaire de Whiskers",
+    content: "Le carnet de santé numérique est fantastique ! Toujours à portée de main sur mon téléphone.",
+    rating: 5,
+  },
+];
+
+const statistics = [
+  { label: "Animaux suivis", value: "500+" },
+  { label: "Vétérinaires partenaires", value: "50+" },
+  { label: "Satisfaction client", value: "4.9/5" },
+];
 
 const Index = () => {
   const { user } = useAuth();
@@ -28,7 +64,35 @@ const Index = () => {
           {/* Hero */}
           <section className="relative overflow-hidden">
             <AnimatedBackground />
-            <div className="container mx-auto px-4 pt-20 pb-32 sm:pt-28 sm:pb-40">
+            
+            {/* Floating animal icons */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+              <motion.div
+                variants={floatingAnimal}
+                animate="animate"
+                className="absolute top-32 left-[5%] text-6xl opacity-20"
+              >
+                🐶
+              </motion.div>
+              <motion.div
+                variants={floatingAnimal}
+                animate="animate"
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                className="absolute top-48 right-[8%] text-6xl opacity-20"
+              >
+                🐱
+              </motion.div>
+              <motion.div
+                variants={floatingAnimal}
+                animate="animate"
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                className="absolute bottom-32 left-[10%] text-6xl opacity-20"
+              >
+                🐰
+              </motion.div>
+            </div>
+
+            <div className="container mx-auto px-4 pt-20 pb-32 sm:pt-28 sm:pb-40 relative z-10">
               <motion.div
                 variants={stagger}
                 initial="hidden"
@@ -160,6 +224,97 @@ const Index = () => {
                   </div>
                   <h3 className="relative font-display text-xl font-semibold">{f.title}</h3>
                   <p className="relative mt-2 text-sm leading-relaxed text-muted-foreground">{f.desc}</p>
+                </motion.div>
+              ))}
+            </motion.div>
+          </section>
+
+          {/* Statistics Section */}
+          <section className="container mx-auto px-4 pb-24">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="mx-auto max-w-5xl rounded-3xl bg-gradient-to-br from-blue-50 to-indigo-50 p-12 shadow-lg border border-blue-100/50"
+            >
+              <div className="grid gap-8 sm:grid-cols-3">
+                {statistics.map((stat, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: idx * 0.1, duration: 0.5 }}
+                    className="text-center"
+                  >
+                    <motion.p
+                      initial={{ scale: 0 }}
+                      whileInView={{ scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: idx * 0.15, duration: 0.5, type: "spring" }}
+                      className="font-display text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600"
+                    >
+                      {stat.value}
+                    </motion.p>
+                    <p className="mt-2 text-sm text-gray-600 font-medium">{stat.label}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          </section>
+
+          {/* Testimonials Section */}
+          <section className="container mx-auto px-4 pb-24">
+            <div className="mx-auto mb-16 max-w-2xl text-center">
+              <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-primary">Avis clients</p>
+              <h2 className="font-display text-4xl font-semibold sm:text-5xl">
+                Les propriétaires adorent <span className="text-gradient">Veto-Care</span>
+              </h2>
+            </div>
+
+            <motion.div
+              variants={stagger}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, margin: "-80px" }}
+              className="mx-auto grid max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-3"
+            >
+              {testimonials.map((testimonial, idx) => (
+                <motion.div
+                  key={idx}
+                  variants={item}
+                  whileHover={{ y: -6 }}
+                  className="group relative overflow-hidden rounded-2xl border border-border/60 bg-card p-8 shadow-lg hover:shadow-xl transition-all duration-300"
+                >
+                  <div className="absolute -right-12 -top-12 h-32 w-32 rounded-full bg-gradient-primary opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-30" />
+                  
+                  <div className="relative mb-4 flex gap-0.5">
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                      <motion.div
+                        key={i}
+                        initial={{ opacity: 0, scale: 0 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: i * 0.1, type: "spring" }}
+                      >
+                        <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
+                      </motion.div>
+                    ))}
+                  </div>
+
+                  <p className="relative mb-6 text-sm leading-relaxed text-muted-foreground italic">
+                    "{testimonial.content}"
+                  </p>
+
+                  <div className="relative flex items-center gap-3">
+                    <div className="h-10 w-10 rounded-full bg-gradient-primary flex items-center justify-center text-lg">
+                      {testimonial.name[0]}
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-foreground">{testimonial.name}</p>
+                      <p className="text-xs text-muted-foreground">{testimonial.role}</p>
+                    </div>
+                  </div>
                 </motion.div>
               ))}
             </motion.div>

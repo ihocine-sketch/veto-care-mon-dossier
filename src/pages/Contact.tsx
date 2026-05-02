@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Mail, Phone, MapPin, Clock, Send } from "lucide-react";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -74,79 +75,130 @@ export default function Contact() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white pt-24 pb-16">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-blue-50 to-white pt-24 pb-16">
       {/* Header Section */}
       <div className="max-w-6xl mx-auto px-4 mb-16">
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-4xl md:text-5xl font-bold text-gray-900 mb-3"
+          >
             Veto-Care
-          </h1>
-          <p className="text-xl text-gray-600 mb-2">Clinique Vétérinaire</p>
-          <div className="h-1 w-24 bg-gradient-to-r from-blue-500 to-blue-600 mx-auto rounded-full"></div>
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-xl text-gray-600 mb-4"
+          >
+            Clinique Vétérinaire
+          </motion.p>
+          <motion.div
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ delay: 0.2, duration: 0.6 }}
+            className="h-1 w-24 bg-gradient-to-r from-blue-500 to-indigo-600 mx-auto rounded-full"
+          />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16"
+        >
           {/* Contact Info Cards */}
-          <Card className="p-6 border-0 shadow-lg hover:shadow-xl transition-shadow duration-300 bg-white">
-            <div className="flex items-start gap-4">
-              <div className="p-3 bg-blue-100 rounded-lg">
-                <MapPin className="h-6 w-6 text-blue-600" />
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            whileHover={{ y: -4 }}
+          >
+            <Card className="p-6 border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-white to-blue-50 group cursor-pointer">
+              <div className="flex items-start gap-4">
+                <motion.div
+                  whileHover={{ scale: 1.1, rotate: 8 }}
+                  className="p-3 bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg group-hover:shadow-lg transition-shadow"
+                >
+                  <MapPin className="h-6 w-6 text-blue-600" />
+                </motion.div>
+                <div>
+                  <h3 className="font-bold text-gray-900 mb-2">Adresse</h3>
+                  <p className="text-gray-600 text-sm leading-relaxed font-medium">
+                    123 Rue de la Santé
+                    <br />
+                    75000 Paris, France
+                  </p>
+                </div>
               </div>
-              <div>
-                <h3 className="font-semibold text-gray-900 mb-1">Adresse</h3>
-                <p className="text-gray-600 text-sm leading-relaxed">
-                  123 Rue de la Santé
-                  <br />
-                  75000 Paris, France
-                </p>
-              </div>
-            </div>
-          </Card>
+            </Card>
+          </motion.div>
 
-          <Card className="p-6 border-0 shadow-lg hover:shadow-xl transition-shadow duration-300 bg-white">
-            <div className="flex items-start gap-4">
-              <div className="p-3 bg-blue-100 rounded-lg">
-                <Phone className="h-6 w-6 text-blue-600" />
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.35 }}
+            whileHover={{ y: -4 }}
+          >
+            <Card className="p-6 border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-white to-blue-50 group cursor-pointer">
+              <div className="flex items-start gap-4">
+                <motion.div
+                  whileHover={{ scale: 1.1, rotate: 8 }}
+                  className="p-3 bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg group-hover:shadow-lg transition-shadow"
+                >
+                  <Phone className="h-6 w-6 text-blue-600" />
+                </motion.div>
+                <div>
+                  <h3 className="font-bold text-gray-900 mb-2">Téléphone</h3>
+                  <p className="text-gray-600 text-sm font-medium">
+                    <a
+                      href="tel:+33123456789"
+                      className="hover:text-blue-600 transition-colors font-semibold"
+                    >
+                      +33 (1) 23 45 67 89
+                    </a>
+                  </p>
+                  <p className="text-gray-500 text-xs mt-2 font-medium">
+                    Appel d'urgence 24/7: +33 (1) 98 76 54 32
+                  </p>
+                </div>
               </div>
-              <div>
-                <h3 className="font-semibold text-gray-900 mb-1">Téléphone</h3>
-                <p className="text-gray-600 text-sm">
-                  <a
-                    href="tel:+33123456789"
-                    className="hover:text-blue-600 transition-colors"
-                  >
-                    +33 (1) 23 45 67 89
-                  </a>
-                </p>
-                <p className="text-gray-500 text-xs mt-1">
-                  Appel d'urgence 24/7: +33 (1) 98 76 54 32
-                </p>
-              </div>
-            </div>
-          </Card>
+            </Card>
+          </motion.div>
 
-          <Card className="p-6 border-0 shadow-lg hover:shadow-xl transition-shadow duration-300 bg-white">
-            <div className="flex items-start gap-4">
-              <div className="p-3 bg-blue-100 rounded-lg">
-                <Mail className="h-6 w-6 text-blue-600" />
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            whileHover={{ y: -4 }}
+          >
+            <Card className="p-6 border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-white to-blue-50 group cursor-pointer">
+              <div className="flex items-start gap-4">
+                <motion.div
+                  whileHover={{ scale: 1.1, rotate: 8 }}
+                  className="p-3 bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg group-hover:shadow-lg transition-shadow"
+                >
+                  <Mail className="h-6 w-6 text-blue-600" />
+                </motion.div>
+                <div>
+                  <h3 className="font-bold text-gray-900 mb-2">Email</h3>
+                  <p className="text-gray-600 text-sm font-medium">
+                    <a
+                      href="mailto:contact@veto-care.com"
+                      className="hover:text-blue-600 transition-colors font-semibold"
+                    >
+                      contact@veto-care.com
+                    </a>
+                  </p>
+                  <p className="text-gray-500 text-xs mt-2 font-medium">
+                    Réponse dans 24 heures
+                  </p>
+                </div>
               </div>
-              <div>
-                <h3 className="font-semibold text-gray-900 mb-1">Email</h3>
-                <p className="text-gray-600 text-sm">
-                  <a
-                    href="mailto:contact@veto-care.com"
-                    className="hover:text-blue-600 transition-colors"
-                  >
-                    contact@veto-care.com
-                  </a>
-                </p>
-                <p className="text-gray-500 text-xs mt-1">
-                  Réponse dans 24 heures
-                </p>
-              </div>
-            </div>
-          </Card>
-        </div>
+            </Card>
+          </motion.div>
+        </motion.div>
       </div>
 
       {/* Main Content Section */}

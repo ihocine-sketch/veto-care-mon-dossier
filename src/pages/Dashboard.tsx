@@ -9,7 +9,7 @@ import { PageTransition } from "@/components/PageTransition";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, Download, FileText, Plus, PawPrint, Sparkles, Clock, CheckCircle2 } from "lucide-react";
+import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, Download, FileText, Plus, PawPrint, Sparkles, Clock, CheckCircle2, TrendingUp, Heart } from "lucide-react";
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { toast } from "sonner";
 
@@ -33,6 +33,22 @@ const statutLabel: Record<string, { label: string; cls: string }> = {
   en_attente: { label: "En attente", cls: "bg-warning/15 text-warning border-warning/30" },
   confirme: { label: "Confirmé", cls: "bg-success/15 text-success border-success/30" },
   annule: { label: "Annulé", cls: "bg-destructive/15 text-destructive border-destructive/30" },
+};
+
+// Animal emoji mapping
+const getAnimalEmoji = (espece: string): string => {
+  const lower = espece.toLowerCase();
+  if (lower.includes("chat") || lower.includes("félin")) return "🐱";
+  if (lower.includes("chien") || lower.includes("canin")) return "🐶";
+  if (lower.includes("lapin")) return "🐰";
+  if (lower.includes("hamster") || lower.includes("rongeur")) return "🐹";
+  if (lower.includes("oiseau")) return "🦜";
+  if (lower.includes("lézard") || lower.includes("reptile")) return "🦎";
+  if (lower.includes("tortue")) return "🐢";
+  if (lower.includes("cochon")) return "🐷";
+  if (lower.includes("cheval")) return "🐴";
+  if (lower.includes("vache")) return "🐄";
+  return "🐾";
 };
 
 const Dashboard = () => {
@@ -137,199 +153,251 @@ const Dashboard = () => {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="mb-10 flex flex-wrap items-end justify-between gap-4"
+            className="mb-12 flex flex-wrap items-end justify-between gap-4"
           >
             <div>
-              <p className="mb-2 inline-flex items-center gap-1.5 text-sm font-semibold uppercase tracking-wider text-primary">
-                <Sparkles className="h-3.5 w-3.5" /> Mon espace
+              <p className="mb-3 inline-flex items-center gap-1.5 text-sm font-semibold uppercase tracking-wider text-primary">
+                <Sparkles className="h-3.5 w-3.5" /> Bienvenue
               </p>
-              <h1 className="font-display text-5xl font-semibold tracking-tight">Mes rendez-vous</h1>
-              <p className="mt-2 text-muted-foreground">Suivez les soins de vos compagnons.</p>
+              <h1 className="font-display text-5xl font-semibold tracking-tight mb-2">Tableau de bord</h1>
+              <p className="text-muted-foreground text-lg">Suivi complet de vos {animalCount} animal{animalCount !== 1 ? 'aux' : ''}</p>
             </div>
-            <Button asChild size="lg" className="gap-2 shadow-soft transition-all hover:-translate-y-0.5 hover:shadow-glow">
+            <Button asChild size="lg" className="gap-2 shadow-elegant transition-all hover:shadow-glow hover:-translate-y-0.5 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white">
               <Link to="/nouveau-rdv"><Plus className="h-4 w-4" /> Nouveau rendez-vous</Link>
             </Button>
           </motion.div>
 
           <div className="grid gap-4 xl:grid-cols-[1.4fr_2fr]">
             <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-1">
-              <Card className="border-border/60 bg-gradient-to-br from-background/80 to-slate-50/60 shadow-soft">
-                <CardContent className="space-y-3 p-6">
-                  <div className="flex items-center justify-between gap-4">
-                    <div>
-                      <p className="text-sm font-medium uppercase tracking-[0.24em] text-muted-foreground">Rendez-vous</p>
-                      <p className="mt-2 text-3xl font-semibold text-foreground">{totalAppointments}</p>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+                whileHover={{ y: -4 }}
+              >
+                <Card className="border-0 bg-gradient-to-br from-blue-500 via-blue-400 to-cyan-400 shadow-lg hover:shadow-xl transition-shadow duration-300 text-white">
+                  <CardContent className="space-y-3 p-6">
+                    <div className="flex items-center justify-between gap-4">
+                      <div>
+                        <p className="text-sm font-medium uppercase tracking-wider text-blue-100 opacity-90">Rendez-vous</p>
+                        <p className="mt-3 text-4xl font-bold">{totalAppointments}</p>
+                      </div>
+                      <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-white/20 backdrop-blur-sm">
+                        <CalendarIcon className="h-8 w-8" />
+                      </div>
                     </div>
-                    <div className="inline-flex h-12 w-12 items-center justify-center rounded-3xl bg-primary/10 text-primary shadow-soft">
-                      <CalendarIcon className="h-6 w-6" />
-                    </div>
-                  </div>
-                  <p className="text-sm text-muted-foreground">Total de rendez-vous enregistrés pour votre compte.</p>
-                </CardContent>
-              </Card>
+                    <p className="text-sm text-blue-50 opacity-90">Total de rendez-vous enregistrés</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
 
-              <Card className="border-border/60 bg-white/80 shadow-soft">
-                <CardContent className="space-y-3 p-6">
-                  <div className="flex items-center justify-between gap-4">
-                    <div>
-                      <p className="text-sm font-medium uppercase tracking-[0.24em] text-muted-foreground">Animaux suivis</p>
-                      <p className="mt-2 text-3xl font-semibold text-foreground">{animalCount}</p>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.15 }}
+                whileHover={{ y: -4 }}
+              >
+                <Card className="border-0 bg-gradient-to-br from-purple-500 via-pink-400 to-rose-400 shadow-lg hover:shadow-xl transition-shadow duration-300 text-white">
+                  <CardContent className="space-y-3 p-6">
+                    <div className="flex items-center justify-between gap-4">
+                      <div>
+                        <p className="text-sm font-medium uppercase tracking-wider text-purple-100 opacity-90">Animaux suivis</p>
+                        <p className="mt-3 text-4xl font-bold">{animalCount}</p>
+                      </div>
+                      <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-white/20 backdrop-blur-sm">
+                        <PawPrint className="h-8 w-8" />
+                      </div>
                     </div>
-                    <div className="inline-flex h-12 w-12 items-center justify-center rounded-3xl bg-secondary/10 text-secondary shadow-soft">
-                      <PawPrint className="h-6 w-6" />
-                    </div>
-                  </div>
-                  <p className="text-sm text-muted-foreground">Nombre d'animaux différents dans votre carnet.</p>
-                </CardContent>
-              </Card>
+                    <p className="text-sm text-purple-50 opacity-90">Dans votre carnet de santé</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
 
-              <Card className="border-border/60 bg-white/80 shadow-soft">
-                <CardContent className="space-y-3 p-6">
-                  <div className="flex items-center justify-between gap-4">
-                    <div>
-                      <p className="text-sm font-medium uppercase tracking-[0.24em] text-muted-foreground">Prochain rendez-vous</p>
-                      <p className="mt-2 text-xl font-semibold text-foreground">
-                        {nextAppointment ? nextAppointment.nom_animal : "Aucun planifié"}
-                      </p>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                whileHover={{ y: -4 }}
+              >
+                <Card className="border-0 bg-gradient-to-br from-amber-400 via-orange-400 to-red-400 shadow-lg hover:shadow-xl transition-shadow duration-300 text-white">
+                  <CardContent className="space-y-3 p-6">
+                    <div className="flex items-center justify-between gap-4">
+                      <div>
+                        <p className="text-sm font-medium uppercase tracking-wider text-amber-100 opacity-90">Prochain RDV</p>
+                        <p className="mt-3 text-2xl font-bold">
+                          {nextAppointment ? (
+                            <span>{getAnimalEmoji(nextAppointment.espece)} {nextAppointment.nom_animal}</span>
+                          ) : (
+                            "—"
+                          )}
+                        </p>
+                      </div>
+                      <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-white/20 backdrop-blur-sm">
+                        <TrendingUp className="h-8 w-8" />
+                      </div>
                     </div>
-                    <div className="inline-flex h-12 w-12 items-center justify-center rounded-3xl bg-emerald-500/10 text-emerald-600 shadow-soft">
-                      <Sparkles className="h-6 w-6" />
-                    </div>
-                  </div>
-                  {nextAppointment ? (
-                    <div className="space-y-1 text-sm text-muted-foreground">
-                      <p>{new Date(nextAppointment.date_rdv).toLocaleString("fr-FR", { dateStyle: "long", timeStyle: "short" })}</p>
-                      <p>{nextAppointment.veterinaires ? `Dr. ${nextAppointment.veterinaires.prenom} ${nextAppointment.veterinaires.nom}` : "Vétérinaire non défini"}</p>
-                    </div>
-                  ) : (
-                    <p className="text-sm text-muted-foreground">Aucun prochain rendez-vous n'a encore été planifié.</p>
-                  )}
-                </CardContent>
-              </Card>
+                    {nextAppointment ? (
+                      <div className="space-y-1 text-sm text-amber-50 opacity-90">
+                        <p>{new Date(nextAppointment.date_rdv).toLocaleString("fr-FR", { dateStyle: "long", timeStyle: "short" })}</p>
+                        <p>{nextAppointment.veterinaires ? `Dr. ${nextAppointment.veterinaires.prenom} ${nextAppointment.veterinaires.nom}` : "Vétérinaire non défini"}</p>
+                      </div>
+                    ) : (
+                      <p className="text-sm text-amber-50 opacity-90">Aucun prochain rendez-vous planifié</p>
+                    )}
+                  </CardContent>
+                </Card>
+              </motion.div>
             </div>
 
-            <Card className="border-border/60 bg-white/80 shadow-soft">
-              <CardContent className="p-6">
-                <div className="mb-5 flex items-center justify-between gap-4">
-                  <div>
-                    <p className="text-sm font-medium uppercase tracking-[0.24em] text-muted-foreground">Rendez-vous par mois</p>
-                    <h2 className="mt-2 text-2xl font-semibold text-foreground">Tendance trimestrielle</h2>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.25 }}
+            >
+              <Card className="border-0 bg-gradient-to-br from-slate-50 to-white shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <CardContent className="p-6">
+                  <div className="mb-6 flex items-center justify-between gap-4">
+                    <div>
+                      <p className="text-sm font-medium uppercase tracking-wider text-muted-foreground">Rendez-vous par mois</p>
+                      <h2 className="mt-2 text-2xl font-bold text-foreground">Tendance annuelle</h2>
+                    </div>
+                    <Badge className="rounded-full px-4 py-1.5 text-sm font-semibold bg-gradient-to-r from-blue-500 to-blue-600 text-white border-0">
+                      {new Date().getFullYear()}
+                    </Badge>
                   </div>
-                  <Badge variant="secondary" className="rounded-full px-3 py-1 text-sm">
-                    {new Date().getFullYear()}
-                  </Badge>
+                  <div className="h-[320px]">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <AreaChart data={monthlyAppointments} margin={{ top: 10, right: 16, left: -10, bottom: 0 }}>
+                        <defs>
+                          <linearGradient id="appointmentsGradient" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stopColor="#2563eb" stopOpacity={0.28} />
+                            <stop offset="100%" stopColor="#2563eb" stopOpacity={0.06} />
+                          </linearGradient>
+                        </defs>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} opacity={0.6} />
+                        <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: "#6b7280", fontSize: 12 }} padding={{ left: 8, right: 8 }} />
+                        <YAxis axisLine={false} tickLine={false} tick={{ fill: "#6b7280", fontSize: 12 }} allowDecimals={false} width={40} />
+                        <Tooltip contentStyle={{ borderRadius: 16, border: "1px solid #e5e7eb", boxShadow: "0 10px 30px rgba(15, 23, 42, 0.08)", backgroundColor: "#fff" }} formatter={(value: number) => [value, "Rendez-vous"]} />
+                        <Area type="monotone" dataKey="count" stroke="#2563eb" fill="url(#appointmentsGradient)" strokeWidth={3} activeDot={{ r: 6, fill: "#2563eb" }} />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+            </Card>
+            </motion.div>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            <Card className="border-0 bg-gradient-to-br from-slate-50 to-white shadow-lg">
+              <CardContent className="p-6">
+                <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+                  <div>
+                    <p className="text-sm font-medium uppercase tracking-wider text-muted-foreground">Calendrier</p>
+                    <h2 className="mt-2 text-2xl font-bold text-foreground">Rendez-vous mensuels</h2>
+                  </div>
+                  <div className="flex items-center gap-2 rounded-full bg-white border border-gray-200 px-3 py-2 text-sm text-muted-foreground shadow-sm hover:shadow-md transition-shadow">
+                    <button
+                      type="button"
+                      className="inline-flex h-8 w-8 items-center justify-center rounded-full hover:bg-gray-100 transition"
+                      onClick={() => setCalendarMonth((prev) => new Date(prev.getFullYear(), prev.getMonth() - 1, 1))}
+                    >
+                      <ChevronLeft className="h-4 w-4" />
+                    </button>
+                    <span className="font-bold text-foreground min-w-[140px] text-center">{monthLabel}</span>
+                    <button
+                      type="button"
+                      className="inline-flex h-8 w-8 items-center justify-center rounded-full hover:bg-gray-100 transition"
+                      onClick={() => setCalendarMonth((prev) => new Date(prev.getFullYear(), prev.getMonth() + 1, 1))}
+                    >
+                      <ChevronRight className="h-4 w-4" />
+                    </button>
+                  </div>
                 </div>
-                <div className="h-[320px]">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={monthlyAppointments} margin={{ top: 10, right: 16, left: -10, bottom: 0 }}>
-                      <defs>
-                        <linearGradient id="appointmentsGradient" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="0%" stopColor="#2563eb" stopOpacity={0.28} />
-                          <stop offset="100%" stopColor="#2563eb" stopOpacity={0.06} />
-                        </linearGradient>
-                      </defs>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} opacity={0.6} />
-                      <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: "#6b7280", fontSize: 12 }} padding={{ left: 8, right: 8 }} />
-                      <YAxis axisLine={false} tickLine={false} tick={{ fill: "#6b7280", fontSize: 12 }} allowDecimals={false} width={40} />
-                      <Tooltip contentStyle={{ borderRadius: 16, border: "1px solid #e5e7eb", boxShadow: "0 10px 30px rgba(15, 23, 42, 0.08)", backgroundColor: "#fff" }} formatter={(value: number) => [value, "Rendez-vous"]} />
-                      <Area type="monotone" dataKey="count" stroke="#2563eb" fill="url(#appointmentsGradient)" strokeWidth={3} activeDot={{ r: 6, fill: "#2563eb" }} />
-                    </AreaChart>
-                  </ResponsiveContainer>
+
+                <div className="rounded-2xl border border-gray-200 bg-white p-5">
+                  <div className="grid grid-cols-7 gap-2 text-center text-xs font-bold tracking-wider text-gray-600 mb-3">
+                    {['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'].map((label) => (
+                      <div key={label} className="py-3">{label}</div>
+                    ))}
+                  </div>
+                  <div className="grid gap-2 sm:grid-cols-7">
+                    {Array.from({ length: totalCells }).map((_, index) => {
+                      const dayNumber = index - firstDayIndex + 1;
+                      const inMonth = dayNumber >= 1 && dayNumber <= daysInMonth;
+                      const date = new Date(calendarMonth.getFullYear(), calendarMonth.getMonth(), dayNumber);
+                      const key = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+                      const items = inMonth ? appointmentDays.get(key) || [] : [];
+                      return (
+                        <motion.div
+                          key={`${calendarMonth.getMonth()}-${index}`}
+                          whileHover={inMonth ? { y: -2, boxShadow: "0 8px 16px rgba(37, 99, 235, 0.1)" } : {}}
+                          className={`min-h-[7.5rem] overflow-hidden rounded-xl border transition-all ${
+                            inMonth 
+                              ? 'bg-white border-gray-200 shadow-sm hover:border-blue-300 cursor-pointer' 
+                              : 'bg-gray-50 border-gray-100 text-gray-400'
+                          }`}
+                        >
+                          <div className="flex items-center justify-between gap-2 p-3">
+                            <span className={`text-sm font-bold ${key === todayKey ? 'text-blue-600 bg-blue-100 rounded-full w-6 h-6 flex items-center justify-center' : 'text-foreground'}`}>
+                              {inMonth ? dayNumber : ''}
+                            </span>
+                            {items.length > 0 && (
+                              <span className="rounded-full bg-blue-100 px-2 py-0.5 text-xs font-semibold text-blue-600">
+                                {items.length}
+                              </span>
+                            )}
+                          </div>
+                          <div className="px-3 pb-3 flex flex-col gap-1.5">
+                            {items.slice(0, 2).map((item) => (
+                              <div key={item.id} className="overflow-hidden rounded-lg bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 px-2 py-1.5 text-xs leading-tight">
+                                <p className="font-bold text-blue-900">{getAnimalEmoji(item.espece)} {item.nom_animal}</p>
+                                <p className="text-blue-700 text-[0.65rem]">
+                                  {item.veterinaires ? `Dr. ${item.veterinaires.prenom}` : 'Vét.'}
+                                </p>
+                              </div>
+                            ))}
+                            {items.length > 2 && (
+                              <p className="text-xs font-semibold text-blue-600">+{items.length - 2} autre{items.length - 2 > 1 ? 's' : ''}</p>
+                            )}
+                          </div>
+                        </motion.div>
+                      );
+                    })}
+                  </div>
                 </div>
               </CardContent>
             </Card>
-          </div>
-
-          <Card className="border-border/60 bg-white/80 shadow-soft">
-            <CardContent className="p-6">
-              <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
-                <div>
-                  <p className="text-sm font-medium uppercase tracking-[0.24em] text-muted-foreground">Calendrier</p>
-                  <h2 className="mt-2 text-2xl font-semibold text-foreground">Rendez-vous mensuels</h2>
-                </div>
-                <div className="flex items-center gap-2 rounded-full bg-slate-100 px-3 py-2 text-sm text-muted-foreground shadow-sm">
-                  <button
-                    type="button"
-                    className="inline-flex h-9 w-9 items-center justify-center rounded-full transition hover:bg-slate-200"
-                    onClick={() => setCalendarMonth((prev) => new Date(prev.getFullYear(), prev.getMonth() - 1, 1))}
-                  >
-                    <ChevronLeft className="h-4 w-4" />
-                  </button>
-                  <span className="font-semibold text-foreground">{monthLabel}</span>
-                  <button
-                    type="button"
-                    className="inline-flex h-9 w-9 items-center justify-center rounded-full transition hover:bg-slate-200"
-                    onClick={() => setCalendarMonth((prev) => new Date(prev.getFullYear(), prev.getMonth() + 1, 1))}
-                  >
-                    <ChevronRight className="h-4 w-4" />
-                  </button>
-                </div>
-              </div>
-
-              <div className="rounded-3xl border border-border/60 bg-background/80 p-5">
-                <div className="grid grid-cols-7 gap-2 text-center text-xs uppercase tracking-[0.18em] text-muted-foreground">
-                  {['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'].map((label) => (
-                    <div key={label} className="py-2">{label}</div>
-                  ))}
-                </div>
-                <div className="mt-3 grid gap-2 sm:grid-cols-7">
-                  {Array.from({ length: totalCells }).map((_, index) => {
-                    const dayNumber = index - firstDayIndex + 1;
-                    const inMonth = dayNumber >= 1 && dayNumber <= daysInMonth;
-                    const date = new Date(calendarMonth.getFullYear(), calendarMonth.getMonth(), dayNumber);
-                    const key = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
-                    const items = inMonth ? appointmentDays.get(key) || [] : [];
-                    return (
-                      <div
-                        key={`${calendarMonth.getMonth()}-${index}`}
-                        className={`min-h-[7rem] overflow-hidden rounded-3xl border p-3 transition-colors ${
-                          inMonth ? 'bg-white shadow-sm hover:border-primary/30' : 'bg-slate-50 text-muted-foreground'
-                        }`}
-                      >
-                        <div className="flex items-center justify-between gap-2">
-                          <span className={`text-sm font-semibold ${key === todayKey ? 'text-primary' : 'text-foreground'}`}>{inMonth ? dayNumber : ''}</span>
-                          {items.length > 0 && <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[0.65rem] font-semibold text-primary">{items.length} rdv</span>}
-                        </div>
-                        <div className="mt-2 flex flex-col gap-1">
-                          {items.slice(0, 2).map((item) => (
-                            <div key={item.id} className="overflow-hidden rounded-2xl bg-primary/5 px-2 py-1 text-[0.72rem] leading-snug text-primary">
-                              <p className="font-semibold truncate">{item.nom_animal}</p>
-                              <p className="truncate text-[0.67rem] text-muted-foreground">
-                                {item.veterinaires ? `Dr. ${item.veterinaires.prenom} ${item.veterinaires.nom}` : 'Vétérinaire'}
-                              </p>
-                            </div>
-                          ))}
-                          {items.length > 2 && (
-                            <p className="text-[0.68rem] text-muted-foreground">+{items.length - 2} autre{items.length - 2 > 1 ? 's' : ''}</p>
-                          )}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          </motion.div>
 
           {loading ? (
             <div className="grid gap-4">
               {[0, 1, 2].map((i) => (
-                <div key={i} className="h-32 animate-pulse rounded-2xl bg-card/60" />
+                <div key={i} className="h-32 animate-pulse rounded-2xl bg-gradient-to-r from-slate-200 to-slate-100" />
               ))}
             </div>
           ) : rdvs.length === 0 ? (
             <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }}>
-              <Card className="border-dashed border-border/60 shadow-none">
+              <Card className="border-2 border-dashed border-blue-200 bg-gradient-to-br from-blue-50 to-indigo-50 shadow-none">
                 <CardContent className="flex flex-col items-center gap-4 py-20 text-center">
-                  <div className="flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-accent to-secondary shadow-soft animate-float">
-                    <PawPrint className="h-10 w-10 text-primary" />
-                  </div>
+                  <motion.div
+                    animate={{ y: [0, -8, 0] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                    className="flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-400 to-blue-500 shadow-lg"
+                  >
+                    <PawPrint className="h-10 w-10 text-white" />
+                  </motion.div>
                   <div>
-                    <h3 className="font-display text-2xl font-semibold">Aucun rendez-vous</h3>
-                    <p className="mt-1 text-sm text-muted-foreground">Prenez votre premier rendez-vous pour commencer.</p>
+                    <h3 className="font-display text-2xl font-bold text-foreground">Aucun rendez-vous</h3>
+                    <p className="mt-2 text-sm text-muted-foreground">Prenez votre premier rendez-vous pour commencer.</p>
                   </div>
-                  <Button asChild className="shadow-soft hover:shadow-glow">
-                    <Link to="/nouveau-rdv">Créer un rendez-vous</Link>
+                  <Button asChild className="gap-2 mt-4 shadow-lg hover:shadow-xl bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white">
+                    <Link to="/nouveau-rdv"><Plus className="h-4 w-4" /> Créer un rendez-vous</Link>
                   </Button>
                 </CardContent>
               </Card>
@@ -345,41 +413,44 @@ const Dashboard = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4, delay: idx * 0.06 }}
-                    whileHover={{ y: -4 }}
+                    whileHover={{ y: -4, boxShadow: "0 20px 40px rgba(37, 99, 235, 0.15)" }}
                   >
-                    <Card className="group relative overflow-hidden border-border/60 shadow-card transition-all duration-300 hover:shadow-elegant">
-                      <div className="absolute inset-y-0 left-0 w-1 bg-gradient-primary opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                      <div className="absolute -right-20 -top-20 h-40 w-40 rounded-full bg-gradient-primary opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-20" />
+                    <Card className="group relative overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-white to-slate-50">
+                      <div className="absolute inset-y-0 left-0 w-1 bg-gradient-to-b from-blue-500 to-indigo-500 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                      <div className="absolute -right-20 -top-20 h-40 w-40 rounded-full bg-gradient-to-br from-blue-400 to-indigo-400 opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-20" />
                       <CardContent className="relative flex flex-col gap-4 p-6 sm:flex-row sm:items-center sm:justify-between">
                         <div className="flex items-start gap-4">
-                          <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-primary shadow-soft transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
-                            <PawPrint className="h-7 w-7 text-primary-foreground" />
-                          </div>
+                          <motion.div
+                            whileHover={{ scale: 1.1, rotate: 8 }}
+                            className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 shadow-lg text-2xl"
+                          >
+                            {getAnimalEmoji(r.espece)}
+                          </motion.div>
                           <div>
                             <div className="flex items-center gap-2">
-                              <h3 className="font-display text-xl font-semibold">{r.nom_animal}</h3>
+                              <h3 className="font-display text-xl font-bold text-foreground">{r.nom_animal}</h3>
                               <span className="text-sm text-muted-foreground">· {r.espece}</span>
                             </div>
-                            <p className="mt-1 text-sm text-muted-foreground">
-                              {r.veterinaires ? `Dr. ${r.veterinaires.prenom} ${r.veterinaires.nom} — ${r.veterinaires.specialite}` : "—"}
+                            <p className="mt-1.5 text-sm text-blue-700 font-medium">
+                              {r.veterinaires ? `Dr. ${r.veterinaires.prenom} ${r.veterinaires.nom}` : "Vétérinaire non défini"}
                             </p>
-                            <p className="mt-2 text-sm text-foreground/80">{r.motif}</p>
+                            <p className="mt-1 text-sm text-muted-foreground">{r.motif}</p>
                           </div>
                         </div>
                         <div className="flex flex-col items-start gap-2 sm:items-end">
                           <div className="flex flex-wrap items-center gap-2">
-                            <Badge variant="outline" className={st.cls}>{st.label}</Badge>
+                            <Badge variant="outline" className={`${st.cls} font-semibold`}>{st.label}</Badge>
                             {(r as any).payment_status === "paid" ? (
-                              <Badge variant="secondary" className="gap-1.5 bg-success/15 text-success border-success/30">
+                              <Badge className="gap-1.5 bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0 font-semibold">
                                 <CheckCircle2 className="h-3.5 w-3.5" /> Payé
                               </Badge>
                             ) : (
-                              <Badge variant="secondary" className="gap-1.5 bg-warning/15 text-warning border-warning/30">
+                              <Badge className="gap-1.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0 font-semibold">
                                 <Clock className="h-3.5 w-3.5" /> En attente
                               </Badge>
                             )}
                           </div>
-                          <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                          <div className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground">
                             <CalendarIcon className="h-4 w-4" />
                             {date.toLocaleString("fr-FR", { dateStyle: "long", timeStyle: "short" })}
                           </div>

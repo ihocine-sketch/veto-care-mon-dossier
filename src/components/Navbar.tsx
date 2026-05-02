@@ -43,9 +43,9 @@ export const Navbar = () => {
 
   return (
     <header
-      className={`sticky top-0 z-50 w-full transition-all duration-300 ${
+      className={`sticky top-0 z-50 w-full transition-all duration-500 ${
         scrolled
-          ? "border-b border-border/60 glass shadow-soft"
+          ? "border-b border-border/40 bg-background/40 backdrop-blur-xl shadow-lg"
           : "border-b border-transparent bg-transparent"
       }`}
     >
