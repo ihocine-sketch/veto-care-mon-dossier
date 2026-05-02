@@ -14,6 +14,7 @@ import Animaux from "./pages/Animaux.tsx";
 import AnimalForm from "./pages/AnimalForm.tsx";
 import AnimalProfile from "./pages/AnimalProfile.tsx";
 import Payment from "./pages/Payment.tsx";
+import Contact from "./pages/Contact.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -28,6 +29,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/contact" element={<Contact />} />
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             <Route path="/veterinaires" element={<ProtectedRoute><Veterinaires /></ProtectedRoute>} />
             <Route path="/nouveau-rdv" element={<ProtectedRoute><NouveauRdv /></ProtectedRoute>} />

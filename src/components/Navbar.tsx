@@ -79,6 +79,20 @@ export const Navbar = () => {
                   )}
                 </NavLink>
               ))}
+              <NavLink to="/contact" className={linkClass}>
+                {({ isActive }) => (
+                  <>
+                    Nous contacter
+                    {isActive && (
+                      <motion.span
+                        layoutId="nav-pill"
+                        className="absolute inset-0 -z-10 rounded-lg bg-accent"
+                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                      />
+                    )}
+                  </>
+                )}
+              </NavLink>
               <Button variant="ghost" size="sm" onClick={handleLogout} className="ml-2 gap-2 transition-transform hover:scale-105">
                 <LogOut className="h-4 w-4" />
                 Déconnexion
@@ -93,9 +107,25 @@ export const Navbar = () => {
             </button>
           </>
         ) : (
-          <Button asChild size="sm" className="gap-2 shadow-soft transition-transform hover:scale-105 hover:shadow-elegant">
-            <Link to="/auth">Se connecter</Link>
-          </Button>
+          <div className="hidden items-center gap-3 md:flex">
+            <NavLink to="/contact" className={linkClass}>
+              {({ isActive }) => (
+                <>
+                  Nous contacter
+                  {isActive && (
+                    <motion.span
+                      layoutId="nav-pill"
+                      className="absolute inset-0 -z-10 rounded-lg bg-accent"
+                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                    />
+                  )}
+                </>
+              )}
+            </NavLink>
+            <Button asChild size="sm" className="gap-2 shadow-soft transition-transform hover:scale-105 hover:shadow-elegant">
+              <Link to="/auth">Se connecter</Link>
+            </Button>
+          </div>
         )}
       </div>
 
@@ -123,6 +153,17 @@ export const Navbar = () => {
                   {l.label}
                 </NavLink>
               ))}
+              <NavLink
+                to="/contact"
+                onClick={() => setOpen(false)}
+                className={({ isActive }) =>
+                  `rounded-lg px-3 py-2.5 text-sm font-medium ${
+                    isActive ? "bg-accent text-primary" : "text-muted-foreground hover:bg-secondary"
+                  }`
+                }
+              >
+                Nous contacter
+              </NavLink>
               <Button variant="ghost" size="sm" onClick={handleLogout} className="mt-1 justify-start gap-2">
                 <LogOut className="h-4 w-4" /> Déconnexion
               </Button>
