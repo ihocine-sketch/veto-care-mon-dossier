@@ -45,10 +45,8 @@ const Dashboard = () => {
       });
   }, [user]);
 
-  const downloadCarnet = async (path: string) => {
-    const { data, error } = await supabase.storage.from("carnets_sante").createSignedUrl(path, 60);
-    if (error) return toast.error("Impossible d'ouvrir le carnet");
-    window.open(data.signedUrl, "_blank");
+  const downloadCarnet = (url: string) => {
+    window.open(url, "_blank");
   };
 
   return (
