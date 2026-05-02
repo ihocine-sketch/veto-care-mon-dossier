@@ -14,8 +14,54 @@ export type Database = {
   }
   public: {
     Tables: {
+      animaux: {
+        Row: {
+          age: number | null
+          allergies: string | null
+          created_at: string
+          espece: string
+          id: string
+          maitre_id: string
+          nom: string
+          notes: string | null
+          photo_url: string | null
+          poids: number | null
+          race: string | null
+          updated_at: string
+        }
+        Insert: {
+          age?: number | null
+          allergies?: string | null
+          created_at?: string
+          espece: string
+          id?: string
+          maitre_id: string
+          nom: string
+          notes?: string | null
+          photo_url?: string | null
+          poids?: number | null
+          race?: string | null
+          updated_at?: string
+        }
+        Update: {
+          age?: number | null
+          allergies?: string | null
+          created_at?: string
+          espece?: string
+          id?: string
+          maitre_id?: string
+          nom?: string
+          notes?: string | null
+          photo_url?: string | null
+          poids?: number | null
+          race?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       rendez_vous: {
         Row: {
+          animal_id: string | null
           carnet_sante_url: string | null
           created_at: string
           date_rdv: string
@@ -28,6 +74,7 @@ export type Database = {
           veterinaire_id: string
         }
         Insert: {
+          animal_id?: string | null
           carnet_sante_url?: string | null
           created_at?: string
           date_rdv: string
@@ -40,6 +87,7 @@ export type Database = {
           veterinaire_id: string
         }
         Update: {
+          animal_id?: string | null
           carnet_sante_url?: string | null
           created_at?: string
           date_rdv?: string
