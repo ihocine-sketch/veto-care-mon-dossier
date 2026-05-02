@@ -9,7 +9,7 @@ import { PageTransition } from "@/components/PageTransition";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, FileText, Plus, PawPrint, Sparkles } from "lucide-react";
+import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, FileText, Plus, PawPrint, Sparkles } from "lucide-react";
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { toast } from "sonner";
 
@@ -40,6 +40,7 @@ const Dashboard = () => {
   const [rdvs, setRdvs] = useState<Rdv[]>([]);
   const [loading, setLoading] = useState(true);
   const [animalCount, setAnimalCount] = useState(0);
+  const [calendarMonth, setCalendarMonth] = useState(new Date());
 
   useEffect(() => {
     if (!user) return;
@@ -105,6 +106,28 @@ const Dashboard = () => {
     return months;
   }, [rdvs]);
 
+  const appointmentDays = useMemo(() => {
+    const map = new Map<string, Rdv[]>();
+    rdvs.forEach((rdv) => {
+      const date = new Date(rdv.date_rdv);
+      const key = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+      const items = map.get(key) || [];
+      items.push(rdv);
+      map.set(key, items);
+    });
+    return map;
+  }, [rdvs]);
+
+  const monthLabel = calendarMonth.toLocaleString("fr-FR", { month: "long", year: "numeric" });
+
+  const firstDayIndex = (new Date(calendarMonth.getFullYear(), calendarMonth.getMonth(), 1).getDay() + 6) % 7;
+  const daysInMonth = new Date(calendarMonth.getFullYear(), calendarMonth.getMonth() + 1, 0).getDate();
+  const totalCells = Math.ceil((firstDayIndex + daysInMonth) / 7) * 7;
+  const todayKey = (() => {
+    const now = new Date();
+    return `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}`;
+  })();
+
   return (
     <div className="min-h-screen bg-gradient-soft">
       <Navbar />
@@ -138,7 +161,7 @@ const Dashboard = () => {
                       <p className="mt-2 text-3xl font-semibold text-foreground">{totalAppointments}</p>
                     </div>
                     <div className="inline-flex h-12 w-12 items-center justify-center rounded-3xl bg-primary/10 text-primary shadow-soft">
-                      <Calendar className="h-6 w-6" />
+                      <CalendarIcon className="h-6 w-6" />
                     </div>
                   </div>
                   <p className="text-sm text-muted-foreground">Total de rendez-vous enregistrés pour votre compte.</p>
@@ -216,6 +239,77 @@ const Dashboard = () => {
               </CardContent>
             </Card>
           </div>
+
+          <Card className="border-border/60 bg-white/80 shadow-soft">
+            <CardContent className="p-6">
+              <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+                <div>
+                  <p className="text-sm font-medium uppercase tracking-[0.24em] text-muted-foreground">Calendrier</p>
+                  <h2 className="mt-2 text-2xl font-semibold text-foreground">Rendez-vous mensuels</h2>
+                </div>
+                <div className="flex items-center gap-2 rounded-full bg-slate-100 px-3 py-2 text-sm text-muted-foreground shadow-sm">
+                  <button
+                    type="button"
+                    className="inline-flex h-9 w-9 items-center justify-center rounded-full transition hover:bg-slate-200"
+                    onClick={() => setCalendarMonth((prev) => new Date(prev.getFullYear(), prev.getMonth() - 1, 1))}
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                  </button>
+                  <span className="font-semibold text-foreground">{monthLabel}</span>
+                  <button
+                    type="button"
+                    className="inline-flex h-9 w-9 items-center justify-center rounded-full transition hover:bg-slate-200"
+                    onClick={() => setCalendarMonth((prev) => new Date(prev.getFullYear(), prev.getMonth() + 1, 1))}
+                  >
+                    <ChevronRight className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
+
+              <div className="rounded-3xl border border-border/60 bg-background/80 p-5">
+                <div className="grid grid-cols-7 gap-2 text-center text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                  {['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'].map((label) => (
+                    <div key={label} className="py-2">{label}</div>
+                  ))}
+                </div>
+                <div className="mt-3 grid gap-2 sm:grid-cols-7">
+                  {Array.from({ length: totalCells }).map((_, index) => {
+                    const dayNumber = index - firstDayIndex + 1;
+                    const inMonth = dayNumber >= 1 && dayNumber <= daysInMonth;
+                    const date = new Date(calendarMonth.getFullYear(), calendarMonth.getMonth(), dayNumber);
+                    const key = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+                    const items = inMonth ? appointmentDays.get(key) || [] : [];
+                    return (
+                      <div
+                        key={`${calendarMonth.getMonth()}-${index}`}
+                        className={`min-h-[7rem] overflow-hidden rounded-3xl border p-3 transition-colors ${
+                          inMonth ? 'bg-white shadow-sm hover:border-primary/30' : 'bg-slate-50 text-muted-foreground'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between gap-2">
+                          <span className={`text-sm font-semibold ${key === todayKey ? 'text-primary' : 'text-foreground'}`}>{inMonth ? dayNumber : ''}</span>
+                          {items.length > 0 && <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[0.65rem] font-semibold text-primary">{items.length} rdv</span>}
+                        </div>
+                        <div className="mt-2 flex flex-col gap-1">
+                          {items.slice(0, 2).map((item) => (
+                            <div key={item.id} className="overflow-hidden rounded-2xl bg-primary/5 px-2 py-1 text-[0.72rem] leading-snug text-primary">
+                              <p className="font-semibold truncate">{item.nom_animal}</p>
+                              <p className="truncate text-[0.67rem] text-muted-foreground">
+                                {item.veterinaires ? `Dr. ${item.veterinaires.prenom} ${item.veterinaires.nom}` : 'Vétérinaire'}
+                              </p>
+                            </div>
+                          ))}
+                          {items.length > 2 && (
+                            <p className="text-[0.68rem] text-muted-foreground">+{items.length - 2} autre{items.length - 2 > 1 ? 's' : ''}</p>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
 
           {loading ? (
             <div className="grid gap-4">
