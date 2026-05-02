@@ -7,6 +7,7 @@ import { PageTransition } from "@/components/PageTransition";
 import { Button } from "@/components/ui/button";
 import { PawPrint, Calendar, Stethoscope, ShieldCheck, ArrowRight, Sparkles, Clock, FileText, Star, CheckCircle2 } from "lucide-react";
 import { motion, type Variants } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 const stagger: Variants = {
   hidden: { opacity: 0 },
@@ -55,6 +56,7 @@ const statistics = [
 
 const Index = () => {
   const { user } = useAuth();
+  const { t } = useTranslation();
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#e8f5e9] via-[#f0f9f0] to-white animate-gradient-x">
@@ -104,13 +106,13 @@ const Index = () => {
                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success opacity-75" />
                     <span className="relative inline-flex h-2 w-2 rounded-full bg-success" />
                   </span>
-                  Extranet vétérinaire · nouvelle génération
+                  {t('hero.badge')}
                 </motion.div>
 
                 <motion.h1 variants={item} className="font-display text-6xl font-bold leading-[1.05] text-foreground sm:text-8xl">
-                  Le suivi santé de vos animaux,{" "}
+                  {t('hero.title')}
                   <span className="relative inline-block">
-                    <span className="text-gradient">en toute simplicité.</span>
+                    <span className="text-gradient">{t('hero.titleHighlight')}</span>
                     <svg className="absolute -bottom-2 left-0 w-full" height="12" viewBox="0 0 200 12" fill="none">
                       <motion.path
                         d="M2 8 Q 50 2, 100 6 T 198 5"
@@ -127,26 +129,26 @@ const Index = () => {
                 </motion.h1>
 
                 <motion.p variants={item} className="mx-auto mt-7 max-w-2xl text-lg text-muted-foreground sm:text-xl">
-                  Prenez rendez-vous, gérez les carnets de santé et suivez les visites de vos compagnons depuis un seul espace, élégant et sécurisé.
+                  {t('hero.subtitle')}
                 </motion.p>
 
                 <motion.div variants={item} className="mt-10 flex flex-wrap items-center justify-center gap-3">
                   <Button asChild size="lg" className="group h-12 gap-2 px-7 text-base shadow-elegant transition-all hover:-translate-y-0.5 hover:shadow-glow">
                     <Link to={user ? "/dashboard" : "/auth"}>
                       <PawPrint className="h-4 w-4" />
-                      {user ? "Mon espace" : "Créer mon espace"}
+                      {user ? t('nav.dashboard') : t('hero.ctaPrimary')}
                       <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                     </Link>
                   </Button>
                   <Button asChild variant="outline" size="lg" className="h-12 px-7 text-base backdrop-blur transition-all hover:-translate-y-0.5">
-                    <Link to="/veterinaires">Voir nos vétérinaires</Link>
+                    <Link to="/veterinaires">{t('hero.ctaSecondary')}</Link>
                   </Button>
                 </motion.div>
 
                 <motion.div variants={item} className="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-muted-foreground">
-                  <span className="flex items-center gap-1.5"><Sparkles className="h-3.5 w-3.5 text-primary" /> Sans engagement</span>
-                  <span className="flex items-center gap-1.5"><ShieldCheck className="h-3.5 w-3.5 text-primary" /> RGPD</span>
-                  <span className="flex items-center gap-1.5"><Clock className="h-3.5 w-3.5 text-primary" /> Disponible 24/7</span>
+                  <span className="flex items-center gap-1.5"><Sparkles className="h-3.5 w-3.5 text-primary" /> {t('hero.features.noCommitment')}</span>
+                  <span className="flex items-center gap-1.5"><ShieldCheck className="h-3.5 w-3.5 text-primary" /> {t('hero.features.gdpr')}</span>
+                  <span className="flex items-center gap-1.5"><Clock className="h-3.5 w-3.5 text-primary" /> {t('hero.features.available')}</span>
                 </motion.div>
               </motion.div>
 
@@ -206,8 +208,8 @@ const Index = () => {
                 <div className="relative mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-100 to-blue-200 shadow-soft transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
                   <Calendar className="h-7 w-7 text-blue-600" />
                 </div>
-                <h3 className="relative font-display text-xl font-bold mb-3">Rendez-vous en ligne</h3>
-                <p className="relative text-sm leading-relaxed text-muted-foreground">Prenez rendez-vous 24/7 avec nos vétérinaires certifiés depuis votre téléphone ou ordinateur.</p>
+                <h3 className="relative font-display text-xl font-bold mb-3">{t('features.cards.appointments.title')}</h3>
+                <p className="relative text-sm leading-relaxed text-muted-foreground">{t('features.cards.appointments.description')}</p>
               </motion.div>
 
               <motion.div
@@ -220,8 +222,8 @@ const Index = () => {
                 <div className="relative mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-red-100 to-pink-200 shadow-soft transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
                   <Sparkles className="h-7 w-7 text-red-600" />
                 </div>
-                <h3 className="relative font-display text-xl font-bold mb-3">Carnet de santé digital</h3>
-                <p className="relative text-sm leading-relaxed text-muted-foreground">Tous les vaccins, traitements et visites médicales de vos animaux centralisés et sécurisés.</p>
+                <h3 className="relative font-display text-xl font-bold mb-3">{t('features.cards.healthRecord.title')}</h3>
+                <p className="relative text-sm leading-relaxed text-muted-foreground">{t('features.cards.healthRecord.description')}</p>
               </motion.div>
 
               <motion.div
@@ -234,8 +236,8 @@ const Index = () => {
                 <div className="relative mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-green-100 to-emerald-200 shadow-soft transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
                   <ShieldCheck className="h-7 w-7 text-green-600" />
                 </div>
-                <h3 className="relative font-display text-xl font-bold mb-3">Vétérinaires certifiés</h3>
-                <p className="relative text-sm leading-relaxed text-muted-foreground">Une équipe de professionnels qualifiés et passionnés, disponibles pour prendre soin de vos compagnons.</p>
+                <h3 className="relative font-display text-xl font-bold mb-3">{t('features.cards.certifiedVets.title')}</h3>
+                <p className="relative text-sm leading-relaxed text-muted-foreground">{t('features.cards.certifiedVets.description')}</p>
               </motion.div>
             </motion.div>
           </section>
@@ -250,19 +252,19 @@ const Index = () => {
               className="mx-auto max-w-4xl rounded-3xl bg-gradient-to-r from-green-50 via-blue-50 to-purple-50 p-8 shadow-lg border border-green-100/50"
             >
               <div className="text-center">
-                <h3 className="font-display text-2xl font-bold text-gray-900 mb-6">Veto-Care en chiffres</h3>
+                <h3 className="font-display text-2xl font-bold text-gray-900 mb-6">{t('stats.title')}</h3>
                 <div className="flex flex-wrap justify-center items-center gap-8 text-lg font-semibold text-gray-700">
                   <div className="flex items-center gap-2">
                     <span className="text-3xl">🐾</span>
-                    <span>500+ animaux suivis</span>
+                    <span>500+ {t('stats.animals')}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-3xl">👨‍⚕️</span>
-                    <span>50+ vétérinaires</span>
+                    <span>50+ {t('stats.veterinarians')}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-3xl">⭐</span>
-                    <span>4.9/5 étoiles</span>
+                    <span>4.9/5 {t('stats.rating')}</span>
                   </div>
                 </div>
               </div>
@@ -349,9 +351,9 @@ const Index = () => {
           {/* Testimonials Section */}
           <section className="container mx-auto px-4 pb-24">
             <div className="mx-auto mb-16 max-w-2xl text-center">
-              <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-primary">Avis clients</p>
+              <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-primary">{t('testimonials.subtitle')}</p>
               <h2 className="font-display text-4xl font-semibold sm:text-5xl">
-                Les propriétaires adorent <span className="text-gradient">Veto-Care</span>
+                {t('testimonials.title')}
               </h2>
             </div>
 
@@ -415,14 +417,14 @@ const Index = () => {
               <div className="absolute -top-24 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full bg-white/20 blur-3xl" />
               <div className="relative">
                 <h2 className="font-display text-4xl font-semibold text-primary-foreground sm:text-5xl">
-                  Prêt à prendre soin d'eux ?
+                  {t('cta.title')}
                 </h2>
                 <p className="mx-auto mt-4 max-w-xl text-primary-foreground/85">
-                  Créez votre espace en moins d'une minute et accédez à toute l'équipe Veto-Care.
+                  {t('cta.subtitle')}
                 </p>
                 <Button asChild size="lg" variant="secondary" className="mt-8 h-12 gap-2 px-7 text-base shadow-elegant transition-transform hover:scale-105">
                   <Link to={user ? "/dashboard" : "/auth"}>
-                    Commencer maintenant
+                    {t('cta.button')}
                     <ArrowRight className="h-4 w-4" />
                   </Link>
                 </Button>

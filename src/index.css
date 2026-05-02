@@ -166,3 +166,80 @@
 ::-webkit-scrollbar-track { background: hsl(var(--background)); }
 ::-webkit-scrollbar-thumb { background: hsl(var(--border)); border-radius: 8px; }
 ::-webkit-scrollbar-thumb:hover { background: hsl(var(--muted-foreground) / 0.4); }
+
+/* RTL Support for Arabic */
+.rtl {
+  direction: rtl;
+}
+
+.rtl .container {
+  direction: rtl;
+}
+
+/* Adjust navbar for RTL */
+[dir="rtl"] .navbar {
+  direction: ltr; /* Keep navbar LTR for consistency */
+}
+
+/* Adjust dropdown menus for RTL */
+[dir="rtl"] .dropdown-menu-content {
+  right: 0;
+  left: auto;
+}
+
+/* Adjust flex layouts for RTL */
+[dir="rtl"] .flex {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .flex-row {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .justify-between {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .justify-end {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .justify-start {
+  flex-direction: row;
+}
+
+/* Adjust text alignment for RTL */
+[dir="rtl"] .text-left {
+  text-align: right;
+}
+
+[dir="rtl"] .text-right {
+  text-align: left;
+}
+
+/* Adjust margins and paddings for RTL */
+[dir="rtl"] .ml-2 {
+  margin-left: 0;
+  margin-right: 0.5rem;
+}
+
+[dir="rtl"] .mr-2 {
+  margin-right: 0;
+  margin-left: 0.5rem;
+}
+
+[dir="rtl"] .pl-4 {
+  padding-left: 0;
+  padding-right: 1rem;
+}
+
+[dir="rtl"] .pr-4 {
+  padding-right: 0;
+  padding-left: 1rem;
+}
+
+/* Adjust navigation pills for RTL */
+[dir="rtl"] .nav-pill {
+  right: 0;
+  left: auto;
+}

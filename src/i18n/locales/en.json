@@ -1,0 +1,216 @@
+{
+  "nav": {
+    "home": "Home",
+    "dashboard": "My Appointments",
+    "animals": "My Animals",
+    "veterinarians": "Veterinarians",
+    "newAppointment": "New Appointment",
+    "contact": "Contact Us",
+    "login": "Sign In",
+    "logout": "Logout",
+    "loggedOut": "Successfully logged out"
+  },
+  "hero": {
+    "title": "Your pets' health tracking, ",
+    "titleHighlight": "in complete simplicity.",
+    "subtitle": "Book appointments, manage health records and follow your companions' visits from a single elegant and secure space.",
+    "ctaPrimary": "Create My Account",
+    "ctaSecondary": "View Our Veterinarians",
+    "badge": "Veterinary extranet · new generation",
+    "features": {
+      "noCommitment": "No commitment",
+      "gdpr": "GDPR compliant",
+      "available": "Available 24/7"
+    }
+  },
+  "features": {
+    "title": "Everything you need, nothing more",
+    "subtitle": "Features",
+    "cards": {
+      "appointments": {
+        "title": "Online Appointments",
+        "description": "Book appointments 24/7 with our certified veterinarians from your phone or computer."
+      },
+      "healthRecord": {
+        "title": "Digital Health Record",
+        "description": "All vaccines, treatments and medical visits of your animals centralized and secured."
+      },
+      "certifiedVets": {
+        "title": "Certified Veterinarians",
+        "description": "A team of qualified and passionate professionals, available to take care of your companions."
+      }
+    },
+    "additional": {
+      "specializedTeam": {
+        "title": "Specialized Team",
+        "description": "General medicine, surgery, dermatology — expertise for every need."
+      },
+      "secureRecord": {
+        "title": "Secure Record",
+        "description": "Documents stored confidentially and accessible at any time."
+      },
+      "completeHistory": {
+        "title": "Complete History",
+        "description": "Find all past and upcoming visits of your companions."
+      },
+      "automaticReminders": {
+        "title": "Automatic Reminders",
+        "description": "Never miss a vaccination or important appointment again."
+      },
+      "elegantInterface": {
+        "title": "Elegant Interface",
+        "description": "An experience designed for serenity, on mobile and computer."
+      }
+    }
+  },
+  "stats": {
+    "title": "Veto-Care in numbers",
+    "animals": "animals followed",
+    "veterinarians": "veterinarians",
+    "rating": "stars"
+  },
+  "testimonials": {
+    "title": "Pet owners love Veto-Care",
+    "subtitle": "Customer Reviews",
+    "reviews": [
+      {
+        "name": "Marie Dupont",
+        "role": "Médor's Owner",
+        "content": "Veto-Care saved my life! No more memorizing appointments, everything is organized."
+      },
+      {
+        "name": "Jean Moreau",
+        "role": "Veterinarian",
+        "content": "Beautiful and very intuitive platform. My clients love the design and simplicity."
+      },
+      {
+        "name": "Sophie Bernard",
+        "role": "Whiskers' Owner",
+        "content": "The digital health record is fantastic! Always at hand on my phone."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Ready to take care of them?",
+    "subtitle": "Create your account in less than a minute and access the entire Veto-Care team.",
+    "button": "Get Started Now"
+  },
+  "footer": {
+    "company": "Veto Care",
+    "description": "Veterinary tracking platform",
+    "email": "contact@veto-care.com",
+    "copyright": "© 2026 Veto Care. All rights reserved."
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Register",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "forgotPassword": "Forgot password?",
+    "noAccount": "No account?",
+    "hasAccount": "Already have an account?",
+    "createAccount": "Create an account",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "welcomeBack": "Welcome back!",
+    "createYourAccount": "Create your account",
+    "loginDescription": "Sign in to your Veto-Care space",
+    "registerDescription": "Join the Veto-Care community"
+  },
+  "dashboard": {
+    "title": "My Dashboard",
+    "welcome": "Welcome to your dashboard",
+    "upcomingAppointments": "Upcoming Appointments",
+    "recentAppointments": "Recent Appointments",
+    "myAnimals": "My Animals",
+    "quickActions": "Quick Actions",
+    "noAppointments": "No upcoming appointments",
+    "noAnimals": "No animals registered",
+    "addAnimal": "Add an animal",
+    "bookAppointment": "Book appointment"
+  },
+  "animals": {
+    "title": "My Animals",
+    "addNew": "Add an animal",
+    "name": "Name",
+    "species": "Species",
+    "breed": "Breed",
+    "birthDate": "Birth Date",
+    "weight": "Weight (kg)",
+    "actions": "Actions",
+    "edit": "Edit",
+    "delete": "Delete",
+    "viewProfile": "View Profile",
+    "noAnimals": "No animals registered",
+    "addFirstAnimal": "Add your first animal"
+  },
+  "appointment": {
+    "title": "New Appointment",
+    "selectAnimal": "Select an animal",
+    "selectVeterinarian": "Select a veterinarian",
+    "selectDate": "Select a date",
+    "reason": "Consultation reason",
+    "notes": "Additional notes",
+    "book": "Book appointment",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "upcoming": "Upcoming",
+    "completed": "Completed",
+    "cancelled": "Cancelled"
+  },
+  "veterinarians": {
+    "title": "Our Veterinarians",
+    "specialty": "Specialty",
+    "experience": "Years of experience",
+    "rating": "Rating",
+    "consultationFee": "Consultation fee",
+    "bookAppointment": "Book appointment",
+    "noVeterinarians": "No veterinarians available"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "next": "Next",
+    "previous": "Previous",
+    "close": "Close",
+    "open": "Open",
+    "yes": "Yes",
+    "no": "No",
+    "confirm": "Confirm",
+    "back": "Back",
+    "home": "Home",
+    "profile": "Profile",
+    "settings": "Settings",
+    "help": "Help",
+    "contact": "Contact",
+    "phone": "Phone",
+    "address": "Address",
+    "city": "City",
+    "country": "Country",
+    "date": "Date",
+    "time": "Time",
+    "status": "Status",
+    "type": "Type",
+    "description": "Description",
+    "price": "Price",
+    "total": "Total",
+    "subtotal": "Subtotal",
+    "tax": "Tax"
+  },
+  "languages": {
+    "fr": "Français",
+    "en": "English",
+    "ar": "العربية",
+    "switchLanguage": "Switch language"
+  }
+}

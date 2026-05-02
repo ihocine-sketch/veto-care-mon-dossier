@@ -5,10 +5,13 @@ import { Button } from "@/components/ui/button";
 import { LogOut, PawPrint, Menu, X } from "lucide-react";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { useTranslation } from "react-i18next";
 
 export const Navbar = () => {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -21,7 +24,7 @@ export const Navbar = () => {
 
   const handleLogout = async () => {
     await signOut();
-    toast.success("Déconnecté avec succès");
+    toast.success(t('nav.loggedOut'));
     navigate("/auth");
   };
 
@@ -34,10 +37,10 @@ export const Navbar = () => {
 
   const links = user
     ? [
-        { to: "/dashboard", label: "Mes RDV" },
-        { to: "/animaux", label: "Mes animaux" },
-        { to: "/veterinaires", label: "Vétérinaires" },
-        { to: "/nouveau-rdv", label: "Nouveau RDV" },
+        { to: "/dashboard", label: t('nav.dashboard') },
+        { to: "/animaux", label: t('nav.animals') },
+        { to: "/veterinaires", label: t('nav.veterinarians') },
+        { to: "/nouveau-rdv", label: t('nav.newAppointment') },
       ]
     : [];
 
@@ -82,7 +85,7 @@ export const Navbar = () => {
               <NavLink to="/contact" className={linkClass}>
                 {({ isActive }) => (
                   <>
-                    Nous contacter
+                    {t('nav.contact')}
                     {isActive && (
                       <motion.span
                         layoutId="nav-pill"
@@ -93,9 +96,10 @@ export const Navbar = () => {
                   </>
                 )}
               </NavLink>
+              <LanguageSwitcher />
               <Button variant="ghost" size="sm" onClick={handleLogout} className="ml-2 gap-2 transition-transform hover:scale-105">
                 <LogOut className="h-4 w-4" />
-                Déconnexion
+                {t('nav.logout')}
               </Button>
             </nav>
             <button
@@ -111,7 +115,7 @@ export const Navbar = () => {
             <NavLink to="/contact" className={linkClass}>
               {({ isActive }) => (
                 <>
-                  Nous contacter
+                  {t('nav.contact')}
                   {isActive && (
                     <motion.span
                       layoutId="nav-pill"
@@ -122,8 +126,9 @@ export const Navbar = () => {
                 </>
               )}
             </NavLink>
+            <LanguageSwitcher />
             <Button asChild size="sm" className="gap-2 shadow-soft transition-transform hover:scale-105 hover:shadow-elegant">
-              <Link to="/auth">Se connecter</Link>
+              <Link to="/auth">{t('nav.login')}</Link>
             </Button>
           </div>
         )}
@@ -162,10 +167,13 @@ export const Navbar = () => {
                   }`
                 }
               >
-                Nous contacter
+                {t('nav.contact')}
               </NavLink>
+              <div className="px-3 py-2">
+                <LanguageSwitcher />
+              </div>
               <Button variant="ghost" size="sm" onClick={handleLogout} className="mt-1 justify-start gap-2">
-                <LogOut className="h-4 w-4" /> Déconnexion
+                <LogOut className="h-4 w-4" /> {t('nav.logout')}
               </Button>
             </div>
           </motion.nav>

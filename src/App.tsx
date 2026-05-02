@@ -16,6 +16,9 @@ import AnimalProfile from "./pages/AnimalProfile.tsx";
 import Payment from "./pages/Payment.tsx";
 import Contact from "./pages/Contact.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import "./i18n/i18n";
+
+const queryClient = new QueryClient();
 
 const queryClient = new QueryClient();
 

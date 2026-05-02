@@ -1,0 +1,216 @@
+{
+  "nav": {
+    "home": "الرئيسية",
+    "dashboard": "مواعيدي",
+    "animals": "حيواناتي",
+    "veterinarians": "الأطباء البيطريين",
+    "newAppointment": "موعد جديد",
+    "contact": "اتصل بنا",
+    "login": "تسجيل الدخول",
+    "logout": "تسجيل الخروج",
+    "loggedOut": "تم تسجيل الخروج بنجاح"
+  },
+  "hero": {
+    "title": "متابعة صحة حيواناتكم، ",
+    "titleHighlight": "بكل بساطة.",
+    "subtitle": "احجزوا المواعيد، أديروا سجلات الصحة وتابعوا زيارات رفاقكم من فضاء أنيق وآمن واحد.",
+    "ctaPrimary": "إنشاء مساحتي",
+    "ctaSecondary": "شاهدوا أطباءنا البيطريين",
+    "badge": "الشبكة الخارجية البيطرية · جيل جديد",
+    "features": {
+      "noCommitment": "بدون التزام",
+      "gdpr": "GDPR",
+      "available": "متوفر 24/7"
+    }
+  },
+  "features": {
+    "title": "كل ما تحتاجون إليه، لا شيء أكثر",
+    "subtitle": "الميزات",
+    "cards": {
+      "appointments": {
+        "title": "المواعيد عبر الإنترنت",
+        "description": "احجزوا المواعيد 24/7 مع أطباءنا البيطريين المعتمدين من هاتفكم أو حاسوبكم."
+      },
+      "healthRecord": {
+        "title": "السجل الصحي الرقمي",
+        "description": "جميع اللقاحات والعلاجات والزيارات الطبية لحيواناتكم مركزة ومؤمنة."
+      },
+      "certifiedVets": {
+        "title": "أطباء بيطريون معتمدون",
+        "description": "فريق من المهنيين المؤهلين والمتحمسين، متاحون للعناية برفاقكم."
+      }
+    },
+    "additional": {
+      "specializedTeam": {
+        "title": "فريق متخصص",
+        "description": "الطب العام، الجراحة، الأمراض الجلدية — خبرة لكل حاجة."
+      },
+      "secureRecord": {
+        "title": "سجل آمن",
+        "description": "الوثائق محفوظة بسرية ويمكن الوصول إليها في أي وقت."
+      },
+      "completeHistory": {
+        "title": "تاريخ كامل",
+        "description": "اعثروا على جميع الزيارات السابقة والمقبلة لرفاقكم."
+      },
+      "automaticReminders": {
+        "title": "تذكيرات تلقائية",
+        "description": "لا تفوتوا لقاحاً أو موعداً مهماً مرة أخرى."
+      },
+      "elegantInterface": {
+        "title": "واجهة أنيقة",
+        "description": "تجربة مصممة للهدوء، على الهاتف والحاسوب."
+      }
+    }
+  },
+  "stats": {
+    "title": "فيتو-كير بالأرقام",
+    "animals": "حيوان تابع",
+    "veterinarians": "طبيب بيطري",
+    "rating": "نجوم"
+  },
+  "testimonials": {
+    "title": "أصحاب الحيوانات يحبون فيتو-كير",
+    "subtitle": "آراء العملاء",
+    "reviews": [
+      {
+        "name": "ماري دوبون",
+        "role": "صاحب ميدور",
+        "content": "فيتو-كير أنقذ حياتي! لم تعد هناك حاجة لحفظ المواعيد، كل شيء منظم."
+      },
+      {
+        "name": "جان مورو",
+        "role": "طبيب بيطري",
+        "content": "منصة جميلة وسهلة الاستخدام جداً. عملائي يحبون التصميم والبساطة."
+      },
+      {
+        "name": "صوفي برنار",
+        "role": "صاحب ويسكرز",
+        "content": "السجل الصحي الرقمي رائع! دائماً في متناول يدي على هاتفي."
+      }
+    ]
+  },
+  "cta": {
+    "title": "مستعدون للعناية بهم؟",
+    "subtitle": "أنشئوا حسابكم في أقل من دقيقة واحدة وادخلوا إلى فريق فيتو-كير بأكمله.",
+    "button": "ابدأوا الآن"
+  },
+  "footer": {
+    "company": "فيتو كير",
+    "description": "منصة متابعة بيطرية",
+    "email": "contact@veto-care.com",
+    "copyright": "© 2026 فيتو كير. جميع الحقوق محفوظة."
+  },
+  "auth": {
+    "login": "تسجيل الدخول",
+    "register": "التسجيل",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "forgotPassword": "نسيت كلمة المرور؟",
+    "noAccount": "ليس لديك حساب؟",
+    "hasAccount": "لديك حساب بالفعل؟",
+    "createAccount": "إنشاء حساب",
+    "signIn": "تسجيل الدخول",
+    "signUp": "التسجيل",
+    "welcomeBack": "مرحباً بك مجدداً!",
+    "createYourAccount": "أنشئ حسابك",
+    "loginDescription": "سجل الدخول إلى مساحة فيتو-كير الخاصة بك",
+    "registerDescription": "انضم إلى مجتمع فيتو-كير"
+  },
+  "dashboard": {
+    "title": "لوحة التحكم الخاصة بي",
+    "welcome": "مرحباً بك في لوحة التحكم الخاصة بك",
+    "upcomingAppointments": "المواعيد القادمة",
+    "recentAppointments": "المواعيد الأخيرة",
+    "myAnimals": "حيواناتي",
+    "quickActions": "الإجراءات السريعة",
+    "noAppointments": "لا توجد مواعيد قادمة",
+    "noAnimals": "لا توجد حيوانات مسجلة",
+    "addAnimal": "إضافة حيوان",
+    "bookAppointment": "حجز موعد"
+  },
+  "animals": {
+    "title": "حيواناتي",
+    "addNew": "إضافة حيوان",
+    "name": "الاسم",
+    "species": "النوع",
+    "breed": "السلالة",
+    "birthDate": "تاريخ الميلاد",
+    "weight": "الوزن (كغ)",
+    "actions": "الإجراءات",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "viewProfile": "عرض الملف",
+    "noAnimals": "لا توجد حيوانات مسجلة",
+    "addFirstAnimal": "أضف حيوانك الأول"
+  },
+  "appointment": {
+    "title": "موعد جديد",
+    "selectAnimal": "اختر حيواناً",
+    "selectVeterinarian": "اختر طبيباً بيطرياً",
+    "selectDate": "اختر تاريخاً",
+    "reason": "سبب الاستشارة",
+    "notes": "ملاحظات إضافية",
+    "book": "حجز الموعد",
+    "confirm": "تأكيد",
+    "cancel": "إلغاء",
+    "upcoming": "قادم",
+    "completed": "مكتمل",
+    "cancelled": "ملغي"
+  },
+  "veterinarians": {
+    "title": "أطباؤنا البيطريون",
+    "specialty": "التخصص",
+    "experience": "سنوات الخبرة",
+    "rating": "التقييم",
+    "consultationFee": "رسوم الاستشارة",
+    "bookAppointment": "حجز موعد",
+    "noVeterinarians": "لا يوجد أطباء بيطريون متاحون"
+  },
+  "common": {
+    "loading": "جارٍ التحميل...",
+    "error": "خطأ",
+    "success": "نجح",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "add": "إضافة",
+    "search": "بحث",
+    "filter": "تصفية",
+    "sort": "ترتيب",
+    "next": "التالي",
+    "previous": "السابق",
+    "close": "إغلاق",
+    "open": "فتح",
+    "yes": "نعم",
+    "no": "لا",
+    "confirm": "تأكيد",
+    "back": "العودة",
+    "home": "الرئيسية",
+    "profile": "الملف الشخصي",
+    "settings": "الإعدادات",
+    "help": "المساعدة",
+    "contact": "الاتصال",
+    "phone": "الهاتف",
+    "address": "العنوان",
+    "city": "المدينة",
+    "country": "البلد",
+    "date": "التاريخ",
+    "time": "الوقت",
+    "status": "الحالة",
+    "type": "النوع",
+    "description": "الوصف",
+    "price": "السعر",
+    "total": "المجموع",
+    "subtotal": "المجموع الفرعي",
+    "tax": "الضريبة"
+  },
+  "languages": {
+    "fr": "Français",
+    "en": "English",
+    "ar": "العربية",
+    "switchLanguage": "تغيير اللغة"
+  }
+}
