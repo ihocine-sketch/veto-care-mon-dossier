@@ -58,9 +58,10 @@ const NouveauRdv = () => {
         if (file.size > 10 * 1024 * 1024) throw new Error("Fichier trop volumineux (max 10 Mo)");
         const ext = file.name.split(".").pop();
         const path = `${user.id}/${Date.now()}.${ext}`;
-        const { error: upErr } = await supabase.storage.from("carnets_sante").upload(path, file);
+        const { error: upErr } = await supabase.storage.from("carnets-sante").upload(path, file);
         if (upErr) throw upErr;
-        carnetUrl = path;
+        const { data: pub } = supabase.storage.from("carnets-sante").getPublicUrl(path);
+        carnetUrl = pub.publicUrl;
       }
 
       const { error } = await supabase.from("rendez_vous").insert({
