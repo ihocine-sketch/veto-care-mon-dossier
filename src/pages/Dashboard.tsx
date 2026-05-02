@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, FileText, Plus, PawPrint, Sparkles } from "lucide-react";
+import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { toast } from "sonner";
 
 interface Rdv {
@@ -23,6 +24,11 @@ interface Rdv {
   veterinaires: { nom: string; prenom: string; specialite: string } | null;
 }
 
+interface MonthData {
+  month: string;
+  count: number;
+}
+
 const statutLabel: Record<string, { label: string; cls: string }> = {
   en_attente: { label: "En attente", cls: "bg-warning/15 text-warning border-warning/30" },
   confirme: { label: "Confirmé", cls: "bg-success/15 text-success border-success/30" },
@@ -33,6 +39,7 @@ const Dashboard = () => {
   const { user } = useAuth();
   const [rdvs, setRdvs] = useState<Rdv[]>([]);
   const [loading, setLoading] = useState(true);
+  const [animalCount, setAnimalCount] = useState(0);
 
   useEffect(() => {
     if (!user) return;
@@ -46,9 +53,57 @@ const Dashboard = () => {
         setRdvs((data as any) || []);
         setLoading(false);
       });
+
+    supabase
+      .from("animaux")
+      .select("id", { count: "exact", head: true })
+      .eq("maitre_id", user.id)
+      .then(({ count, error }) => {
+        if (error) {
+          toast.error(error.message);
+          return;
+        }
+        setAnimalCount(count ?? 0);
+      });
   }, [user]);
 
   const downloadCarnet = (url: string) => window.open(url, "_blank");
+
+  const totalAppointments = rdvs.length;
+
+  const nextAppointment = useMemo(() => {
+    const now = Date.now();
+    return rdvs
+      .map((rdv) => ({ ...rdv, date: new Date(rdv.date_rdv) }))
+      .filter((rdv) => rdv.date.getTime() >= now)
+      .sort((a, b) => a.date.getTime() - b.date.getTime())[0];
+  }, [rdvs]);
+
+  const monthlyAppointments = useMemo((): MonthData[] => {
+    const months = Array.from({ length: 12 }, (_, index) => {
+      const date = new Date();
+      date.setMonth(index);
+      return {
+        month: date.toLocaleString("fr-FR", { month: "short" }).replace(".", ""),
+        count: 0,
+      };
+    });
+
+    const currentYear = new Date().getFullYear();
+
+    rdvs.forEach((rdv) => {
+      const date = new Date(rdv.date_rdv);
+      if (date.getFullYear() !== currentYear) {
+        return;
+      }
+      const monthKey = date.getMonth();
+      if (!Number.isNaN(monthKey)) {
+        months[monthKey]!.count += 1;
+      }
+    });
+
+    return months;
+  }, [rdvs]);
 
   return (
     <div className="min-h-screen bg-gradient-soft">
@@ -72,6 +127,95 @@ const Dashboard = () => {
               <Link to="/nouveau-rdv"><Plus className="h-4 w-4" /> Nouveau rendez-vous</Link>
             </Button>
           </motion.div>
+
+          <div className="grid gap-4 xl:grid-cols-[1.4fr_2fr]">
+            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-1">
+              <Card className="border-border/60 bg-gradient-to-br from-background/80 to-slate-50/60 shadow-soft">
+                <CardContent className="space-y-3 p-6">
+                  <div className="flex items-center justify-between gap-4">
+                    <div>
+                      <p className="text-sm font-medium uppercase tracking-[0.24em] text-muted-foreground">Rendez-vous</p>
+                      <p className="mt-2 text-3xl font-semibold text-foreground">{totalAppointments}</p>
+                    </div>
+                    <div className="inline-flex h-12 w-12 items-center justify-center rounded-3xl bg-primary/10 text-primary shadow-soft">
+                      <Calendar className="h-6 w-6" />
+                    </div>
+                  </div>
+                  <p className="text-sm text-muted-foreground">Total de rendez-vous enregistrés pour votre compte.</p>
+                </CardContent>
+              </Card>
+
+              <Card className="border-border/60 bg-white/80 shadow-soft">
+                <CardContent className="space-y-3 p-6">
+                  <div className="flex items-center justify-between gap-4">
+                    <div>
+                      <p className="text-sm font-medium uppercase tracking-[0.24em] text-muted-foreground">Animaux suivis</p>
+                      <p className="mt-2 text-3xl font-semibold text-foreground">{animalCount}</p>
+                    </div>
+                    <div className="inline-flex h-12 w-12 items-center justify-center rounded-3xl bg-secondary/10 text-secondary shadow-soft">
+                      <PawPrint className="h-6 w-6" />
+                    </div>
+                  </div>
+                  <p className="text-sm text-muted-foreground">Nombre d'animaux différents dans votre carnet.</p>
+                </CardContent>
+              </Card>
+
+              <Card className="border-border/60 bg-white/80 shadow-soft">
+                <CardContent className="space-y-3 p-6">
+                  <div className="flex items-center justify-between gap-4">
+                    <div>
+                      <p className="text-sm font-medium uppercase tracking-[0.24em] text-muted-foreground">Prochain rendez-vous</p>
+                      <p className="mt-2 text-xl font-semibold text-foreground">
+                        {nextAppointment ? nextAppointment.nom_animal : "Aucun planifié"}
+                      </p>
+                    </div>
+                    <div className="inline-flex h-12 w-12 items-center justify-center rounded-3xl bg-emerald-500/10 text-emerald-600 shadow-soft">
+                      <Sparkles className="h-6 w-6" />
+                    </div>
+                  </div>
+                  {nextAppointment ? (
+                    <div className="space-y-1 text-sm text-muted-foreground">
+                      <p>{new Date(nextAppointment.date_rdv).toLocaleString("fr-FR", { dateStyle: "long", timeStyle: "short" })}</p>
+                      <p>{nextAppointment.veterinaires ? `Dr. ${nextAppointment.veterinaires.prenom} ${nextAppointment.veterinaires.nom}` : "Vétérinaire non défini"}</p>
+                    </div>
+                  ) : (
+                    <p className="text-sm text-muted-foreground">Aucun prochain rendez-vous n'a encore été planifié.</p>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
+
+            <Card className="border-border/60 bg-white/80 shadow-soft">
+              <CardContent className="p-6">
+                <div className="mb-5 flex items-center justify-between gap-4">
+                  <div>
+                    <p className="text-sm font-medium uppercase tracking-[0.24em] text-muted-foreground">Rendez-vous par mois</p>
+                    <h2 className="mt-2 text-2xl font-semibold text-foreground">Tendance trimestrielle</h2>
+                  </div>
+                  <Badge variant="secondary" className="rounded-full px-3 py-1 text-sm">
+                    {new Date().getFullYear()}
+                  </Badge>
+                </div>
+                <div className="h-[320px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart data={monthlyAppointments} margin={{ top: 10, right: 16, left: -10, bottom: 0 }}>
+                      <defs>
+                        <linearGradient id="appointmentsGradient" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stopColor="#2563eb" stopOpacity={0.28} />
+                          <stop offset="100%" stopColor="#2563eb" stopOpacity={0.06} />
+                        </linearGradient>
+                      </defs>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} opacity={0.6} />
+                      <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: "#6b7280", fontSize: 12 }} padding={{ left: 8, right: 8 }} />
+                      <YAxis axisLine={false} tickLine={false} tick={{ fill: "#6b7280", fontSize: 12 }} allowDecimals={false} width={40} />
+                      <Tooltip contentStyle={{ borderRadius: 16, border: "1px solid #e5e7eb", boxShadow: "0 10px 30px rgba(15, 23, 42, 0.08)", backgroundColor: "#fff" }} formatter={(value: number) => [value, "Rendez-vous"]} />
+                      <Area type="monotone" dataKey="count" stroke="#2563eb" fill="url(#appointmentsGradient)" strokeWidth={3} activeDot={{ r: 6, fill: "#2563eb" }} />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
 
           {loading ? (
             <div className="grid gap-4">
