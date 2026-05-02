@@ -91,6 +91,20 @@ const NouveauRdv = () => {
       });
       if (error) throw error;
 
+      const vet = vets.find((v) => v.id === parsed.data.veterinaire_id);
+      if (user.email) {
+        await supabase.functions.invoke("confirm-appointment", {
+          body: JSON.stringify({
+            email: user.email,
+            nom_animal: parsed.data.nom_animal,
+            espece: parsed.data.espece,
+            date_rdv: new Date(parsed.data.date_rdv).toISOString(),
+            motif: parsed.data.motif,
+            veterinaire: vet ? `Dr. ${vet.prenom} ${vet.nom}` : "Vétérinaire non défini",
+          }),
+        });
+      }
+
       toast.success("Rendez-vous créé avec succès !");
       navigate(animalId && animalId !== "manual" ? `/animaux/${animalId}` : "/dashboard");
     } catch (e: any) {
