@@ -28,7 +28,8 @@ type Appointment = {
   motif: string;
   maitre_id: string;
   veterinaire_id: string | null;
-  veterinaires: { nom: string; prenom: string } | null;
+  veterinarian_nom: string | null;
+  veterinarian_prenom: string | null;
 };
 
 const AdminDashboard = () => {
@@ -60,46 +61,47 @@ const AdminDashboard = () => {
         setVets((vetsData as Vet[]) ?? []);
       }
 
-      // Fetch all appointments for admin
-      console.log("Fetching appointments for admin user...");
+      // Fetch all appointments for admin using RLS-bypassing function
+      console.log("Fetching appointments for admin user using secure function...");
       
-      // Query matching actual table structure
+      // First check if user is admin
+      const { data: userRole, error: roleError } = await supabase
+        .from("roles")
+        .select("role")
+        .eq("user_id", (await supabase.auth.getUser()).data.user?.id)
+        .single();
+        
+      if (roleError || userRole?.role !== 'admin') {
+        console.error("User is not admin:", roleError);
+        toast.error("Accès refusé: Utilisateur non administrateur");
+        setLoading(false);
+        return;
+      }
+      
+      // Use the secure function that bypasses RLS
       const { data: rdvData, error: rdvError } = await supabase
-        .from("rendez_vous")
-        .select(`
-          id, 
-          nom_animal,
-          espece,
-          date_rdv, 
-          statut, 
-          motif,
-          maitre_id,
-          veterinaire_id,
-          veterinaires!left(nom, prenom)
-        `)
-        .order("date_rdv", { ascending: false });
+        .rpc('get_all_appointments_for_admin') as any;
 
       if (rdvError) {
         console.error("Appointments fetch error:", rdvError);
+        toast.error(`Erreur rendez-vous: ${rdvError.message}`);
         
-        // Try a more basic query without joins as fallback
-        console.log("Trying fallback query without joins...");
+        // Try the basic function as fallback
+        console.log("Trying fallback function without joins...");
         const { data: fallbackData, error: fallbackError } = await supabase
-          .from("rendez_vous")
-          .select("id, nom_animal, date_rdv, statut, motif, maitre_id")
-          .order("date_rdv", { ascending: false });
+          .rpc('get_all_appointments_basic') as any;
           
         if (fallbackError) {
-          console.error("Fallback query also failed:", fallbackError);
+          console.error("Fallback function also failed:", fallbackError);
           toast.error(`Erreur rendez-vous: ${rdvError.message}. RLS policies may be blocking access.`);
         } else {
           console.log("Fallback data:", fallbackData);
           setAppointments((fallbackData as unknown as Appointment[]) ?? []);
-          toast.info("Affichage des rendez-vous sans informations détaillées (vétérinaire/animal)");
+          toast.info("Affichage des rendez-vous sans informations détaillées (vétérinaire)");
         }
       } else {
         console.log("Appointments data:", rdvData);
-        console.log(`Found ${rdvData?.length || 0} appointments`);
+        console.log(`Found ${Array.isArray(rdvData) ? rdvData.length : 0} appointments`);
         setAppointments((rdvData as unknown as Appointment[]) ?? []);
       }
     } catch (error) {
@@ -336,7 +338,9 @@ const AdminDashboard = () => {
                             </div>
                           </TableCell>
                           <TableCell>
-                            {a.veterinaires ? `Dr. ${a.veterinaires.prenom} ${a.veterinaires.nom}` : "-"}
+                            {a.veterinarian_prenom && a.veterinarian_nom 
+                              ? `Dr. ${a.veterinarian_prenom} ${a.veterinarian_nom}` 
+                              : "-"}
                           </TableCell>
                           <TableCell>
                             <div className="max-w-[200px] truncate" title={a.motif}>
