@@ -76,7 +76,8 @@
       {
         "name": "Marie Dupont",
         "role": "Propriétaire de Médor",
-        "content": "Veto-Care m'a sauvé la vie ! Plus besoin de mémoriser les rendez-vous, tout est organisé."
+        "content": "Veto-Care m'a sauvé la vie ! Plus besoin de mémoriser les rendez-vous, tout est organisé.",
+        "onClick": "tel:+21326843211"
       },
       {
         "name": "Jean Moreau",
@@ -331,7 +332,7 @@
     "addressLabel": "Adresse",
     "addressValue": "Tizi Ouzou, Algérie",
     "phoneLabel": "Téléphone",
-    "phoneValue": "+213 XX XX XX XX",
+    "phoneValue": "+213 26 84 32 11",
     "emailLabel": "Email",
     "emailValue": "contact@veto-care.com",
     "emergency": "Appel d'urgence 24/7",

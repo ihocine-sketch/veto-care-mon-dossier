@@ -168,7 +168,7 @@ export default function Contact() {
                       <h3 className="font-bold text-gray-900 mb-2">{t("contactPage.phoneLabel")}</h3>
                       <p className="text-gray-600 text-sm font-medium">
                         <a
-                          href="tel:+213XXXXXXXX"
+                          href="tel:+21326843211"
                           className="hover:text-emerald-700 transition-colors font-semibold"
                         >
                           {t("contactPage.phoneValue")}
@@ -357,7 +357,7 @@ export default function Contact() {
                 </Button>
                 <Button
                   variant="outline"
-                  onClick={() => (window.location.href = "tel:+213XXXXXXXX")}
+                  onClick={() => (window.location.href = "tel:+21326843211")}
                   className="border-2 border-white bg-transparent text-white hover:bg-white/15 font-medium px-8 py-2.5"
                 >
                   {t("contactPage.cta.call")}

@@ -32,7 +32,7 @@ export const Footer = () => {
             <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-foreground">Cabinet</h4>
             <ul className="space-y-3 text-sm text-muted-foreground">
               <li className="flex items-start gap-2"><MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary" /> Tizi Ouzou, Algérie</li>
-              <li className="flex items-center gap-2"><Phone className="h-4 w-4 text-primary" /> +213 XX XX XX XX</li>
+              <li className="flex items-center gap-2"><Phone className="h-4 w-4 text-primary" /> +213 26 84 32 11</li>
               <li className="flex items-center gap-2"><Mail className="h-4 w-4 text-primary" /> contact@veto-care.com</li>
             </ul>
           </div>
