@@ -5,7 +5,7 @@ import { Footer } from "@/components/Footer";
 import { AnimatedBackground } from "@/components/AnimatedBackground";
 import { PageTransition } from "@/components/PageTransition";
 import { Button } from "@/components/ui/button";
-import { PawPrint, Calendar, Stethoscope, ShieldCheck, ArrowRight, Sparkles, Clock, FileText, Star, CheckCircle2 } from "lucide-react";
+import { PawPrint, Calendar, Stethoscope, ShieldCheck, ArrowRight, Sparkles, Clock, FileText, Star } from "lucide-react";
 import { motion, type Variants } from "framer-motion";
 import { useTranslation } from "react-i18next";
 
@@ -27,36 +27,19 @@ const floatingAnimal: Variants = {
   },
 };
 
-const testimonials = [
-  {
-    name: "Marie Dupont",
-    role: "Propriétaire de Médor",
-    content: "Veto-Care m'a sauvé la vie ! Plus besoin de mémoriser les rendez-vous, tout est organisé.",
-    rating: 5,
-  },
-  {
-    name: "Jean Moreau",
-    role: "Vétérinaire",
-    content: "Plateforme magnifique et très intuitive. Mes clients adorent le design et la simplicité.",
-    rating: 5,
-  },
-  {
-    name: "Sophie Bernard",
-    role: "Propriétaire de Whiskers",
-    content: "Le carnet de santé numérique est fantastique ! Toujours à portée de main sur mon téléphone.",
-    rating: 5,
-  },
-];
-
-const statistics = [
-  { label: "Animaux suivis", value: "500+" },
-  { label: "Vétérinaires partenaires", value: "50+" },
-  { label: "Satisfaction client", value: "4.9/5" },
-];
-
 const Index = () => {
   const { user } = useAuth();
   const { t } = useTranslation();
+  const testimonials = t("testimonials.reviews", { returnObjects: true }) as Array<{
+    name: string;
+    role: string;
+    content: string;
+  }>;
+  const statistics = [
+    { label: t("homePage.statistics.animals"), value: "500+" },
+    { label: t("homePage.statistics.vets"), value: "50+" },
+    { label: t("homePage.statistics.satisfaction"), value: "4.9/5" },
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#e8f5e9] via-[#f0f9f0] to-white animate-gradient-x">
@@ -167,15 +150,15 @@ const Index = () => {
                         <Calendar className="h-5 w-5 text-primary-foreground" />
                       </div>
                       <div>
-                        <p className="text-xs font-medium text-muted-foreground">Prochain rendez-vous</p>
-                        <p className="font-display text-lg font-semibold">Médor — Vaccin annuel</p>
+                        <p className="text-xs font-medium text-muted-foreground">{t("homePage.preview.nextAppointment")}</p>
+                        <p className="font-display text-lg font-semibold">{t("homePage.preview.title")}</p>
                       </div>
                     </div>
                     <div className="mt-6 grid gap-3 sm:grid-cols-3">
                       {[
-                        { label: "Vétérinaire", value: "Dr. Meziane" },
-                        { label: "Date", value: "Mar. 14h00" },
-                        { label: "Statut", value: "Confirmé", accent: true },
+                        { label: t("homePage.preview.vetLabel"), value: t("homePage.preview.vetValue") },
+                        { label: t("homePage.preview.dateLabel"), value: t("homePage.preview.dateValue") },
+                        { label: t("homePage.preview.statusLabel"), value: t("homePage.preview.statusValue"), accent: true },
                       ].map((s) => (
                         <div key={s.label} className="rounded-xl border border-border/60 bg-background/60 p-4">
                           <p className="text-xs uppercase tracking-wider text-muted-foreground">{s.label}</p>
@@ -274,9 +257,9 @@ const Index = () => {
           {/* Features */}
           <section className="container mx-auto px-4 pb-24">
             <div className="mx-auto mb-14 max-w-2xl text-center">
-              <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-primary">Fonctionnalités</p>
+              <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-primary">{t("features.subtitle")}</p>
               <h2 className="font-display text-4xl font-semibold sm:text-5xl">
-                Tout ce qu'il faut, <span className="text-gradient">rien de plus</span>
+                {t("homePage.featuresHeadingPrefix")} <span className="text-gradient">{t("homePage.featuresHeadingHighlight")}</span>
               </h2>
             </div>
 
@@ -288,12 +271,12 @@ const Index = () => {
               className="mx-auto grid max-w-6xl gap-6 sm:grid-cols-2 lg:grid-cols-3"
             >
               {[
-                { icon: Calendar, title: "Rendez-vous en ligne", desc: "Choisissez votre vétérinaire et planifiez en quelques clics, à toute heure." },
-                { icon: Stethoscope, title: "Équipe spécialisée", desc: "Médecine générale, chirurgie, dermatologie — un savoir-faire pour chaque besoin." },
-                { icon: ShieldCheck, title: "Carnet sécurisé", desc: "Documents stockés de manière confidentielle et accessibles à tout moment." },
-                { icon: FileText, title: "Historique complet", desc: "Retrouvez toutes les visites passées et à venir de vos compagnons." },
-                { icon: Clock, title: "Rappels automatiques", desc: "Ne manquez plus jamais un vaccin ou un rendez-vous important." },
-                { icon: Sparkles, title: "Interface élégante", desc: "Une expérience pensée pour la sérénité, sur mobile comme sur ordinateur." },
+                { icon: Calendar, title: t("features.cards.appointments.title"), desc: t("features.cards.appointments.description") },
+                { icon: Stethoscope, title: t("features.additional.specializedTeam.title"), desc: t("features.additional.specializedTeam.description") },
+                { icon: ShieldCheck, title: t("features.additional.secureRecord.title"), desc: t("features.additional.secureRecord.description") },
+                { icon: FileText, title: t("features.additional.completeHistory.title"), desc: t("features.additional.completeHistory.description") },
+                { icon: Clock, title: t("features.additional.automaticReminders.title"), desc: t("features.additional.automaticReminders.description") },
+                { icon: Sparkles, title: t("features.additional.elegantInterface.title"), desc: t("features.additional.elegantInterface.description") },
               ].map((f) => (
                 <motion.div
                   key={f.title}

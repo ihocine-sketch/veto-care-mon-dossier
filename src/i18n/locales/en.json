@@ -207,6 +207,216 @@
     "subtotal": "Subtotal",
     "tax": "Tax"
   },
+  "homePage": {
+    "preview": {
+      "nextAppointment": "Next appointment",
+      "title": "Médor — Annual vaccine",
+      "vetLabel": "Veterinarian",
+      "vetValue": "Dr. Meziane",
+      "dateLabel": "Date",
+      "dateValue": "Tue 2:00 PM",
+      "statusLabel": "Status",
+      "statusValue": "Confirmed"
+    },
+    "featuresHeadingPrefix": "Everything you need,",
+    "featuresHeadingHighlight": "nothing more",
+    "statistics": {
+      "animals": "Animals followed",
+      "vets": "Partner veterinarians",
+      "satisfaction": "Customer satisfaction"
+    }
+  },
+  "dashboardPage": {
+    "welcome": "Welcome",
+    "title": "Dashboard",
+    "animalsFollowed": "Complete follow-up for your {{count}} animals",
+    "newAppointment": "New appointment",
+    "cards": {
+      "appointments": "Appointments",
+      "totalAppointments": "Total registered appointments",
+      "animals": "Animals followed",
+      "healthRecord": "In your health record",
+      "next": "Next appointment"
+    },
+    "chart": {
+      "byMonth": "Appointments by month",
+      "annualTrend": "Annual trend"
+    },
+    "calendar": {
+      "title": "Calendar",
+      "monthlyAppointments": "Monthly appointments"
+    },
+    "days": {
+      "mon": "Mon",
+      "tue": "Tue",
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri",
+      "sat": "Sat",
+      "sun": "Sun"
+    },
+    "other": "other",
+    "empty": {
+      "title": "No appointments",
+      "subtitle": "Book your first appointment to get started.",
+      "create": "Create appointment"
+    },
+    "status": {
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "cancelled": "Cancelled"
+    },
+    "payment": {
+      "paid": "Paid"
+    },
+    "invoice": "Invoice",
+    "healthRecord": "Record",
+    "vetShort": "Vet",
+    "vetNotSet": "Veterinarian not set",
+    "noNextAppointment": "No upcoming appointment planned",
+    "errors": {
+      "invoice": "Error downloading invoice"
+    }
+  },
+  "appointmentsPage": {
+    "badge": "Book appointment",
+    "title": "New appointment",
+    "subtitle": "Fill in your pet information.",
+    "vetNotSet": "Veterinarian not set",
+    "validation": {
+      "animalNameRequired": "Animal name is required",
+      "speciesRequired": "Species is required",
+      "dateRequired": "Date is required",
+      "vetRequired": "Veterinarian is required",
+      "reasonTooShort": "Reason is too short"
+    },
+    "form": {
+      "title": "Appointment information",
+      "description": "All fields are required except health record.",
+      "animal": "Animal",
+      "selectAnimal": "Choose an animal",
+      "manualEntry": "Enter manually",
+      "animalName": "Animal name",
+      "animalNamePlaceholder": "Buddy",
+      "species": "Species",
+      "speciesPlaceholder": "Dog, cat...",
+      "datetime": "Appointment date and time",
+      "vet": "Veterinarian",
+      "selectVet": "Choose a veterinarian",
+      "reason": "Reason",
+      "reasonPlaceholder": "Describe the reason for the appointment...",
+      "healthRecord": "Health record (optional)",
+      "uploadClick": "Click to upload",
+      "uploadHint": "PDF, JPG or PNG · max 10 MB",
+      "submitting": "Creating...",
+      "submit": "Create appointment"
+    },
+    "success": {
+      "created": "Appointment created! Proceed to payment to confirm."
+    },
+    "errors": {
+      "create": "Error while creating appointment",
+      "fileTooLarge": "File too large (max 10 MB)"
+    }
+  },
+  "veterinariansPage": {
+    "badge": "Our team",
+    "title": "Our veterinarians",
+    "subtitle": "An experienced team dedicated to your companions."
+  },
+  "contactPage": {
+    "backHome": "Back to home",
+    "clinicName": "Veto-Care Veterinary Clinic",
+    "clinicSubtitle": "Veterinary Clinic",
+    "addressLabel": "Address",
+    "addressValue": "Tizi Ouzou, Algeria",
+    "phoneLabel": "Phone",
+    "phoneValue": "+213 XX XX XX XX",
+    "emailLabel": "Email",
+    "emailValue": "contact@veto-care.com",
+    "emergency": "24/7 emergency call",
+    "responseDelay": "Reply within 24 hours",
+    "openingHours": "Opening hours",
+    "closed": "Closed",
+    "urgencyTitle": "24/7 emergencies:",
+    "urgencyText": "Emergency service available every day and every night.",
+    "mapTitle": "Map — Tizi Ouzou",
+    "days": {
+      "monday": "Monday",
+      "tuesday": "Tuesday",
+      "wednesday": "Wednesday",
+      "thursday": "Thursday",
+      "friday": "Friday",
+      "saturday": "Saturday",
+      "sunday": "Sunday"
+    },
+    "form": {
+      "title": "Contact us",
+      "fullName": "Full name",
+      "fullNamePlaceholder": "Your name",
+      "email": "Email address",
+      "emailPlaceholder": "you@email.com",
+      "message": "Message",
+      "messagePlaceholder": "Your message...",
+      "sending": "Sending...",
+      "submit": "Send message",
+      "securityNotice": "Your data is secure and will never be shared."
+    },
+    "cta": {
+      "title": "Book an appointment",
+      "subtitle": "Access our platform to book online or call us directly.",
+      "login": "Sign in",
+      "call": "Call us"
+    },
+    "errors": {
+      "required": "Please fill in all fields",
+      "invalidEmail": "Please enter a valid email address",
+      "send": "Error sending message"
+    },
+    "success": {
+      "sent": "Message sent successfully!"
+    }
+  },
+  "animalProfilePage": {
+    "success": {
+      "deleted": "Profile deleted"
+    },
+    "notFound": "Animal not found",
+    "back": "Back",
+    "myAnimals": "My animals",
+    "profile": "Profile",
+    "edit": "Edit",
+    "newAppointment": "New appointment",
+    "delete": "Delete",
+    "deleteTitle": "Delete this profile?",
+    "deleteDescription": "This action is irreversible. Linked appointments will not be deleted.",
+    "cancel": "Cancel",
+    "allergies": "Allergies",
+    "noAllergies": "No allergies provided",
+    "notes": "Notes",
+    "noNotes": "No notes",
+    "medicalHistory": "Medical history",
+    "allAppointments": "All appointments for {{name}}",
+    "add": "Add",
+    "noAppointments": "No appointments recorded for this animal.",
+    "createAppointment": "Create appointment",
+    "notSet": "—",
+    "healthRecord": "Health record",
+    "timelineSummary": "{{past}} past visit(s) · {{upcoming}} upcoming",
+    "status": {
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "cancelled": "Cancelled"
+    },
+    "stats": {
+      "age": "Age",
+      "weight": "Weight",
+      "visits": "Visits",
+      "upcoming": "Upcoming",
+      "years_one": "year",
+      "years_other": "years"
+    }
+  },
   "languages": {
     "fr": "Français",
     "en": "English",

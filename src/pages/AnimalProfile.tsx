@@ -18,6 +18,7 @@ import {
   Cake, Weight, AlertTriangle, NotebookPen, Plus, Sparkles,
 } from "lucide-react";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 interface Animal {
   id: string;
@@ -41,13 +42,16 @@ interface Rdv {
   veterinaires: { nom: string; prenom: string; specialite: string } | null;
 }
 
-const statutLabel: Record<string, { label: string; cls: string }> = {
-  en_attente: { label: "En attente", cls: "bg-warning/15 text-warning border-warning/30" },
-  confirme: { label: "Confirmé", cls: "bg-success/15 text-success border-success/30" },
-  annule: { label: "Annulé", cls: "bg-destructive/15 text-destructive border-destructive/30" },
+const statutClass: Record<string, string> = {
+  en_attente: "bg-warning/15 text-warning border-warning/30",
+  confirme: "bg-success/15 text-success border-success/30",
+  "confirmé": "bg-success/15 text-success border-success/30",
+  annule: "bg-destructive/15 text-destructive border-destructive/30",
+  "annulé": "bg-destructive/15 text-destructive border-destructive/30",
 };
 
 const AnimalProfile = () => {
+  const { t, i18n } = useTranslation();
   const { id } = useParams();
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -77,7 +81,7 @@ const AnimalProfile = () => {
     if (!id) return;
     const { error } = await supabase.from("animaux").delete().eq("id", id);
     if (error) return toast.error(error.message);
-    toast.success("Profil supprimé");
+    toast.success(t("animalProfilePage.success.deleted"));
     navigate("/animaux");
   };
 
@@ -97,8 +101,8 @@ const AnimalProfile = () => {
       <div className="min-h-screen bg-gradient-soft">
         <Navbar />
         <main className="container mx-auto px-4 py-20 text-center">
-          <h1 className="font-display text-3xl">Animal introuvable</h1>
-          <Button asChild className="mt-6"><Link to="/animaux">Retour</Link></Button>
+          <h1 className="font-display text-3xl">{t("animalProfilePage.notFound")}</h1>
+          <Button asChild className="mt-6"><Link to="/animaux">{t("animalProfilePage.back")}</Link></Button>
         </main>
       </div>
     );
@@ -109,10 +113,10 @@ const AnimalProfile = () => {
   const past = rdvs.filter((r) => new Date(r.date_rdv).getTime() < now);
 
   const stats = [
-    { icon: Cake, label: "Âge", value: animal.age != null ? `${animal.age} an${animal.age > 1 ? "s" : ""}` : "—" },
-    { icon: Weight, label: "Poids", value: animal.poids != null ? `${animal.poids} kg` : "—" },
-    { icon: Stethoscope, label: "Visites", value: String(rdvs.length) },
-    { icon: Calendar, label: "À venir", value: String(upcoming.length) },
+    { icon: Cake, label: t("animalProfilePage.stats.age"), value: animal.age != null ? `${animal.age} ${t("animalProfilePage.stats.years", { count: animal.age })}` : "—" },
+    { icon: Weight, label: t("animalProfilePage.stats.weight"), value: animal.poids != null ? `${animal.poids} kg` : "—" },
+    { icon: Stethoscope, label: t("animalProfilePage.stats.visits"), value: String(rdvs.length) },
+    { icon: Calendar, label: t("animalProfilePage.stats.upcoming"), value: String(upcoming.length) },
   ];
 
   return (
@@ -121,7 +125,7 @@ const AnimalProfile = () => {
       <PageTransition>
         <main className="container mx-auto px-4 py-10">
           <Link to="/animaux" className="mb-6 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary">
-            <ArrowLeft className="h-4 w-4" /> Mes animaux
+            <ArrowLeft className="h-4 w-4" /> {t("animalProfilePage.myAnimals")}
           </Link>
 
           {/* Hero card */}
@@ -145,7 +149,7 @@ const AnimalProfile = () => {
               </div>
               <div className="flex-1">
                 <p className="mb-1 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-primary">
-                  <Sparkles className="h-3 w-3" /> Profil
+                  <Sparkles className="h-3 w-3" /> {t("animalProfilePage.profile")}
                 </p>
                 <h1 className="font-display text-4xl font-semibold tracking-tight sm:text-5xl">{animal.nom}</h1>
                 <p className="mt-1 text-muted-foreground">
@@ -153,27 +157,27 @@ const AnimalProfile = () => {
                 </p>
                 <div className="mt-4 flex flex-wrap gap-2">
                   <Button asChild size="sm" variant="secondary" className="gap-1.5">
-                    <Link to={`/animaux/${animal.id}/edit`}><Pencil className="h-3.5 w-3.5" /> Modifier</Link>
+                    <Link to={`/animaux/${animal.id}/edit`}><Pencil className="h-3.5 w-3.5" /> {t("animalProfilePage.edit")}</Link>
                   </Button>
                   <Button asChild size="sm" className="gap-1.5">
-                    <Link to="/nouveau-rdv"><Plus className="h-3.5 w-3.5" /> Nouveau RDV</Link>
+                    <Link to="/nouveau-rdv"><Plus className="h-3.5 w-3.5" /> {t("animalProfilePage.newAppointment")}</Link>
                   </Button>
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
                       <Button size="sm" variant="ghost" className="gap-1.5 text-destructive hover:bg-destructive/10 hover:text-destructive">
-                        <Trash2 className="h-3.5 w-3.5" /> Supprimer
+                        <Trash2 className="h-3.5 w-3.5" /> {t("animalProfilePage.delete")}
                       </Button>
                     </AlertDialogTrigger>
                     <AlertDialogContent>
                       <AlertDialogHeader>
-                        <AlertDialogTitle>Supprimer ce profil ?</AlertDialogTitle>
+                        <AlertDialogTitle>{t("animalProfilePage.deleteTitle")}</AlertDialogTitle>
                         <AlertDialogDescription>
-                          Cette action est irréversible. Les rendez-vous liés ne seront pas supprimés.
+                          {t("animalProfilePage.deleteDescription")}
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
-                        <AlertDialogCancel>Annuler</AlertDialogCancel>
-                        <AlertDialogAction onClick={handleDelete} className="bg-destructive hover:bg-destructive/90">Supprimer</AlertDialogAction>
+                        <AlertDialogCancel>{t("animalProfilePage.cancel")}</AlertDialogCancel>
+                        <AlertDialogAction onClick={handleDelete} className="bg-destructive hover:bg-destructive/90">{t("animalProfilePage.delete")}</AlertDialogAction>
                       </AlertDialogFooter>
                     </AlertDialogContent>
                   </AlertDialog>
@@ -203,20 +207,20 @@ const AnimalProfile = () => {
               <Card className="border-border/60 shadow-card">
                 <CardContent className="space-y-4 p-6">
                   <div className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-primary">
-                    <AlertTriangle className="h-4 w-4" /> Allergies
+                    <AlertTriangle className="h-4 w-4" /> {t("animalProfilePage.allergies")}
                   </div>
                   <p className="text-sm text-foreground/80">
-                    {animal.allergies || <span className="italic text-muted-foreground">Aucune allergie renseignée</span>}
+                    {animal.allergies || <span className="italic text-muted-foreground">{t("animalProfilePage.noAllergies")}</span>}
                   </p>
                 </CardContent>
               </Card>
               <Card className="border-border/60 shadow-card">
                 <CardContent className="space-y-4 p-6">
                   <div className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-primary">
-                    <NotebookPen className="h-4 w-4" /> Notes
+                    <NotebookPen className="h-4 w-4" /> {t("animalProfilePage.notes")}
                   </div>
                   <p className="whitespace-pre-line text-sm text-foreground/80">
-                    {animal.notes || <span className="italic text-muted-foreground">Aucune note</span>}
+                    {animal.notes || <span className="italic text-muted-foreground">{t("animalProfilePage.noNotes")}</span>}
                   </p>
                 </CardContent>
               </Card>
@@ -228,11 +232,11 @@ const AnimalProfile = () => {
                 <CardContent className="p-6 sm:p-8">
                   <div className="mb-6 flex items-center justify-between">
                     <div>
-                      <h2 className="font-display text-2xl font-semibold">Historique médical</h2>
-                      <p className="text-sm text-muted-foreground">Tous les rendez-vous de {animal.nom}</p>
+                      <h2 className="font-display text-2xl font-semibold">{t("animalProfilePage.medicalHistory")}</h2>
+                      <p className="text-sm text-muted-foreground">{t("animalProfilePage.allAppointments", { name: animal.nom })}</p>
                     </div>
                     <Button asChild size="sm" variant="outline" className="gap-1.5">
-                      <Link to="/nouveau-rdv"><Plus className="h-3.5 w-3.5" /> Ajouter</Link>
+                      <Link to="/nouveau-rdv"><Plus className="h-3.5 w-3.5" /> {t("animalProfilePage.add")}</Link>
                     </Button>
                   </div>
 
@@ -241,15 +245,20 @@ const AnimalProfile = () => {
                       <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-accent">
                         <Calendar className="h-6 w-6 text-primary" />
                       </div>
-                      <p className="text-sm text-muted-foreground">Aucun rendez-vous enregistré pour cet animal.</p>
-                      <Button asChild size="sm"><Link to="/nouveau-rdv">Créer un rendez-vous</Link></Button>
+                      <p className="text-sm text-muted-foreground">{t("animalProfilePage.noAppointments")}</p>
+                      <Button asChild size="sm"><Link to="/nouveau-rdv">{t("animalProfilePage.createAppointment")}</Link></Button>
                     </div>
                   ) : (
                     <div className="relative">
                       <div className="absolute bottom-2 left-[19px] top-2 w-px bg-gradient-to-b from-primary/40 via-border to-transparent" />
                       <ol className="space-y-5">
                         {rdvs.map((r, idx) => {
-                          const st = statutLabel[r.statut] || statutLabel.en_attente;
+                          const stClass = statutClass[r.statut] || statutClass.en_attente;
+                          const stLabel = r.statut.includes("confirm")
+                            ? t("animalProfilePage.status.confirmed")
+                            : r.statut.includes("annul")
+                              ? t("animalProfilePage.status.cancelled")
+                              : t("animalProfilePage.status.pending");
                           const date = new Date(r.date_rdv);
                           const isFuture = date.getTime() >= now;
                           return (
@@ -267,16 +276,16 @@ const AnimalProfile = () => {
                                 <div className="flex flex-wrap items-start justify-between gap-2">
                                   <div>
                                     <p className="text-xs uppercase tracking-wider text-muted-foreground">
-                                      {date.toLocaleString("fr-FR", { dateStyle: "long", timeStyle: "short" })}
+                                      {date.toLocaleString(i18n.language === "ar" ? "ar-DZ" : i18n.language === "en" ? "en-US" : "fr-FR", { dateStyle: "long", timeStyle: "short" })}
                                     </p>
                                     <h3 className="mt-0.5 font-display text-lg font-semibold">{r.motif}</h3>
                                     <p className="mt-0.5 text-sm text-muted-foreground">
                                       {r.veterinaires
                                         ? `Dr. ${r.veterinaires.prenom} ${r.veterinaires.nom} — ${r.veterinaires.specialite}`
-                                        : "—"}
+                                        : t("animalProfilePage.notSet")}
                                     </p>
                                   </div>
-                                  <Badge variant="outline" className={st.cls}>{st.label}</Badge>
+                                  <Badge variant="outline" className={stClass}>{stLabel}</Badge>
                                 </div>
                                 {r.carnet_sante_url && (
                                   <Button
@@ -284,7 +293,7 @@ const AnimalProfile = () => {
                                     className="mt-2 h-7 gap-1.5 px-2 text-xs"
                                     onClick={() => window.open(r.carnet_sante_url!, "_blank")}
                                   >
-                                    <FileText className="h-3.5 w-3.5" /> Carnet de santé
+                                    <FileText className="h-3.5 w-3.5" /> {t("animalProfilePage.healthRecord")}
                                   </Button>
                                 )}
                               </div>
@@ -295,7 +304,7 @@ const AnimalProfile = () => {
 
                       {past.length > 0 && (
                         <p className="mt-6 text-center text-xs text-muted-foreground">
-                          {past.length} visite{past.length > 1 ? "s" : ""} passée{past.length > 1 ? "s" : ""} · {upcoming.length} à venir
+                          {t("animalProfilePage.timelineSummary", { past: past.length, upcoming: upcoming.length })}
                         </p>
                       )}
                     </div>

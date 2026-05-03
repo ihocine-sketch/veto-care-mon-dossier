@@ -15,19 +15,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Upload, Sparkles, FileCheck, PawPrint } from "lucide-react";
 import { toast } from "sonner";
-
-const rdvSchema = z.object({
-  nom_animal: z.string().trim().min(1, "Nom de l'animal requis").max(80),
-  espece: z.string().trim().min(1, "Espèce requise").max(50),
-  date_rdv: z.string().min(1, "Date requise"),
-  veterinaire_id: z.string().uuid("Vétérinaire requis"),
-  motif: z.string().trim().min(3, "Motif trop court").max(500),
-});
+import { useTranslation } from "react-i18next";
 
 interface Vet { id: string; nom: string; prenom: string; specialite: string; }
 interface AnimalOpt { id: string; nom: string; espece: string; }
 
 const NouveauRdv = () => {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const navigate = useNavigate();
   const [params] = useSearchParams();
@@ -42,6 +36,13 @@ const NouveauRdv = () => {
   const [vetId, setVetId] = useState("");
   const [motif, setMotif] = useState("");
   const [file, setFile] = useState<File | null>(null);
+  const rdvSchema = z.object({
+    nom_animal: z.string().trim().min(1, t("appointmentsPage.validation.animalNameRequired")).max(80),
+    espece: z.string().trim().min(1, t("appointmentsPage.validation.speciesRequired")).max(50),
+    date_rdv: z.string().min(1, t("appointmentsPage.validation.dateRequired")),
+    veterinaire_id: z.string().uuid(t("appointmentsPage.validation.vetRequired")),
+    motif: z.string().trim().min(3, t("appointmentsPage.validation.reasonTooShort")).max(500),
+  });
 
   useEffect(() => {
     supabase.from("veterinaires").select("*").order("nom").then(({ data }) => setVets(data || []));
@@ -70,7 +71,7 @@ const NouveauRdv = () => {
       let carnetUrl: string | null = null;
 
       if (file) {
-        if (file.size > 10 * 1024 * 1024) throw new Error("Fichier trop volumineux (max 10 Mo)");
+        if (file.size > 10 * 1024 * 1024) throw new Error(t("appointmentsPage.errors.fileTooLarge"));
         const ext = file.name.split(".").pop();
         const path = `${user.id}/${Date.now()}.${ext}`;
         const { error: upErr } = await supabase.storage.from("carnets-sante").upload(path, file);
@@ -100,15 +101,15 @@ const NouveauRdv = () => {
             espece: parsed.data.espece,
             date_rdv: new Date(parsed.data.date_rdv).toISOString(),
             motif: parsed.data.motif,
-            veterinaire: vet ? `Dr. ${vet.prenom} ${vet.nom}` : "Vétérinaire non défini",
+            veterinaire: vet ? `Dr. ${vet.prenom} ${vet.nom}` : t("appointmentsPage.vetNotSet"),
           }),
         });
       }
 
-      toast.success("Rendez-vous créé ! Effectuez le paiement pour confirmer.");
+      toast.success(t("appointmentsPage.success.created"));
       navigate(`/payment?appointment=${insertedRdv.id}`);
     } catch (e: any) {
-      toast.error(e.message || "Erreur lors de la création");
+      toast.error(e.message || t("appointmentsPage.errors.create"));
     } finally {
       setSubmitting(false);
     }
@@ -121,30 +122,30 @@ const NouveauRdv = () => {
         <main className="container mx-auto max-w-2xl px-4 py-12">
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="mb-8">
             <p className="mb-2 inline-flex items-center gap-1.5 text-sm font-semibold uppercase tracking-wider text-primary">
-              <Sparkles className="h-3.5 w-3.5" /> Prendre rendez-vous
+              <Sparkles className="h-3.5 w-3.5" /> {t("appointmentsPage.badge")}
             </p>
-            <h1 className="font-display text-5xl font-semibold tracking-tight">Nouveau rendez-vous</h1>
-            <p className="mt-2 text-muted-foreground">Renseignez les informations de votre animal.</p>
+            <h1 className="font-display text-5xl font-semibold tracking-tight">{t("appointmentsPage.title")}</h1>
+            <p className="mt-2 text-muted-foreground">{t("appointmentsPage.subtitle")}</p>
           </motion.div>
 
           <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }}>
             <Card className="border-border/60 bg-card/80 shadow-elegant backdrop-blur-xl">
               <CardHeader>
-                <CardTitle className="font-display text-2xl">Informations du rendez-vous</CardTitle>
-                <CardDescription>Tous les champs sont obligatoires sauf le carnet de santé.</CardDescription>
+                <CardTitle className="font-display text-2xl">{t("appointmentsPage.form.title")}</CardTitle>
+                <CardDescription>{t("appointmentsPage.form.description")}</CardDescription>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-5">
                   {animaux.length > 0 && (
                     <div className="space-y-2">
-                      <Label className="flex items-center gap-1.5"><PawPrint className="h-3.5 w-3.5" /> Animal</Label>
+                      <Label className="flex items-center gap-1.5"><PawPrint className="h-3.5 w-3.5" /> {t("appointmentsPage.form.animal")}</Label>
                       <Select value={animalId} onValueChange={setAnimalId}>
-                        <SelectTrigger className="h-11"><SelectValue placeholder="Choisir un animal" /></SelectTrigger>
+                        <SelectTrigger className="h-11"><SelectValue placeholder={t("appointmentsPage.form.selectAnimal")} /></SelectTrigger>
                         <SelectContent>
                           {animaux.map((a) => (
                             <SelectItem key={a.id} value={a.id}>{a.nom} — {a.espece}</SelectItem>
                           ))}
-                          <SelectItem value="manual">+ Saisir manuellement</SelectItem>
+                          <SelectItem value="manual">+ {t("appointmentsPage.form.manualEntry")}</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -152,24 +153,24 @@ const NouveauRdv = () => {
 
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div className="space-y-2">
-                      <Label htmlFor="nom_animal">Nom de l'animal</Label>
-                      <Input id="nom_animal" value={nomAnimal} onChange={(e) => setNomAnimal(e.target.value)} placeholder="Médor" className="h-11" disabled={animalId !== "manual" && animalId !== ""} />
+                      <Label htmlFor="nom_animal">{t("appointmentsPage.form.animalName")}</Label>
+                      <Input id="nom_animal" value={nomAnimal} onChange={(e) => setNomAnimal(e.target.value)} placeholder={t("appointmentsPage.form.animalNamePlaceholder")} className="h-11" disabled={animalId !== "manual" && animalId !== ""} />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="espece">Espèce</Label>
-                      <Input id="espece" value={espece} onChange={(e) => setEspece(e.target.value)} placeholder="Chien, chat..." className="h-11" disabled={animalId !== "manual" && animalId !== ""} />
+                      <Label htmlFor="espece">{t("appointmentsPage.form.species")}</Label>
+                      <Input id="espece" value={espece} onChange={(e) => setEspece(e.target.value)} placeholder={t("appointmentsPage.form.speciesPlaceholder")} className="h-11" disabled={animalId !== "manual" && animalId !== ""} />
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="date_rdv">Date et heure du rendez-vous</Label>
+                    <Label htmlFor="date_rdv">{t("appointmentsPage.form.datetime")}</Label>
                     <Input id="date_rdv" type="datetime-local" value={dateRdv} onChange={(e) => setDateRdv(e.target.value)} className="h-11" />
                   </div>
 
                   <div className="space-y-2">
-                    <Label>Vétérinaire</Label>
+                    <Label>{t("appointmentsPage.form.vet")}</Label>
                     <Select value={vetId} onValueChange={setVetId}>
-                      <SelectTrigger className="h-11"><SelectValue placeholder="Choisir un vétérinaire" /></SelectTrigger>
+                      <SelectTrigger className="h-11"><SelectValue placeholder={t("appointmentsPage.form.selectVet")} /></SelectTrigger>
                       <SelectContent>
                         {vets.map((v) => (
                           <SelectItem key={v.id} value={v.id}>Dr. {v.prenom} {v.nom} — {v.specialite}</SelectItem>
@@ -179,26 +180,26 @@ const NouveauRdv = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="motif">Motif</Label>
-                    <Textarea id="motif" value={motif} onChange={(e) => setMotif(e.target.value)} placeholder="Décrivez la raison du rendez-vous..." rows={4} />
+                    <Label htmlFor="motif">{t("appointmentsPage.form.reason")}</Label>
+                    <Textarea id="motif" value={motif} onChange={(e) => setMotif(e.target.value)} placeholder={t("appointmentsPage.form.reasonPlaceholder")} rows={4} />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="carnet">Carnet de santé (optionnel)</Label>
+                    <Label htmlFor="carnet">{t("appointmentsPage.form.healthRecord")}</Label>
                     <label htmlFor="carnet" className="group flex cursor-pointer items-center gap-3 rounded-xl border-2 border-dashed border-border bg-secondary/30 p-5 transition-all hover:border-primary hover:bg-accent/40">
                       <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-card shadow-soft transition-transform group-hover:scale-110">
                         {file ? <FileCheck className="h-5 w-5 text-success" /> : <Upload className="h-5 w-5 text-primary" />}
                       </div>
                       <div className="flex-1">
-                        <p className="text-sm font-medium text-foreground">{file ? file.name : "Cliquez pour téléverser"}</p>
-                        <p className="text-xs text-muted-foreground">PDF, JPG ou PNG · max 10 Mo</p>
+                        <p className="text-sm font-medium text-foreground">{file ? file.name : t("appointmentsPage.form.uploadClick")}</p>
+                        <p className="text-xs text-muted-foreground">{t("appointmentsPage.form.uploadHint")}</p>
                       </div>
                       <Input id="carnet" type="file" accept=".pdf,.jpg,.jpeg,.png" onChange={(e) => setFile(e.target.files?.[0] ?? null)} className="hidden" />
                     </label>
                   </div>
 
                   <Button type="submit" disabled={submitting} className="w-full shadow-soft transition-all hover:shadow-glow" size="lg">
-                    {submitting ? "Création en cours..." : "Créer le rendez-vous"}
+                    {submitting ? t("appointmentsPage.form.submitting") : t("appointmentsPage.form.submit")}
                   </Button>
                 </form>
               </CardContent>

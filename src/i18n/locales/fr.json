@@ -207,6 +207,216 @@
     "subtotal": "Sous-total",
     "tax": "TVA"
   },
+  "homePage": {
+    "preview": {
+      "nextAppointment": "Prochain rendez-vous",
+      "title": "Médor — Vaccin annuel",
+      "vetLabel": "Vétérinaire",
+      "vetValue": "Dr. Meziane",
+      "dateLabel": "Date",
+      "dateValue": "Mar. 14h00",
+      "statusLabel": "Statut",
+      "statusValue": "Confirmé"
+    },
+    "featuresHeadingPrefix": "Tout ce qu'il faut,",
+    "featuresHeadingHighlight": "rien de plus",
+    "statistics": {
+      "animals": "Animaux suivis",
+      "vets": "Vétérinaires partenaires",
+      "satisfaction": "Satisfaction client"
+    }
+  },
+  "dashboardPage": {
+    "welcome": "Bienvenue",
+    "title": "Tableau de bord",
+    "animalsFollowed": "Suivi complet de vos {{count}} animaux",
+    "newAppointment": "Nouveau rendez-vous",
+    "cards": {
+      "appointments": "Rendez-vous",
+      "totalAppointments": "Total de rendez-vous enregistrés",
+      "animals": "Animaux suivis",
+      "healthRecord": "Dans votre carnet de santé",
+      "next": "Prochain RDV"
+    },
+    "chart": {
+      "byMonth": "Rendez-vous par mois",
+      "annualTrend": "Tendance annuelle"
+    },
+    "calendar": {
+      "title": "Calendrier",
+      "monthlyAppointments": "Rendez-vous mensuels"
+    },
+    "days": {
+      "mon": "Lun",
+      "tue": "Mar",
+      "wed": "Mer",
+      "thu": "Jeu",
+      "fri": "Ven",
+      "sat": "Sam",
+      "sun": "Dim"
+    },
+    "other": "autre",
+    "empty": {
+      "title": "Aucun rendez-vous",
+      "subtitle": "Prenez votre premier rendez-vous pour commencer.",
+      "create": "Créer un rendez-vous"
+    },
+    "status": {
+      "pending": "En attente",
+      "confirmed": "Confirmé",
+      "cancelled": "Annulé"
+    },
+    "payment": {
+      "paid": "Payé"
+    },
+    "invoice": "Facture",
+    "healthRecord": "Carnet",
+    "vetShort": "Vét.",
+    "vetNotSet": "Vétérinaire non défini",
+    "noNextAppointment": "Aucun prochain rendez-vous planifié",
+    "errors": {
+      "invoice": "Erreur lors du téléchargement de la facture"
+    }
+  },
+  "appointmentsPage": {
+    "badge": "Prendre rendez-vous",
+    "title": "Nouveau rendez-vous",
+    "subtitle": "Renseignez les informations de votre animal.",
+    "vetNotSet": "Vétérinaire non défini",
+    "validation": {
+      "animalNameRequired": "Nom de l'animal requis",
+      "speciesRequired": "Espèce requise",
+      "dateRequired": "Date requise",
+      "vetRequired": "Vétérinaire requis",
+      "reasonTooShort": "Motif trop court"
+    },
+    "form": {
+      "title": "Informations du rendez-vous",
+      "description": "Tous les champs sont obligatoires sauf le carnet de santé.",
+      "animal": "Animal",
+      "selectAnimal": "Choisir un animal",
+      "manualEntry": "Saisir manuellement",
+      "animalName": "Nom de l'animal",
+      "animalNamePlaceholder": "Médor",
+      "species": "Espèce",
+      "speciesPlaceholder": "Chien, chat...",
+      "datetime": "Date et heure du rendez-vous",
+      "vet": "Vétérinaire",
+      "selectVet": "Choisir un vétérinaire",
+      "reason": "Motif",
+      "reasonPlaceholder": "Décrivez la raison du rendez-vous...",
+      "healthRecord": "Carnet de santé (optionnel)",
+      "uploadClick": "Cliquez pour téléverser",
+      "uploadHint": "PDF, JPG ou PNG · max 10 Mo",
+      "submitting": "Création en cours...",
+      "submit": "Créer le rendez-vous"
+    },
+    "success": {
+      "created": "Rendez-vous créé ! Effectuez le paiement pour confirmer."
+    },
+    "errors": {
+      "create": "Erreur lors de la création",
+      "fileTooLarge": "Fichier trop volumineux (max 10 Mo)"
+    }
+  },
+  "veterinariansPage": {
+    "badge": "Notre équipe",
+    "title": "Nos vétérinaires",
+    "subtitle": "Une équipe expérimentée à l'écoute de vos compagnons."
+  },
+  "contactPage": {
+    "backHome": "Retour à l'accueil",
+    "clinicName": "Veto-Care Clinique Vétérinaire",
+    "clinicSubtitle": "Clinique Vétérinaire",
+    "addressLabel": "Adresse",
+    "addressValue": "Tizi Ouzou, Algérie",
+    "phoneLabel": "Téléphone",
+    "phoneValue": "+213 XX XX XX XX",
+    "emailLabel": "Email",
+    "emailValue": "contact@veto-care.com",
+    "emergency": "Appel d'urgence 24/7",
+    "responseDelay": "Réponse dans 24 heures",
+    "openingHours": "Horaires d'ouverture",
+    "closed": "Fermé",
+    "urgencyTitle": "Urgences 24/7:",
+    "urgencyText": "Service d'urgence disponible tous les jours et toutes les nuits.",
+    "mapTitle": "Carte — Tizi Ouzou",
+    "days": {
+      "monday": "Lundi",
+      "tuesday": "Mardi",
+      "wednesday": "Mercredi",
+      "thursday": "Jeudi",
+      "friday": "Vendredi",
+      "saturday": "Samedi",
+      "sunday": "Dimanche"
+    },
+    "form": {
+      "title": "Nous contacter",
+      "fullName": "Nom complet",
+      "fullNamePlaceholder": "Votre nom",
+      "email": "Adresse email",
+      "emailPlaceholder": "votre@email.com",
+      "message": "Message",
+      "messagePlaceholder": "Votre message...",
+      "sending": "Envoi en cours...",
+      "submit": "Envoyer le message",
+      "securityNotice": "Vos données sont sécurisées et ne seront jamais partagées."
+    },
+    "cta": {
+      "title": "Prendre un rendez-vous",
+      "subtitle": "Accédez à notre plateforme pour prendre rendez-vous en ligne ou appelez-nous directement.",
+      "login": "Se connecter",
+      "call": "Nous appeler"
+    },
+    "errors": {
+      "required": "Veuillez remplir tous les champs",
+      "invalidEmail": "Veuillez entrer une adresse email valide",
+      "send": "Erreur lors de l'envoi du message"
+    },
+    "success": {
+      "sent": "Message envoyé avec succès!"
+    }
+  },
+  "animalProfilePage": {
+    "success": {
+      "deleted": "Profil supprimé"
+    },
+    "notFound": "Animal introuvable",
+    "back": "Retour",
+    "myAnimals": "Mes animaux",
+    "profile": "Profil",
+    "edit": "Modifier",
+    "newAppointment": "Nouveau RDV",
+    "delete": "Supprimer",
+    "deleteTitle": "Supprimer ce profil ?",
+    "deleteDescription": "Cette action est irréversible. Les rendez-vous liés ne seront pas supprimés.",
+    "cancel": "Annuler",
+    "allergies": "Allergies",
+    "noAllergies": "Aucune allergie renseignée",
+    "notes": "Notes",
+    "noNotes": "Aucune note",
+    "medicalHistory": "Historique médical",
+    "allAppointments": "Tous les rendez-vous de {{name}}",
+    "add": "Ajouter",
+    "noAppointments": "Aucun rendez-vous enregistré pour cet animal.",
+    "createAppointment": "Créer un rendez-vous",
+    "notSet": "—",
+    "healthRecord": "Carnet de santé",
+    "timelineSummary": "{{past}} visite(s) passée(s) · {{upcoming}} à venir",
+    "status": {
+      "pending": "En attente",
+      "confirmed": "Confirmé",
+      "cancelled": "Annulé"
+    },
+    "stats": {
+      "age": "Âge",
+      "weight": "Poids",
+      "visits": "Visites",
+      "upcoming": "À venir",
+      "years_one": "an",
+      "years_other": "ans"
+    }
+  },
   "languages": {
     "fr": "Français",
     "en": "English",

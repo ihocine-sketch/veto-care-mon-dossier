@@ -207,6 +207,216 @@
     "subtotal": "المجموع الفرعي",
     "tax": "الضريبة"
   },
+  "homePage": {
+    "preview": {
+      "nextAppointment": "الموعد القادم",
+      "title": "ميدور — اللقاح السنوي",
+      "vetLabel": "الطبيب البيطري",
+      "vetValue": "د. مزيان",
+      "dateLabel": "التاريخ",
+      "dateValue": "الثلاثاء 14:00",
+      "statusLabel": "الحالة",
+      "statusValue": "مؤكد"
+    },
+    "featuresHeadingPrefix": "كل ما تحتاجون إليه،",
+    "featuresHeadingHighlight": "لا شيء أكثر",
+    "statistics": {
+      "animals": "حيوانات متابعة",
+      "vets": "أطباء بيطريون شركاء",
+      "satisfaction": "رضا العملاء"
+    }
+  },
+  "dashboardPage": {
+    "welcome": "مرحباً",
+    "title": "لوحة التحكم",
+    "animalsFollowed": "متابعة كاملة لـ {{count}} من حيواناتك",
+    "newAppointment": "موعد جديد",
+    "cards": {
+      "appointments": "المواعيد",
+      "totalAppointments": "إجمالي المواعيد المسجلة",
+      "animals": "الحيوانات المتابعة",
+      "healthRecord": "في السجل الصحي",
+      "next": "الموعد القادم"
+    },
+    "chart": {
+      "byMonth": "المواعيد حسب الشهر",
+      "annualTrend": "الاتجاه السنوي"
+    },
+    "calendar": {
+      "title": "التقويم",
+      "monthlyAppointments": "مواعيد الشهر"
+    },
+    "days": {
+      "mon": "الإثنين",
+      "tue": "الثلاثاء",
+      "wed": "الأربعاء",
+      "thu": "الخميس",
+      "fri": "الجمعة",
+      "sat": "السبت",
+      "sun": "الأحد"
+    },
+    "other": "آخر",
+    "empty": {
+      "title": "لا توجد مواعيد",
+      "subtitle": "احجز موعدك الأول للبدء.",
+      "create": "إنشاء موعد"
+    },
+    "status": {
+      "pending": "قيد الانتظار",
+      "confirmed": "مؤكد",
+      "cancelled": "ملغي"
+    },
+    "payment": {
+      "paid": "مدفوع"
+    },
+    "invoice": "فاتورة",
+    "healthRecord": "السجل",
+    "vetShort": "بيطري",
+    "vetNotSet": "لم يتم تحديد طبيب بيطري",
+    "noNextAppointment": "لا يوجد موعد قادم",
+    "errors": {
+      "invoice": "حدث خطأ أثناء تنزيل الفاتورة"
+    }
+  },
+  "appointmentsPage": {
+    "badge": "حجز موعد",
+    "title": "موعد جديد",
+    "subtitle": "أدخل معلومات الحيوان.",
+    "vetNotSet": "لم يتم تحديد طبيب بيطري",
+    "validation": {
+      "animalNameRequired": "اسم الحيوان مطلوب",
+      "speciesRequired": "النوع مطلوب",
+      "dateRequired": "التاريخ مطلوب",
+      "vetRequired": "الطبيب البيطري مطلوب",
+      "reasonTooShort": "سبب الموعد قصير جداً"
+    },
+    "form": {
+      "title": "معلومات الموعد",
+      "description": "جميع الحقول مطلوبة ما عدا السجل الصحي.",
+      "animal": "الحيوان",
+      "selectAnimal": "اختر حيواناً",
+      "manualEntry": "إدخال يدوي",
+      "animalName": "اسم الحيوان",
+      "animalNamePlaceholder": "ميدور",
+      "species": "النوع",
+      "speciesPlaceholder": "كلب، قط...",
+      "datetime": "تاريخ ووقت الموعد",
+      "vet": "الطبيب البيطري",
+      "selectVet": "اختر طبيباً بيطرياً",
+      "reason": "السبب",
+      "reasonPlaceholder": "صف سبب الموعد...",
+      "healthRecord": "السجل الصحي (اختياري)",
+      "uploadClick": "انقر للرفع",
+      "uploadHint": "PDF أو JPG أو PNG · الحد الأقصى 10MB",
+      "submitting": "جاري الإنشاء...",
+      "submit": "إنشاء الموعد"
+    },
+    "success": {
+      "created": "تم إنشاء الموعد! أكمل الدفع للتأكيد."
+    },
+    "errors": {
+      "create": "خطأ أثناء إنشاء الموعد",
+      "fileTooLarge": "الملف كبير جداً (الحد الأقصى 10MB)"
+    }
+  },
+  "veterinariansPage": {
+    "badge": "فريقنا",
+    "title": "أطباؤنا البيطريون",
+    "subtitle": "فريق ذو خبرة لخدمة رفاقكم."
+  },
+  "contactPage": {
+    "backHome": "العودة إلى الرئيسية",
+    "clinicName": "فيتو-كير العيادة البيطرية",
+    "clinicSubtitle": "عيادة بيطرية",
+    "addressLabel": "العنوان",
+    "addressValue": "تيزي وزو، الجزائر",
+    "phoneLabel": "الهاتف",
+    "phoneValue": "+213 XX XX XX XX",
+    "emailLabel": "البريد الإلكتروني",
+    "emailValue": "contact@veto-care.com",
+    "emergency": "اتصال طوارئ 24/7",
+    "responseDelay": "الرد خلال 24 ساعة",
+    "openingHours": "ساعات العمل",
+    "closed": "مغلق",
+    "urgencyTitle": "طوارئ 24/7:",
+    "urgencyText": "خدمة الطوارئ متاحة كل يوم وكل ليلة.",
+    "mapTitle": "الخريطة — تيزي وزو",
+    "days": {
+      "monday": "الإثنين",
+      "tuesday": "الثلاثاء",
+      "wednesday": "الأربعاء",
+      "thursday": "الخميس",
+      "friday": "الجمعة",
+      "saturday": "السبت",
+      "sunday": "الأحد"
+    },
+    "form": {
+      "title": "اتصل بنا",
+      "fullName": "الاسم الكامل",
+      "fullNamePlaceholder": "اسمك",
+      "email": "البريد الإلكتروني",
+      "emailPlaceholder": "you@email.com",
+      "message": "الرسالة",
+      "messagePlaceholder": "رسالتك...",
+      "sending": "جاري الإرسال...",
+      "submit": "إرسال الرسالة",
+      "securityNotice": "بياناتك آمنة ولن تتم مشاركتها."
+    },
+    "cta": {
+      "title": "احجز موعداً",
+      "subtitle": "ادخل منصتنا للحجز عبر الإنترنت أو اتصل بنا مباشرة.",
+      "login": "تسجيل الدخول",
+      "call": "اتصل بنا"
+    },
+    "errors": {
+      "required": "يرجى ملء جميع الحقول",
+      "invalidEmail": "يرجى إدخال بريد إلكتروني صحيح",
+      "send": "حدث خطأ أثناء إرسال الرسالة"
+    },
+    "success": {
+      "sent": "تم إرسال الرسالة بنجاح!"
+    }
+  },
+  "animalProfilePage": {
+    "success": {
+      "deleted": "تم حذف الملف"
+    },
+    "notFound": "الحيوان غير موجود",
+    "back": "رجوع",
+    "myAnimals": "حيواناتي",
+    "profile": "الملف",
+    "edit": "تعديل",
+    "newAppointment": "موعد جديد",
+    "delete": "حذف",
+    "deleteTitle": "حذف هذا الملف؟",
+    "deleteDescription": "هذا الإجراء لا يمكن التراجع عنه. لن يتم حذف المواعيد المرتبطة.",
+    "cancel": "إلغاء",
+    "allergies": "الحساسية",
+    "noAllergies": "لا توجد حساسية مسجلة",
+    "notes": "ملاحظات",
+    "noNotes": "لا توجد ملاحظات",
+    "medicalHistory": "السجل الطبي",
+    "allAppointments": "كل مواعيد {{name}}",
+    "add": "إضافة",
+    "noAppointments": "لا توجد مواعيد مسجلة لهذا الحيوان.",
+    "createAppointment": "إنشاء موعد",
+    "notSet": "—",
+    "healthRecord": "السجل الصحي",
+    "timelineSummary": "{{past}} زيارة سابقة · {{upcoming}} قادمة",
+    "status": {
+      "pending": "قيد الانتظار",
+      "confirmed": "مؤكد",
+      "cancelled": "ملغي"
+    },
+    "stats": {
+      "age": "العمر",
+      "weight": "الوزن",
+      "visits": "الزيارات",
+      "upcoming": "القادمة",
+      "years_one": "سنة",
+      "years_other": "سنوات"
+    }
+  },
   "languages": {
     "fr": "Français",
     "en": "English",

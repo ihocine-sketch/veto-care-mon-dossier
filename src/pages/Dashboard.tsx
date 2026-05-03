@@ -9,9 +9,10 @@ import { PageTransition } from "@/components/PageTransition";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, Download, FileText, Plus, PawPrint, Sparkles, Clock, CheckCircle2, TrendingUp, Heart } from "lucide-react";
+import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, Download, FileText, Plus, PawPrint, Sparkles, Clock, CheckCircle2, TrendingUp } from "lucide-react";
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 interface Rdv {
   id: string;
@@ -29,12 +30,12 @@ interface MonthData {
   count: number;
 }
 
-const statutLabel: Record<string, { label: string; cls: string }> = {
-  en_attente: { label: "En attente", cls: "bg-warning/15 text-warning border-warning/30" },
-  confirme: { label: "Confirmé", cls: "bg-success/15 text-success border-success/30" },
-  "confirmé": { label: "Confirmé", cls: "bg-success/15 text-success border-success/30" },
-  annule: { label: "Annulé", cls: "bg-destructive/15 text-destructive border-destructive/30" },
-  "annulé": { label: "Annulé", cls: "bg-destructive/15 text-destructive border-destructive/30" },
+const statutClass: Record<string, string> = {
+  en_attente: "bg-warning/15 text-warning border-warning/30",
+  confirme: "bg-success/15 text-success border-success/30",
+  "confirmé": "bg-success/15 text-success border-success/30",
+  annule: "bg-destructive/15 text-destructive border-destructive/30",
+  "annulé": "bg-destructive/15 text-destructive border-destructive/30",
 };
 
 // Animal emoji mapping
@@ -54,6 +55,7 @@ const getAnimalEmoji = (espece: string): string => {
 };
 
 const Dashboard = () => {
+  const { t, i18n } = useTranslation();
   const { user } = useAuth();
   const [rdvs, setRdvs] = useState<Rdv[]>([]);
   const [loading, setLoading] = useState(true);
@@ -136,7 +138,8 @@ const Dashboard = () => {
     return map;
   }, [rdvs]);
 
-  const monthLabel = calendarMonth.toLocaleString("fr-FR", { month: "long", year: "numeric" });
+  const locale = i18n.language === "ar" ? "ar-DZ" : i18n.language === "en" ? "en-US" : "fr-FR";
+  const monthLabel = calendarMonth.toLocaleString(locale, { month: "long", year: "numeric" });
 
   const firstDayIndex = (new Date(calendarMonth.getFullYear(), calendarMonth.getMonth(), 1).getDay() + 6) % 7;
   const daysInMonth = new Date(calendarMonth.getFullYear(), calendarMonth.getMonth() + 1, 0).getDate();
@@ -159,13 +162,13 @@ const Dashboard = () => {
           >
             <div>
               <p className="mb-3 inline-flex items-center gap-1.5 text-sm font-semibold uppercase tracking-wider text-primary">
-                <Sparkles className="h-3.5 w-3.5" /> Bienvenue
+                <Sparkles className="h-3.5 w-3.5" /> {t("dashboardPage.welcome")}
               </p>
-              <h1 className="font-display text-5xl font-semibold tracking-tight mb-2">Tableau de bord</h1>
-              <p className="text-muted-foreground text-lg">Suivi complet de vos {animalCount} animal{animalCount !== 1 ? 'aux' : ''}</p>
+              <h1 className="font-display text-5xl font-semibold tracking-tight mb-2">{t("dashboardPage.title")}</h1>
+              <p className="text-muted-foreground text-lg">{t("dashboardPage.animalsFollowed", { count: animalCount })}</p>
             </div>
             <Button asChild size="lg" className="gap-2 shadow-elegant transition-all hover:shadow-glow hover:-translate-y-0.5 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white">
-              <Link to="/nouveau-rdv"><Plus className="h-4 w-4" /> Nouveau rendez-vous</Link>
+              <Link to="/nouveau-rdv"><Plus className="h-4 w-4" /> {t("dashboardPage.newAppointment")}</Link>
             </Button>
           </motion.div>
 
@@ -181,14 +184,14 @@ const Dashboard = () => {
                   <CardContent className="space-y-3 p-6">
                     <div className="flex items-center justify-between gap-4">
                       <div>
-                        <p className="text-sm font-medium uppercase tracking-wider text-blue-100 opacity-90">Rendez-vous</p>
+                        <p className="text-sm font-medium uppercase tracking-wider text-blue-100 opacity-90">{t("dashboardPage.cards.appointments")}</p>
                         <p className="mt-3 text-4xl font-bold">{totalAppointments}</p>
                       </div>
                       <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-white/20 backdrop-blur-sm">
                         <CalendarIcon className="h-8 w-8" />
                       </div>
                     </div>
-                    <p className="text-sm text-blue-50 opacity-90">Total de rendez-vous enregistrés</p>
+                    <p className="text-sm text-blue-50 opacity-90">{t("dashboardPage.cards.totalAppointments")}</p>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -203,14 +206,14 @@ const Dashboard = () => {
                   <CardContent className="space-y-3 p-6">
                     <div className="flex items-center justify-between gap-4">
                       <div>
-                        <p className="text-sm font-medium uppercase tracking-wider text-purple-100 opacity-90">Animaux suivis</p>
+                        <p className="text-sm font-medium uppercase tracking-wider text-purple-100 opacity-90">{t("dashboardPage.cards.animals")}</p>
                         <p className="mt-3 text-4xl font-bold">{animalCount}</p>
                       </div>
                       <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-white/20 backdrop-blur-sm">
                         <PawPrint className="h-8 w-8" />
                       </div>
                     </div>
-                    <p className="text-sm text-purple-50 opacity-90">Dans votre carnet de santé</p>
+                    <p className="text-sm text-purple-50 opacity-90">{t("dashboardPage.cards.healthRecord")}</p>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -225,7 +228,7 @@ const Dashboard = () => {
                   <CardContent className="space-y-3 p-6">
                     <div className="flex items-center justify-between gap-4">
                       <div>
-                        <p className="text-sm font-medium uppercase tracking-wider text-amber-100 opacity-90">Prochain RDV</p>
+                        <p className="text-sm font-medium uppercase tracking-wider text-amber-100 opacity-90">{t("dashboardPage.cards.next")}</p>
                         <p className="mt-3 text-2xl font-bold">
                           {nextAppointment ? (
                             <span>{getAnimalEmoji(nextAppointment.espece)} {nextAppointment.nom_animal}</span>
@@ -240,11 +243,11 @@ const Dashboard = () => {
                     </div>
                     {nextAppointment ? (
                       <div className="space-y-1 text-sm text-amber-50 opacity-90">
-                        <p>{new Date(nextAppointment.date_rdv).toLocaleString("fr-FR", { dateStyle: "long", timeStyle: "short" })}</p>
-                        <p>{nextAppointment.veterinaires ? `Dr. ${nextAppointment.veterinaires.prenom} ${nextAppointment.veterinaires.nom}` : "Vétérinaire non défini"}</p>
+                        <p>{new Date(nextAppointment.date_rdv).toLocaleString(locale, { dateStyle: "long", timeStyle: "short" })}</p>
+                        <p>{nextAppointment.veterinaires ? `Dr. ${nextAppointment.veterinaires.prenom} ${nextAppointment.veterinaires.nom}` : t("dashboardPage.vetNotSet")}</p>
                       </div>
                     ) : (
-                      <p className="text-sm text-amber-50 opacity-90">Aucun prochain rendez-vous planifié</p>
+                      <p className="text-sm text-amber-50 opacity-90">{t("dashboardPage.noNextAppointment")}</p>
                     )}
                   </CardContent>
                 </Card>
@@ -260,8 +263,8 @@ const Dashboard = () => {
                 <CardContent className="p-6">
                   <div className="mb-6 flex items-center justify-between gap-4">
                     <div>
-                      <p className="text-sm font-medium uppercase tracking-wider text-muted-foreground">Rendez-vous par mois</p>
-                      <h2 className="mt-2 text-2xl font-bold text-foreground">Tendance annuelle</h2>
+                      <p className="text-sm font-medium uppercase tracking-wider text-muted-foreground">{t("dashboardPage.chart.byMonth")}</p>
+                      <h2 className="mt-2 text-2xl font-bold text-foreground">{t("dashboardPage.chart.annualTrend")}</h2>
                     </div>
                     <Badge className="rounded-full px-4 py-1.5 text-sm font-semibold bg-gradient-to-r from-blue-500 to-blue-600 text-white border-0">
                       {new Date().getFullYear()}
@@ -279,7 +282,7 @@ const Dashboard = () => {
                         <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} opacity={0.6} />
                         <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: "#6b7280", fontSize: 12 }} padding={{ left: 8, right: 8 }} />
                         <YAxis axisLine={false} tickLine={false} tick={{ fill: "#6b7280", fontSize: 12 }} allowDecimals={false} width={40} />
-                        <Tooltip contentStyle={{ borderRadius: 16, border: "1px solid #e5e7eb", boxShadow: "0 10px 30px rgba(15, 23, 42, 0.08)", backgroundColor: "#fff" }} formatter={(value: number) => [value, "Rendez-vous"]} />
+                        <Tooltip contentStyle={{ borderRadius: 16, border: "1px solid #e5e7eb", boxShadow: "0 10px 30px rgba(15, 23, 42, 0.08)", backgroundColor: "#fff" }} formatter={(value: number) => [value, t("dashboardPage.cards.appointments")]} />
                         <Area type="monotone" dataKey="count" stroke="#2563eb" fill="url(#appointmentsGradient)" strokeWidth={3} activeDot={{ r: 6, fill: "#2563eb" }} />
                       </AreaChart>
                     </ResponsiveContainer>
@@ -298,8 +301,8 @@ const Dashboard = () => {
               <CardContent className="p-6">
                 <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
                   <div>
-                    <p className="text-sm font-medium uppercase tracking-wider text-muted-foreground">Calendrier</p>
-                    <h2 className="mt-2 text-2xl font-bold text-foreground">Rendez-vous mensuels</h2>
+                    <p className="text-sm font-medium uppercase tracking-wider text-muted-foreground">{t("dashboardPage.calendar.title")}</p>
+                    <h2 className="mt-2 text-2xl font-bold text-foreground">{t("dashboardPage.calendar.monthlyAppointments")}</h2>
                   </div>
                   <div className="flex items-center gap-2 rounded-full bg-white border border-gray-200 px-3 py-2 text-sm text-muted-foreground shadow-sm hover:shadow-md transition-shadow">
                     <button
@@ -322,7 +325,7 @@ const Dashboard = () => {
 
                 <div className="rounded-2xl border border-gray-200 bg-white p-5">
                   <div className="grid grid-cols-7 gap-2 text-center text-xs font-bold tracking-wider text-gray-600 mb-3">
-                    {['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'].map((label) => (
+                    {[t("dashboardPage.days.mon"), t("dashboardPage.days.tue"), t("dashboardPage.days.wed"), t("dashboardPage.days.thu"), t("dashboardPage.days.fri"), t("dashboardPage.days.sat"), t("dashboardPage.days.sun")].map((label) => (
                       <div key={label} className="py-3">{label}</div>
                     ))}
                   </div>
@@ -358,12 +361,12 @@ const Dashboard = () => {
                               <div key={item.id} className="overflow-hidden rounded-lg bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 px-2 py-1.5 text-xs leading-tight">
                                 <p className="font-bold text-blue-900">{getAnimalEmoji(item.espece)} {item.nom_animal}</p>
                                 <p className="text-blue-700 text-[0.65rem]">
-                                  {item.veterinaires ? `Dr. ${item.veterinaires.prenom}` : 'Vét.'}
+                                  {item.veterinaires ? `Dr. ${item.veterinaires.prenom}` : t("dashboardPage.vetShort")}
                                 </p>
                               </div>
                             ))}
                             {items.length > 2 && (
-                              <p className="text-xs font-semibold text-blue-600">+{items.length - 2} autre{items.length - 2 > 1 ? 's' : ''}</p>
+                              <p className="text-xs font-semibold text-blue-600">+{items.length - 2} {t("dashboardPage.other", { count: items.length - 2 })}</p>
                             )}
                           </div>
                         </motion.div>
@@ -393,11 +396,11 @@ const Dashboard = () => {
                     <PawPrint className="h-10 w-10 text-white" />
                   </motion.div>
                   <div>
-                    <h3 className="font-display text-2xl font-bold text-foreground">Aucun rendez-vous</h3>
-                    <p className="mt-2 text-sm text-muted-foreground">Prenez votre premier rendez-vous pour commencer.</p>
+                    <h3 className="font-display text-2xl font-bold text-foreground">{t("dashboardPage.empty.title")}</h3>
+                    <p className="mt-2 text-sm text-muted-foreground">{t("dashboardPage.empty.subtitle")}</p>
                   </div>
                   <Button asChild className="gap-2 mt-4 shadow-lg hover:shadow-xl bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white">
-                    <Link to="/nouveau-rdv"><Plus className="h-4 w-4" /> Créer un rendez-vous</Link>
+                    <Link to="/nouveau-rdv"><Plus className="h-4 w-4" /> {t("dashboardPage.empty.create")}</Link>
                   </Button>
                 </CardContent>
               </Card>
@@ -405,7 +408,12 @@ const Dashboard = () => {
           ) : (
             <div className="grid gap-4">
               {rdvs.map((r, idx) => {
-                const st = statutLabel[r.statut] || statutLabel.en_attente;
+                const stClass = statutClass[r.statut] || statutClass.en_attente;
+                const stLabel = r.statut.includes("confirm")
+                  ? t("dashboardPage.status.confirmed")
+                  : r.statut.includes("annul")
+                    ? t("dashboardPage.status.cancelled")
+                    : t("dashboardPage.status.pending");
                 const date = new Date(r.date_rdv);
                 return (
                   <motion.div
@@ -432,27 +440,27 @@ const Dashboard = () => {
                               <span className="text-sm text-muted-foreground">· {r.espece}</span>
                             </div>
                             <p className="mt-1.5 text-sm text-blue-700 font-medium">
-                              {r.veterinaires ? `Dr. ${r.veterinaires.prenom} ${r.veterinaires.nom}` : "Vétérinaire non défini"}
+                              {r.veterinaires ? `Dr. ${r.veterinaires.prenom} ${r.veterinaires.nom}` : t("dashboardPage.vetNotSet")}
                             </p>
                             <p className="mt-1 text-sm text-muted-foreground">{r.motif}</p>
                           </div>
                         </div>
                         <div className="flex flex-col items-start gap-2 sm:items-end">
                           <div className="flex flex-wrap items-center gap-2">
-                            <Badge variant="outline" className={`${st.cls} font-semibold`}>{st.label}</Badge>
+                            <Badge variant="outline" className={`${stClass} font-semibold`}>{stLabel}</Badge>
                             {(r as any).payment_status === "paid" ? (
                               <Badge className="gap-1.5 bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0 font-semibold">
-                                <CheckCircle2 className="h-3.5 w-3.5" /> Payé
+                                <CheckCircle2 className="h-3.5 w-3.5" /> {t("dashboardPage.payment.paid")}
                               </Badge>
                             ) : (
                               <Badge className="gap-1.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0 font-semibold">
-                                <Clock className="h-3.5 w-3.5" /> En attente
+                                <Clock className="h-3.5 w-3.5" /> {t("dashboardPage.status.pending")}
                               </Badge>
                             )}
                           </div>
                           <div className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground">
                             <CalendarIcon className="h-4 w-4" />
-                            {date.toLocaleString("fr-FR", { dateStyle: "long", timeStyle: "short" })}
+                            {date.toLocaleString(locale, { dateStyle: "long", timeStyle: "short" })}
                           </div>
                           <div className="flex flex-wrap gap-1.5">
                             {(r as any).payment_status === "paid" && (
@@ -473,16 +481,16 @@ const Dashboard = () => {
                                     a.download = `facture_${r.id.substring(0, 8)}.html`;
                                     a.click();
                                   } catch (err) {
-                                    toast.error("Erreur lors du téléchargement de la facture");
+                                    toast.error(t("dashboardPage.errors.invoice"));
                                   }
                                 }}
                               >
-                                <Download className="h-3.5 w-3.5" /> Facture
+                                <Download className="h-3.5 w-3.5" /> {t("dashboardPage.invoice")}
                               </Button>
                             )}
                             {r.carnet_sante_url && (
                               <Button variant="ghost" size="sm" className="gap-1.5 h-7 px-2 text-xs transition-transform hover:scale-105" onClick={() => downloadCarnet(r.carnet_sante_url!)}>
-                                <FileText className="h-3.5 w-3.5" /> Carnet
+                                <FileText className="h-3.5 w-3.5" /> {t("dashboardPage.healthRecord")}
                               </Button>
                             )}
                           </div>

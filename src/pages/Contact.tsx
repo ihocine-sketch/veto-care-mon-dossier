@@ -11,8 +11,10 @@ import { Footer } from "@/components/Footer";
 import { PageTransition } from "@/components/PageTransition";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { useTranslation } from "react-i18next";
 
 export default function Contact() {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -32,13 +34,13 @@ export default function Contact() {
     e.preventDefault();
 
     if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
-      toast.error("Veuillez remplir tous les champs");
+      toast.error(t("contactPage.errors.required"));
       return;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
-      toast.error("Veuillez entrer une adresse email valide");
+      toast.error(t("contactPage.errors.invalidEmail"));
       return;
     }
 
@@ -54,14 +56,14 @@ export default function Contact() {
       });
 
       if (error) {
-        toast.error("Erreur lors de l'envoi du message");
+        toast.error(t("contactPage.errors.send"));
         console.error(error);
       } else {
-        toast.success("Message envoyé avec succès!");
+        toast.success(t("contactPage.success.sent"));
         setFormData({ name: "", email: "", message: "" });
       }
     } catch (error) {
-      toast.error("Erreur lors de l'envoi du message");
+      toast.error(t("contactPage.errors.send"));
       console.error(error);
     } finally {
       setIsSubmitting(false);
@@ -69,13 +71,13 @@ export default function Contact() {
   };
 
   const openingHours = [
-    { day: "Lundi", hours: "09:00 - 19:00" },
-    { day: "Mardi", hours: "09:00 - 19:00" },
-    { day: "Mercredi", hours: "09:00 - 19:00" },
-    { day: "Jeudi", hours: "09:00 - 19:00" },
-    { day: "Vendredi", hours: "09:00 - 19:00" },
-    { day: "Samedi", hours: "10:00 - 16:00" },
-    { day: "Dimanche", hours: "Fermé" },
+    { day: t("contactPage.days.monday"), hours: "09:00 - 19:00" },
+    { day: t("contactPage.days.tuesday"), hours: "09:00 - 19:00" },
+    { day: t("contactPage.days.wednesday"), hours: "09:00 - 19:00" },
+    { day: t("contactPage.days.thursday"), hours: "09:00 - 19:00" },
+    { day: t("contactPage.days.friday"), hours: "09:00 - 19:00" },
+    { day: t("contactPage.days.saturday"), hours: "10:00 - 16:00" },
+    { day: t("contactPage.days.sunday"), hours: t("contactPage.closed") },
   ];
 
   return (
@@ -88,7 +90,7 @@ export default function Contact() {
               to="/"
               className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
             >
-              <ArrowLeft className="h-4 w-4" /> Retour à l'accueil
+              <ArrowLeft className="h-4 w-4" /> {t("contactPage.backHome")}
             </Link>
           </div>
 
@@ -100,7 +102,7 @@ export default function Contact() {
                 animate={{ opacity: 1, y: 0 }}
                 className="font-display text-4xl md:text-5xl font-bold text-gray-900 mb-3"
               >
-                Veto-Care Clinique Vétérinaire
+                {t("contactPage.clinicName")}
               </motion.h1>
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
@@ -108,7 +110,7 @@ export default function Contact() {
                 transition={{ delay: 0.1 }}
                 className="text-xl text-gray-600 mb-4"
               >
-                Clinique Vétérinaire
+                {t("contactPage.clinicSubtitle")}
               </motion.p>
               <motion.div
                 initial={{ scaleX: 0 }}
@@ -139,9 +141,9 @@ export default function Contact() {
                       <MapPin className="h-6 w-6 text-emerald-700" />
                     </motion.div>
                     <div>
-                      <h3 className="font-bold text-gray-900 mb-2">Adresse</h3>
+                      <h3 className="font-bold text-gray-900 mb-2">{t("contactPage.addressLabel")}</h3>
                       <p className="text-gray-600 text-sm leading-relaxed font-medium">
-                        Tizi Ouzou, Algérie
+                        {t("contactPage.addressValue")}
                       </p>
                     </div>
                   </div>
@@ -163,17 +165,17 @@ export default function Contact() {
                       <Phone className="h-6 w-6 text-emerald-700" />
                     </motion.div>
                     <div>
-                      <h3 className="font-bold text-gray-900 mb-2">Téléphone</h3>
+                      <h3 className="font-bold text-gray-900 mb-2">{t("contactPage.phoneLabel")}</h3>
                       <p className="text-gray-600 text-sm font-medium">
                         <a
                           href="tel:+213XXXXXXXX"
                           className="hover:text-emerald-700 transition-colors font-semibold"
                         >
-                          +213 XX XX XX XX
+                          {t("contactPage.phoneValue")}
                         </a>
                       </p>
                       <p className="text-gray-500 text-xs mt-2 font-medium">
-                        Appel d'urgence 24/7
+                        {t("contactPage.emergency")}
                       </p>
                     </div>
                   </div>
@@ -195,17 +197,17 @@ export default function Contact() {
                       <Mail className="h-6 w-6 text-emerald-700" />
                     </motion.div>
                     <div>
-                      <h3 className="font-bold text-gray-900 mb-2">Email</h3>
+                      <h3 className="font-bold text-gray-900 mb-2">{t("contactPage.emailLabel")}</h3>
                       <p className="text-gray-600 text-sm font-medium">
                         <a
                           href="mailto:contact@veto-care.com"
                           className="hover:text-emerald-700 transition-colors font-semibold"
                         >
-                          contact@veto-care.com
+                          {t("contactPage.emailValue")}
                         </a>
                       </p>
                       <p className="text-gray-500 text-xs mt-2 font-medium">
-                        Réponse dans 24 heures
+                        {t("contactPage.responseDelay")}
                       </p>
                     </div>
                   </div>
@@ -220,47 +222,47 @@ export default function Contact() {
               <div>
                 <Card className="p-8 border-border/60 shadow-elegant bg-card/95 backdrop-blur-sm">
                   <h2 className="font-display text-2xl font-bold text-gray-900 mb-6">
-                    Nous contacter
+                    {t("contactPage.form.title")}
                   </h2>
 
                   <form onSubmit={handleSubmit} className="space-y-5">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Nom complet
+                        {t("contactPage.form.fullName")}
                       </label>
                       <Input
                         type="text"
                         name="name"
                         value={formData.name}
                         onChange={handleInputChange}
-                        placeholder="Votre nom"
+                        placeholder={t("contactPage.form.fullNamePlaceholder")}
                         className="w-full focus-visible:ring-emerald-500/30 focus-visible:border-emerald-500"
                       />
                     </div>
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Adresse email
+                        {t("contactPage.form.email")}
                       </label>
                       <Input
                         type="email"
                         name="email"
                         value={formData.email}
                         onChange={handleInputChange}
-                        placeholder="votre@email.com"
+                        placeholder={t("contactPage.form.emailPlaceholder")}
                         className="w-full focus-visible:ring-emerald-500/30 focus-visible:border-emerald-500"
                       />
                     </div>
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Message
+                        {t("contactPage.form.message")}
                       </label>
                       <Textarea
                         name="message"
                         value={formData.message}
                         onChange={handleInputChange}
-                        placeholder="Votre message..."
+                        placeholder={t("contactPage.form.messagePlaceholder")}
                         rows={5}
                         className="w-full resize-none focus-visible:ring-emerald-500/30 focus-visible:border-emerald-500"
                       />
@@ -272,12 +274,12 @@ export default function Contact() {
                       className="w-full shadow-soft gap-2 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white font-medium py-2.5"
                     >
                       <Send className="h-4 w-4" />
-                      {isSubmitting ? "Envoi en cours..." : "Envoyer le message"}
+                      {isSubmitting ? t("contactPage.form.sending") : t("contactPage.form.submit")}
                     </Button>
                   </form>
 
                   <p className="text-xs text-muted-foreground mt-4 text-center">
-                    Vos données sont sécurisées et ne seront jamais partagées.
+                    {t("contactPage.form.securityNotice")}
                   </p>
                 </Card>
               </div>
@@ -289,7 +291,7 @@ export default function Contact() {
                       <Clock className="h-6 w-6 text-emerald-700" />
                     </div>
                     <h2 className="font-display text-2xl font-bold text-gray-900">
-                      Horaires d'ouverture
+                      {t("contactPage.openingHours")}
                     </h2>
                   </div>
 
@@ -299,7 +301,7 @@ export default function Contact() {
                         <span className="text-gray-700 font-medium">{item.day}</span>
                         <span
                           className={`text-sm font-medium ${
-                            item.hours === "Fermé"
+                            item.hours === t("contactPage.closed")
                               ? "text-gray-400"
                               : "text-emerald-700"
                           }`}
@@ -313,10 +315,9 @@ export default function Contact() {
                   <div className="mt-6 pt-6 border-t border-border">
                     <p className="text-sm text-gray-600">
                       <span className="font-semibold text-gray-900">
-                        Urgences 24/7:
+                        {t("contactPage.urgencyTitle")}
                       </span>{" "}
-                      Service d'urgence disponible tous les jours et toutes les
-                      nuits.
+                      {t("contactPage.urgencyText")}
                     </p>
                   </div>
                 </Card>
@@ -331,7 +332,7 @@ export default function Contact() {
                       allowFullScreen={true}
                       loading="lazy"
                       referrerPolicy="no-referrer-when-downgrade"
-                      title="Carte — Tizi Ouzou"
+                      title={t("contactPage.mapTitle")}
                     />
                   </div>
                 </Card>
@@ -342,25 +343,24 @@ export default function Contact() {
           <div className="mt-16 bg-gradient-to-r from-emerald-600 via-green-600 to-emerald-700 py-12 px-4">
             <div className="max-w-4xl mx-auto text-center text-white">
               <h3 className="font-display text-2xl md:text-3xl font-bold mb-3">
-                Prendre un rendez-vous
+                {t("contactPage.cta.title")}
               </h3>
               <p className="mb-6 text-emerald-50">
-                Accédez à notre plateforme pour prendre rendez-vous en ligne ou
-                appelez-nous directement.
+                {t("contactPage.cta.subtitle")}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button
                   onClick={() => (window.location.href = "/auth")}
                   className="bg-white text-emerald-700 hover:bg-emerald-50 font-medium px-8 py-2.5"
                 >
-                  Se connecter
+                  {t("contactPage.cta.login")}
                 </Button>
                 <Button
                   variant="outline"
                   onClick={() => (window.location.href = "tel:+213XXXXXXXX")}
                   className="border-2 border-white bg-transparent text-white hover:bg-white/15 font-medium px-8 py-2.5"
                 >
-                  Nous appeler
+                  {t("contactPage.cta.call")}
                 </Button>
               </div>
             </div>

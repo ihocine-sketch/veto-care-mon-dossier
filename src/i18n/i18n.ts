@@ -40,4 +40,18 @@ i18n
     },
   });
 
+const applyDirection = (lng: string) => {
+  const direction = lng === 'ar' ? 'rtl' : 'ltr';
+  document.documentElement.dir = direction;
+  document.documentElement.lang = lng;
+  if (lng === 'ar') {
+    document.body.classList.add('rtl');
+  } else {
+    document.body.classList.remove('rtl');
+  }
+};
+
+i18n.on('initialized', () => applyDirection(i18n.language || 'fr'));
+i18n.on('languageChanged', (lng) => applyDirection(lng));
+
 export default i18n;

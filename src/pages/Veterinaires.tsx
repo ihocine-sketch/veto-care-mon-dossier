@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Stethoscope, Sparkles } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface Vet {
   id: string;
@@ -16,6 +17,7 @@ interface Vet {
 }
 
 const Veterinaires = () => {
+  const { t } = useTranslation();
   const [vets, setVets] = useState<Vet[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -38,10 +40,10 @@ const Veterinaires = () => {
             className="mb-10"
           >
             <p className="mb-2 inline-flex items-center gap-1.5 text-sm font-semibold uppercase tracking-wider text-primary">
-              <Sparkles className="h-3.5 w-3.5" /> Notre équipe
+              <Sparkles className="h-3.5 w-3.5" /> {t("veterinariansPage.badge")}
             </p>
-            <h1 className="font-display text-5xl font-semibold tracking-tight">Nos vétérinaires</h1>
-            <p className="mt-2 text-muted-foreground">Une équipe expérimentée à l'écoute de vos compagnons.</p>
+            <h1 className="font-display text-5xl font-semibold tracking-tight">{t("veterinariansPage.title")}</h1>
+            <p className="mt-2 text-muted-foreground">{t("veterinariansPage.subtitle")}</p>
           </motion.div>
 
           {loading ? (
