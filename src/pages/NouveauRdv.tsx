@@ -79,7 +79,7 @@ const NouveauRdv = () => {
         carnetUrl = pub.publicUrl;
       }
 
-      const { error } = await supabase.from("rendez_vous").insert({
+      const { data: insertedRdv, error } = await supabase.from("rendez_vous").insert({
         maitre_id: user.id,
         veterinaire_id: parsed.data.veterinaire_id,
         animal_id: animalId && animalId !== "manual" ? animalId : null,
@@ -88,7 +88,7 @@ const NouveauRdv = () => {
         date_rdv: new Date(parsed.data.date_rdv).toISOString(),
         motif: parsed.data.motif,
         carnet_sante_url: carnetUrl,
-      });
+      }).select("id").single();
       if (error) throw error;
 
       const vet = vets.find((v) => v.id === parsed.data.veterinaire_id);
@@ -106,7 +106,7 @@ const NouveauRdv = () => {
       }
 
       toast.success("Rendez-vous créé ! Effectuez le paiement pour confirmer.");
-      navigate(`/payment?appointment=${(data as any).id}`);
+      navigate(`/payment?appointment=${insertedRdv.id}`);
     } catch (e: any) {
       toast.error(e.message || "Erreur lors de la création");
     } finally {

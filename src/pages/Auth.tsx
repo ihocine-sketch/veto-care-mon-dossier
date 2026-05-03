@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
-import { useAuth } from "@/contexts/AuthContext";
+import { getDefaultDashboardPath, useAuth } from "@/contexts/AuthContext";
 import { AnimatedBackground } from "@/components/AnimatedBackground";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,15 +20,15 @@ const authSchema = z.object({
 });
 
 const Auth = () => {
-  const { user } = useAuth();
+  const { user, role } = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   useEffect(() => {
-    if (user) navigate("/dashboard");
-  }, [user, navigate]);
+    if (user) navigate(getDefaultDashboardPath(role));
+  }, [user, role, navigate]);
 
   const handle = async (mode: "signin" | "signup") => {
     const parsed = authSchema.safeParse({ email, password });
@@ -38,23 +38,29 @@ const Auth = () => {
     }
     setLoading(true);
     try {
+      let signedUserId: string | null = null;
       if (mode === "signup") {
-        const { error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
           email: parsed.data.email,
           password: parsed.data.password,
           options: { emailRedirectTo: `${window.location.origin}/dashboard` },
         });
         if (error) throw error;
+        signedUserId = data.user?.id ?? null;
         toast.success("Compte créé ! Vous êtes connecté.");
       } else {
-        const { error } = await supabase.auth.signInWithPassword({
+        const { data, error } = await supabase.auth.signInWithPassword({
           email: parsed.data.email,
           password: parsed.data.password,
         });
         if (error) throw error;
+        signedUserId = data.user?.id ?? null;
         toast.success("Bienvenue !");
       }
-      navigate("/dashboard");
+      const { data: roleRow } = signedUserId
+        ? await supabase.from("roles").select("role").eq("user_id", signedUserId).maybeSingle()
+        : { data: null };
+      navigate(getDefaultDashboardPath((roleRow?.role as "admin" | "client" | "vet" | undefined) ?? role));
     } catch (e: any) {
       toast.error(e.message || "Une erreur est survenue");
     } finally {

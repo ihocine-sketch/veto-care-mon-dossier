@@ -9,7 +9,7 @@ import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useTranslation } from "react-i18next";
 
 export const Navbar = () => {
-  const { user, signOut } = useAuth();
+  const { user, role, signOut } = useAuth();
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [scrolled, setScrolled] = useState(false);
@@ -36,12 +36,16 @@ export const Navbar = () => {
     }`;
 
   const links = user
-    ? [
-        { to: "/dashboard", label: t('nav.dashboard') },
-        { to: "/animaux", label: t('nav.animals') },
-        { to: "/veterinaires", label: t('nav.veterinarians') },
-        { to: "/nouveau-rdv", label: t('nav.newAppointment') },
-      ]
+    ? role === "admin"
+      ? [{ to: "/admin", label: "Admin dashboard" }]
+      : role === "vet"
+        ? [{ to: "/vet", label: "Vet dashboard" }]
+        : [
+            { to: "/dashboard", label: t('nav.dashboard') },
+            { to: "/animaux", label: t('nav.animals') },
+            { to: "/veterinaires", label: t('nav.veterinarians') },
+            { to: "/nouveau-rdv", label: t('nav.newAppointment') },
+          ]
     : [];
 
   return (

@@ -16,9 +16,9 @@ import AnimalProfile from "./pages/AnimalProfile.tsx";
 import Payment from "./pages/Payment.tsx";
 import Contact from "./pages/Contact.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import AdminDashboard from "./pages/AdminDashboard.tsx";
+import VetDashboard from "./pages/VetDashboard.tsx";
 import "./i18n/i18n";
-
-const queryClient = new QueryClient();
 
 const queryClient = new QueryClient();
 
@@ -33,7 +33,9 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+            <Route path="/dashboard" element={<ProtectedRoute allowedRoles={["client"]}><Dashboard /></ProtectedRoute>} />
+            <Route path="/admin" element={<ProtectedRoute allowedRoles={["admin"]}><AdminDashboard /></ProtectedRoute>} />
+            <Route path="/vet" element={<ProtectedRoute allowedRoles={["vet"]}><VetDashboard /></ProtectedRoute>} />
             <Route path="/veterinaires" element={<ProtectedRoute><Veterinaires /></ProtectedRoute>} />
             <Route path="/nouveau-rdv" element={<ProtectedRoute><NouveauRdv /></ProtectedRoute>} />
             <Route path="/payment" element={<ProtectedRoute><Payment /></ProtectedRoute>} />

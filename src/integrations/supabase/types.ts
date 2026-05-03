@@ -69,7 +69,15 @@ export type Database = {
           id: string
           maitre_id: string
           motif: string
+          notes_veterinaire: string | null
           nom_animal: string
+          payment_amount: number | null
+          payment_date: string | null
+          payment_method: string | null
+          payment_status: string
+          reminder_sent_at: string | null
+          stripe_payment_id: string | null
+          invoice_url: string | null
           statut: string
           veterinaire_id: string
         }
@@ -80,9 +88,17 @@ export type Database = {
           date_rdv: string
           espece: string
           id?: string
+          invoice_url?: string | null
           maitre_id: string
           motif: string
+          notes_veterinaire?: string | null
           nom_animal: string
+          payment_amount?: number | null
+          payment_date?: string | null
+          payment_method?: string | null
+          payment_status?: string
+          reminder_sent_at?: string | null
+          stripe_payment_id?: string | null
           statut?: string
           veterinaire_id: string
         }
@@ -93,9 +109,17 @@ export type Database = {
           date_rdv?: string
           espece?: string
           id?: string
+          invoice_url?: string | null
           maitre_id?: string
           motif?: string
+          notes_veterinaire?: string | null
           nom_animal?: string
+          payment_amount?: number | null
+          payment_date?: string | null
+          payment_method?: string | null
+          payment_status?: string
+          reminder_sent_at?: string | null
+          stripe_payment_id?: string | null
           statut?: string
           veterinaire_id?: string
         }
@@ -109,27 +133,54 @@ export type Database = {
           },
         ]
       }
+      roles: {
+        Row: {
+          created_at: string
+          role: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          role: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          role?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       veterinaires: {
         Row: {
+          consultation_fee: number
           created_at: string
           id: string
           nom: string
           prenom: string
           specialite: string
+          user_id: string | null
         }
         Insert: {
+          consultation_fee?: number
           created_at?: string
           id?: string
           nom: string
           prenom: string
           specialite: string
+          user_id?: string | null
         }
         Update: {
+          consultation_fee?: number
           created_at?: string
           id?: string
           nom?: string
           prenom?: string
           specialite?: string
+          user_id?: string | null
         }
         Relationships: []
       }

@@ -1,8 +1,14 @@
 import { Navigate } from "react-router-dom";
-import { useAuth } from "@/contexts/AuthContext";
+import { UserRole, getDefaultDashboardPath, useAuth } from "@/contexts/AuthContext";
 
-export const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
-  const { user, loading } = useAuth();
+export const ProtectedRoute = ({
+  children,
+  allowedRoles,
+}: {
+  children: JSX.Element;
+  allowedRoles?: UserRole[];
+}) => {
+  const { user, role, loading } = useAuth();
   if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
@@ -11,5 +17,8 @@ export const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
     );
   }
   if (!user) return <Navigate to="/auth" replace />;
+  if (allowedRoles && (!role || !allowedRoles.includes(role))) {
+    return <Navigate to={getDefaultDashboardPath(role)} replace />;
+  }
   return children;
 };

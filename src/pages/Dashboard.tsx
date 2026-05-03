@@ -32,7 +32,9 @@ interface MonthData {
 const statutLabel: Record<string, { label: string; cls: string }> = {
   en_attente: { label: "En attente", cls: "bg-warning/15 text-warning border-warning/30" },
   confirme: { label: "Confirmé", cls: "bg-success/15 text-success border-success/30" },
+  "confirmé": { label: "Confirmé", cls: "bg-success/15 text-success border-success/30" },
   annule: { label: "Annulé", cls: "bg-destructive/15 text-destructive border-destructive/30" },
+  "annulé": { label: "Annulé", cls: "bg-destructive/15 text-destructive border-destructive/30" },
 };
 
 // Animal emoji mapping
