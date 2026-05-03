@@ -23,7 +23,7 @@
 
 ---
 
-## 🏗️ Analyse d'Architecture Cloud (500 mots)
+## 🏗️ Analyse d'Architecture Cloud 
 
 ### 1. Pourquoi Vercel + Supabase est financièrement plus logique ? (CAPEX vs OPEX)
 
