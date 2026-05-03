@@ -129,7 +129,7 @@ const Auth = () => {
                   }`}
                 >
                   <User className="h-5 w-5" />
-                  <span className="text-xs font-medium">Maître</span>
+                  <span className="text-xs font-medium">Client</span>
                 </Button>
                 <Button
                   variant={selectedRole === "vet" ? "default" : "outline"}
