@@ -22,12 +22,14 @@ type Vet = {
 type Appointment = {
   id: string;
   nom_animal: string;
+  animal_id: string | null;
   date_rdv: string;
   statut: string;
   motif: string;
   maitre_id: string;
-  veterinaires: { nom: string; prenom: string };
-  animaux: { nom: string; espece: string };
+  veterinaire_id: string | null;
+  veterinaires: { nom: string; prenom: string } | null;
+  animaux: { nom: string; espece: string } | null;
 };
 
 const AdminDashboard = () => {
@@ -62,18 +64,20 @@ const AdminDashboard = () => {
       // Fetch all appointments for admin
       console.log("Fetching appointments for admin user...");
       
-      // First try a simple query to test RLS
+      // Query with proper joins using foreign keys
       const { data: rdvData, error: rdvError } = await supabase
         .from("rendez_vous")
         .select(`
           id, 
-          nom_animal, 
+          nom_animal,
+          animal_id,
           date_rdv, 
           statut, 
           motif,
           maitre_id,
-          veterinaires(nom, prenom),
-          animaux(nom, espece)
+          veterinaire_id,
+          veterinaires!left(nom, prenom),
+          animaux!left(nom, espece)
         `)
         .order("date_rdv", { ascending: false });
 
@@ -320,8 +324,12 @@ const AdminDashboard = () => {
                         <TableRow key={a.id}>
                           <TableCell>
                             <div>
-                              <div className="font-medium">{a.animaux?.nom || a.nom_animal}</div>
-                              <div className="text-sm text-muted-foreground">{a.animaux?.espece || ''}</div>
+                              <div className="font-medium">
+                                {a.animaux?.nom || a.nom_animal || 'Animal non spécifié'}
+                              </div>
+                              <div className="text-sm text-muted-foreground">
+                                {a.animaux?.espece || 'Espèce non spécifiée'}
+                              </div>
                             </div>
                           </TableCell>
                           <TableCell>
