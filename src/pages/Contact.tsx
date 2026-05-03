@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { Mail, Phone, MapPin, Clock, Send } from "lucide-react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { ArrowLeft } from "lucide-react";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -76,6 +78,14 @@ export default function Contact() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 via-blue-50 to-white pt-24 pb-16">
+      <div className="max-w-6xl mx-auto px-4 mb-6">
+        <Link
+          to="/"
+          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
+        >
+          <ArrowLeft className="h-4 w-4" /> Retour à l'accueil
+        </Link>
+      </div>
       {/* Header Section */}
       <div className="max-w-6xl mx-auto px-4 mb-16">
         <div className="text-center mb-12">
