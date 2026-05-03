@@ -24,7 +24,10 @@ type Appointment = {
   nom_animal: string;
   date_rdv: string;
   statut: string;
-  veterinaires: { nom: string; prenom: string } | null;
+  motif: string;
+  maitre_id: string;
+  veterinaires: { nom: string; prenom: string };
+  animaux: { nom: string; espece: string };
 };
 
 const AdminDashboard = () => {
@@ -39,24 +42,84 @@ const AdminDashboard = () => {
 
   const fetchData = async () => {
     setLoading(true);
-    const [{ data: vetsData, error: vetsError }, { data: rdvData, error: rdvError }] = await Promise.all([
-      supabase.from("veterinaires").select("id, nom, prenom, specialite, user_id").order("nom"),
-      supabase
+    try {
+      console.log("Fetching admin dashboard data...");
+      
+      // Fetch veterinarians
+      const { data: vetsData, error: vetsError } = await supabase
+        .from("veterinaires")
+        .select("id, nom, prenom, specialite, user_id")
+        .order("nom");
+
+      if (vetsError) {
+        console.error("Vets fetch error:", vetsError);
+        toast.error(`Erreur vétérinaires: ${vetsError.message}`);
+      } else {
+        console.log("Vets data:", vetsData);
+        setVets((vetsData as Vet[]) ?? []);
+      }
+
+      // Fetch all appointments for admin
+      const { data: rdvData, error: rdvError } = await supabase
         .from("rendez_vous")
-        .select("id, nom_animal, date_rdv, statut, veterinaires(nom, prenom)")
-        .order("date_rdv", { ascending: false }),
-    ]);
+        .select(`
+          id, 
+          nom_animal, 
+          date_rdv, 
+          statut, 
+          motif,
+          veterinaires!inner(nom, prenom),
+          maitre_id,
+          animaux!inner(nom, espece)
+        `)
+        .order("date_rdv", { ascending: false });
 
-    if (vetsError) toast.error(vetsError.message);
-    if (rdvError) toast.error(rdvError.message);
-
-    setVets((vetsData as Vet[]) ?? []);
-    setAppointments((rdvData as unknown as Appointment[]) ?? []);
-    setLoading(false);
+      if (rdvError) {
+        console.error("Appointments fetch error:", rdvError);
+        toast.error(`Erreur rendez-vous: ${rdvError.message}`);
+      } else {
+        console.log("Appointments data:", rdvData);
+        setAppointments((rdvData as unknown as Appointment[]) ?? []);
+      }
+    } catch (error) {
+      console.error("Fetch data error:", error);
+      toast.error("Erreur lors du chargement des données");
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
     fetchData();
+
+    // Real-time subscription for appointment changes
+    const subscription = supabase
+      .channel('admin_rendez_vous_changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'rendez_vous'
+        },
+        (payload) => {
+          console.log('Admin received change:', payload);
+          if (payload.eventType === 'UPDATE') {
+            setAppointments(prev => prev.map(apt => 
+              apt.id === payload.new.id ? { ...apt, ...payload.new } : apt
+            ));
+          } else if (payload.eventType === 'INSERT') {
+            setAppointments(prev => [...prev, payload.new as Appointment]);
+          } else if (payload.eventType === 'DELETE') {
+            setAppointments(prev => prev.filter(apt => apt.id !== payload.old.id));
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
   const resetVetForm = () => {
@@ -219,31 +282,58 @@ const AdminDashboard = () => {
                   <TableHeader>
                     <TableRow>
                       <TableHead>Animal</TableHead>
+                      <TableHead>Propriétaire</TableHead>
                       <TableHead>Vétérinaire</TableHead>
+                      <TableHead>Motif</TableHead>
                       <TableHead>Date</TableHead>
                       <TableHead>Statut</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {appointments.map((a) => (
-                      <TableRow key={a.id}>
-                        <TableCell>{a.nom_animal}</TableCell>
-                        <TableCell>{a.veterinaires ? `Dr. ${a.veterinaires.prenom} ${a.veterinaires.nom}` : "-"}</TableCell>
-                        <TableCell>{new Date(a.date_rdv).toLocaleString("fr-FR")}</TableCell>
-                        <TableCell>
-                          <Select value={a.statut} onValueChange={(value) => updateAppointmentStatus(a.id, value)}>
-                            <SelectTrigger className="w-[160px]">
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="en_attente">En attente</SelectItem>
-                              <SelectItem value="confirmé">Confirmé</SelectItem>
-                              <SelectItem value="annulé">Annulé</SelectItem>
-                            </SelectContent>
-                          </Select>
+                    {appointments.length === 0 ? (
+                      <TableRow>
+                        <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
+                          Aucun rendez-vous trouvé
                         </TableCell>
                       </TableRow>
-                    ))}
+                    ) : (
+                      appointments.map((a) => (
+                        <TableRow key={a.id}>
+                          <TableCell>
+                            <div>
+                              <div className="font-medium">{a.animaux?.nom || a.nom_animal}</div>
+                              <div className="text-sm text-muted-foreground">{a.animaux?.espece || ''}</div>
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <div className="text-sm">
+                              ID: {a.maitre_id?.substring(0, 8)}...
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            {a.veterinaires ? `Dr. ${a.veterinaires.prenom} ${a.veterinaires.nom}` : "-"}
+                          </TableCell>
+                          <TableCell>
+                            <div className="max-w-[200px] truncate" title={a.motif}>
+                              {a.motif || "-"}
+                            </div>
+                          </TableCell>
+                          <TableCell>{new Date(a.date_rdv).toLocaleString("fr-FR")}</TableCell>
+                          <TableCell>
+                            <Select value={a.statut} onValueChange={(value) => updateAppointmentStatus(a.id, value)}>
+                              <SelectTrigger className="w-[140px]">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="en_attente">En attente</SelectItem>
+                                <SelectItem value="confirmé">Confirmé</SelectItem>
+                                <SelectItem value="annulé">Annulé</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </TableCell>
+                        </TableRow>
+                      ))
+                    )}
                   </TableBody>
                 </Table>
               )}
