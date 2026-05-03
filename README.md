@@ -1,47 +1,55 @@
 # 🐾 Veto-Care — Extranet Clinique Vétérinaire
 
-## 👥 Binôme
-- Étudiant 1 : [Votre Nom Prénom]
-- Étudiant 2 : [Nom Prénom Binôme]
+## 👥 Groupe
+- HOCINE Imen
+- IAOUDARENE Lina
+- MADI Abderrahmane
+- MEZIANI Amir Mouataz
 
 ## 🔗 Liens
-- **Application en ligne** : https://veto-care-mon-dossier.vercel.app
-- **Dépôt GitHub** : https://github.com/ihocine-sketch/veto-care-mon-dossier
+- **Application** : https://veto-care-mon-dossier.vercel.app
+- **GitHub** : https://github.com/ihocine-sketch/veto-care-mon-dossier
+
+---
 
 ## 🗺️ Mapping du Thème
 
 | Élément | Correspondance dans Veto-Care |
 |---------|-------------------------------|
-| **Table A** | Maîtres (propriétaires d'animaux) — gérés via Supabase Auth |
+| **Table A** | Maîtres (propriétaires d'animaux) gérés via Supabase Auth |
 | **Table B** | Vétérinaires (nom, prénom, spécialité) |
 | **Table C** | Rendez-vous (relie un maître à un vétérinaire, avec date et statut) |
-| **Fichier** | Carnet de santé de l'animal (PDF ou image uploadé via Supabase Storage) |
+| **Fichier** | Carnet de santé de l'animal (PDF ou image) via Supabase Storage |
 
-## 🏗️ Analyse d'Architecture Cloud
+---
+
+## 🏗️ Analyse d'Architecture Cloud (500 mots)
 
 ### 1. Pourquoi Vercel + Supabase est financièrement plus logique ? (CAPEX vs OPEX)
 
-Dans un modèle classique, lancer un projet nécessite un investissement initial important appelé **CAPEX** (Capital Expenditure) : achat de serveurs physiques, installation dans un data center, licences logicielles, et infrastructure réseau. Ces coûts sont fixes et doivent être payés avant même d'avoir un seul utilisateur.
+Lorsqu'une entreprise ou un étudiant souhaite lancer une application web, deux modèles économiques s'offrent à lui. Le premier modèle est basé sur le **CAPEX** (Capital Expenditure), c'est-à-dire les dépenses en capital. Dans ce modèle classique, il faut acheter des serveurs physiques, payer une salle dans un data center, installer les systèmes d'exploitation, configurer les bases de données, acheter des licences logicielles, et embaucher des administrateurs système. Tout cela représente un investissement initial très élevé, parfois des dizaines de milliers d'euros, avant même d'avoir le premier utilisateur.
 
-Avec Vercel et Supabase, on passe à un modèle **OPEX** (Operational Expenditure) : on paye uniquement ce qu'on consomme, au fur et à mesure. Pour notre projet Veto-Care, le coût de démarrage est **zéro euro**. Vercel offre un hébergement gratuit avec déploiement automatique, et Supabase offre une base de données PostgreSQL gratuite avec authentification et stockage inclus. Ce modèle est idéal pour un projet étudiant ou une startup qui veut valider son idée sans risque financier.
+Le deuxième modèle est basé sur l'**OPEX** (Operational Expenditure), c'est-à-dire les dépenses opérationnelles. C'est exactement ce que proposent Vercel et Supabase. Au lieu de payer tout d'avance, on paye uniquement ce qu'on consomme, au fur et à mesure. Pour notre projet Veto-Care, le coût de démarrage est **zéro euro**. Vercel offre un hébergement gratuit avec déploiement automatique, et Supabase offre une base de données PostgreSQL gratuite avec authentification et stockage de fichiers inclus. Si demain notre application grandit et attire des milliers d'utilisateurs, on peut passer à un plan payant progressivement, sans changer d'architecture. Ce modèle OPEX est donc beaucoup plus adapté pour un projet étudiant, une startup, ou tout projet qui veut valider son idée avant d'investir massivement.
 
-### 2. Comment Vercel gère-t-il la scalabilité ?
+### 2. Comment Vercel gère-t-il la scalabilité par rapport à un Data Center physique ?
 
-Un data center physique local nécessite une infrastructure coûteuse : salles climatisées, serveurs en rack, onduleurs, équipes de maintenance 24h/24. Si le trafic augmente soudainement, il faut acheter de nouveaux serveurs, ce qui prend des semaines.
+Un data center physique local est une infrastructure très complexe et coûteuse à maintenir. Il nécessite des salles climatisées en permanence pour éviter la surchauffe des serveurs, des serveurs en rack avec des alimentations redondantes, des onduleurs pour éviter les coupures de courant, des connexions réseau multiples pour garantir la disponibilité, et des équipes techniques disponibles 24h/24 et 7j/7. Si le trafic augmente soudainement, il faut commander de nouveaux serveurs, les installer et les configurer, ce qui peut prendre plusieurs semaines.
 
-Vercel utilise une architecture **Serverless** et un réseau de distribution mondial (CDN). Concrètement, si Veto-Care reçoit 10 visiteurs ou 10 000 visiteurs en même temps, Vercel adapte automatiquement les ressources sans intervention humaine. Les fonctions s'exécutent à la demande et s'arrêtent quand elles ne sont plus utilisées. Il n'y a pas de serveur qui "tourne dans le vide". Cette scalabilité automatique est impossible à atteindre facilement avec un serveur physique local.
+Vercel utilise une architecture **Serverless** basée sur un réseau de distribution mondial appelé CDN (Content Delivery Network). Concrètement, si Veto-Care reçoit 10 visiteurs ou 100 000 visiteurs en même temps, Vercel adapte automatiquement les ressources disponibles sans aucune intervention humaine. Les fonctions s'exécutent uniquement à la demande et s'arrêtent automatiquement quand elles ne sont plus utilisées, ce qui évite tout gaspillage de ressources. De plus, le contenu est servi depuis le serveur le plus proche de l'utilisateur géographiquement, ce qui rend l'application rapide partout dans le monde. Cette scalabilité automatique et instantanée est pratiquement impossible à atteindre avec un serveur physique local sans un investissement énorme.
 
 ### 3. Données Structurées vs Non-Structurées dans Veto-Care
 
-Dans notre application, les deux types de données coexistent :
+Dans notre application Veto-Care, les deux types de données coexistent et se complètent.
 
-**Données structurées** : Ce sont les données organisées dans les tables PostgreSQL de Supabase. La table `veterinaires` contient des colonnes précises (nom, prénom, spécialité). La table `rendez_vous` contient des champs définis (date, motif, statut, clés étrangères). Ces données sont facilement interrogeables avec des requêtes SQL.
+Les **données structurées** sont organisées dans les tables PostgreSQL de Supabase. La table `veterinaires` contient des colonnes bien définies : id, nom, prénom, spécialité, et date de création. La table `rendez_vous` contient des champs précis : id, maitre_id (clé étrangère vers auth.users), veterinaire_id (clé étrangère vers veterinaires), nom_animal, espece, date_rdv, motif, statut, et carnet_sante_url. Ces données sont facilement interrogeables avec des requêtes SQL, filtrables, et triables. Le Row Level Security (RLS) de Supabase s'applique directement sur ces tables pour garantir que chaque maître ne voit que ses propres rendez-vous.
 
-**Données non-structurées** : Ce sont les carnets de santé des animaux uploadés par les maîtres. Ces fichiers (PDF ou images) n'ont pas de structure fixe — chaque carnet est différent, avec des formats variés. Ils sont stockés dans **Supabase Storage** (bucket `carnets-sante`) et référencés par une URL dans la table `rendez_vous`. Ce type de données ne peut pas être stocké directement dans une colonne SQL classique.
+Les **données non-structurées** sont les carnets de santé des animaux uploadés par les maîtres. Ces fichiers peuvent être des PDFs ou des images, avec des formats, des tailles et des contenus complètement différents d'un animal à l'autre. Ils n'ont pas de structure fixe et ne peuvent pas être stockés dans une colonne SQL classique. C'est pourquoi nous utilisons **Supabase Storage** avec le bucket `carnets-sante` pour stocker ces fichiers. Dans la base de données, nous sauvegardons uniquement l'URL publique du fichier dans la colonne `carnet_sante_url` de la table `rendez_vous`, ce qui permet de lier la donnée non-structurée à la donnée structurée.
+
+---
 
 ## 🛠️ Stack Technologique
 - **Frontend** : React + TypeScript + Tailwind CSS
-- **Backend/BaaS** : Supabase (PostgreSQL + Auth + Storage)
+- **Backend/BaaS** : Supabase (PostgreSQL + Auth + Storage + RLS)
 - **Déploiement** : Vercel (CI/CD automatique)
 - **Vibe Coding** : Lovable.dev + Cursor AI
 
