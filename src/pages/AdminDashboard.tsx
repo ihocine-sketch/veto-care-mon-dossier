@@ -60,6 +60,9 @@ const AdminDashboard = () => {
       }
 
       // Fetch all appointments for admin
+      console.log("Fetching appointments for admin user...");
+      
+      // First try a simple query to test RLS
       const { data: rdvData, error: rdvError } = await supabase
         .from("rendez_vous")
         .select(`
@@ -68,17 +71,33 @@ const AdminDashboard = () => {
           date_rdv, 
           statut, 
           motif,
-          veterinaires!inner(nom, prenom),
           maitre_id,
-          animaux!inner(nom, espece)
+          veterinaires(nom, prenom),
+          animaux(nom, espece)
         `)
         .order("date_rdv", { ascending: false });
 
       if (rdvError) {
         console.error("Appointments fetch error:", rdvError);
-        toast.error(`Erreur rendez-vous: ${rdvError.message}`);
+        
+        // Try a more basic query without joins as fallback
+        console.log("Trying fallback query without joins...");
+        const { data: fallbackData, error: fallbackError } = await supabase
+          .from("rendez_vous")
+          .select("id, nom_animal, date_rdv, statut, motif, maitre_id")
+          .order("date_rdv", { ascending: false });
+          
+        if (fallbackError) {
+          console.error("Fallback query also failed:", fallbackError);
+          toast.error(`Erreur rendez-vous: ${rdvError.message}. RLS policies may be blocking access.`);
+        } else {
+          console.log("Fallback data:", fallbackData);
+          setAppointments((fallbackData as unknown as Appointment[]) ?? []);
+          toast.info("Affichage des rendez-vous sans informations détaillées (vétérinaire/animal)");
+        }
       } else {
         console.log("Appointments data:", rdvData);
+        console.log(`Found ${rdvData?.length || 0} appointments`);
         setAppointments((rdvData as unknown as Appointment[]) ?? []);
       }
     } catch (error) {
