@@ -3,14 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
-import { getDefaultDashboardPath, useAuth } from "@/contexts/AuthContext";
+import { getDefaultDashboardPath, useAuth, UserRole } from "@/contexts/AuthContext";
 import { AnimatedBackground } from "@/components/AnimatedBackground";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { PawPrint, ArrowLeft } from "lucide-react";
+import { PawPrint, ArrowLeft, User, Stethoscope, Shield } from "lucide-react";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
 
@@ -25,6 +25,7 @@ const Auth = () => {
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [selectedRole, setSelectedRole] = useState<UserRole>("client");
 
   useEffect(() => {
     if (user) navigate(getDefaultDashboardPath(role));
@@ -43,10 +44,24 @@ const Auth = () => {
         const { data, error } = await supabase.auth.signUp({
           email: parsed.data.email,
           password: parsed.data.password,
-          options: { emailRedirectTo: `${window.location.origin}/dashboard` },
+          options: { 
+            emailRedirectTo: `${window.location.origin}/dashboard`,
+            data: {
+              role: selectedRole
+            }
+          },
         });
         if (error) throw error;
         signedUserId = data.user?.id ?? null;
+        
+        // Create role entry for new user
+        if (signedUserId) {
+          const { error: roleError } = await supabase
+            .from("roles")
+            .insert({ user_id: signedUserId, role: selectedRole });
+          if (roleError) console.error("Role creation error:", roleError);
+        }
+        
         toast.success("Compte créé ! Vous êtes connecté.");
       } else {
         const { data, error } = await supabase.auth.signInWithPassword({
@@ -97,10 +112,51 @@ const Auth = () => {
 
         <Card className="border-border/60 bg-card/80 shadow-elegant backdrop-blur-xl">
           <CardHeader>
-            <CardTitle className="font-display text-2xl">Espace maître</CardTitle>
-            <CardDescription>Connectez-vous ou créez un compte</CardDescription>
+            <CardTitle className="font-display text-2xl">Espace de connexion</CardTitle>
+            <CardDescription>Choisissez votre rôle et connectez-vous</CardDescription>
           </CardHeader>
           <CardContent>
+            <div className="mb-6">
+              <Label className="text-sm font-medium text-muted-foreground mb-3 block">Je suis...</Label>
+              <div className="grid grid-cols-3 gap-2">
+                <Button
+                  variant={selectedRole === "client" ? "default" : "outline"}
+                  onClick={() => setSelectedRole("client")}
+                  className={`flex flex-col gap-2 h-auto py-3 px-2 transition-all ${
+                    selectedRole === "client" 
+                      ? "bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white border-green-600 shadow-lg" 
+                      : "hover:bg-green-50 hover:border-green-200"
+                  }`}
+                >
+                  <User className="h-5 w-5" />
+                  <span className="text-xs font-medium">Maître</span>
+                </Button>
+                <Button
+                  variant={selectedRole === "vet" ? "default" : "outline"}
+                  onClick={() => setSelectedRole("vet")}
+                  className={`flex flex-col gap-2 h-auto py-3 px-2 transition-all ${
+                    selectedRole === "vet" 
+                      ? "bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white border-green-600 shadow-lg" 
+                      : "hover:bg-green-50 hover:border-green-200"
+                  }`}
+                >
+                  <Stethoscope className="h-5 w-5" />
+                  <span className="text-xs font-medium">Vétérinaire</span>
+                </Button>
+                <Button
+                  variant={selectedRole === "admin" ? "default" : "outline"}
+                  onClick={() => setSelectedRole("admin")}
+                  className={`flex flex-col gap-2 h-auto py-3 px-2 transition-all ${
+                    selectedRole === "admin" 
+                      ? "bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white border-green-600 shadow-lg" 
+                      : "hover:bg-green-50 hover:border-green-200"
+                  }`}
+                >
+                  <Shield className="h-5 w-5" />
+                  <span className="text-xs font-medium">Administrateur</span>
+                </Button>
+              </div>
+            </div>
             <Tabs defaultValue="signin" className="w-full">
               <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="signin">Connexion</TabsTrigger>
@@ -119,12 +175,12 @@ const Auth = () => {
               </div>
 
               <TabsContent value="signin" className="mt-6">
-                <Button onClick={() => handle("signin")} disabled={loading} className="w-full shadow-soft transition-all hover:shadow-glow" size="lg">
+                <Button onClick={() => handle("signin")} disabled={loading} className="w-full shadow-soft transition-all hover:shadow-glow bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white" size="lg">
                   {loading ? "Connexion..." : "Se connecter"}
                 </Button>
               </TabsContent>
               <TabsContent value="signup" className="mt-6">
-                <Button onClick={() => handle("signup")} disabled={loading} className="w-full shadow-soft transition-all hover:shadow-glow" size="lg">
+                <Button onClick={() => handle("signup")} disabled={loading} className="w-full shadow-soft transition-all hover:shadow-glow bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white" size="lg">
                   {loading ? "Création..." : "Créer mon compte"}
                 </Button>
               </TabsContent>
