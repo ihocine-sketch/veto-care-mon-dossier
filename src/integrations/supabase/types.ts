@@ -59,8 +59,36 @@ export type Database = {
         }
         Relationships: []
       }
+      payments: {
+        Row: {
+          amount: number
+          appointment_id: string
+          created_at: string
+          id: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          appointment_id: string
+          created_at?: string
+          id?: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          appointment_id?: string
+          created_at?: string
+          id?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       rendez_vous: {
         Row: {
+          amount: number | null
           animal_id: string | null
           carnet_sante_url: string | null
           created_at: string
@@ -70,10 +98,13 @@ export type Database = {
           maitre_id: string
           motif: string
           nom_animal: string
+          notes_veterinaire: string | null
+          payment_status: string
           statut: string
           veterinaire_id: string
         }
         Insert: {
+          amount?: number | null
           animal_id?: string | null
           carnet_sante_url?: string | null
           created_at?: string
@@ -83,10 +114,13 @@ export type Database = {
           maitre_id: string
           motif: string
           nom_animal: string
+          notes_veterinaire?: string | null
+          payment_status?: string
           statut?: string
           veterinaire_id: string
         }
         Update: {
+          amount?: number | null
           animal_id?: string | null
           carnet_sante_url?: string | null
           created_at?: string
@@ -96,6 +130,8 @@ export type Database = {
           maitre_id?: string
           motif?: string
           nom_animal?: string
+          notes_veterinaire?: string | null
+          payment_status?: string
           statut?: string
           veterinaire_id?: string
         }
@@ -109,6 +145,27 @@ export type Database = {
           },
         ]
       }
+      roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
       veterinaires: {
         Row: {
           created_at: string
@@ -116,6 +173,7 @@ export type Database = {
           nom: string
           prenom: string
           specialite: string
+          user_id: string | null
         }
         Insert: {
           created_at?: string
@@ -123,6 +181,7 @@ export type Database = {
           nom: string
           prenom: string
           specialite: string
+          user_id?: string | null
         }
         Update: {
           created_at?: string
@@ -130,6 +189,7 @@ export type Database = {
           nom?: string
           prenom?: string
           specialite?: string
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -138,10 +198,16 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "client" | "vet"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -268,6 +334,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "client", "vet"],
+    },
   },
 } as const

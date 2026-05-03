@@ -129,10 +129,7 @@ const Payment = () => {
         .from("rendez_vous")
         .update({
           payment_status: "paid",
-          payment_amount: paymentDetails.consultationFee,
-          payment_date: new Date().toISOString(),
-          payment_method: "card",
-          stripe_payment_id: `sim_${Date.now()}`,
+          amount: paymentDetails.consultationFee,
         })
         .eq("id", paymentDetails.appointmentId);
 
@@ -141,11 +138,9 @@ const Payment = () => {
       // Create payment record
       await supabase.from("payments").insert({
         appointment_id: paymentDetails.appointmentId,
-        maitre_id: user.id,
+        user_id: user.id,
         amount: paymentDetails.consultationFee,
         status: "completed",
-        payment_method: "card",
-        stripe_payment_intent_id: `sim_${Date.now()}`,
       });
 
       setPaymentStatus("success");
@@ -258,7 +253,7 @@ const Payment = () => {
                             placeholder="1234 5678 9012 3456"
                             className="h-11 font-mono"
                             disabled={processing}
-                            maxLength="19"
+                            maxLength={19}
                           />
                         </div>
 
@@ -272,7 +267,7 @@ const Payment = () => {
                               placeholder="MM/YY"
                               className="h-11 font-mono"
                               disabled={processing}
-                              maxLength="5"
+                              maxLength={5}
                             />
                           </div>
                           <div className="space-y-2">
@@ -284,7 +279,7 @@ const Payment = () => {
                               placeholder="123"
                               className="h-11 font-mono"
                               disabled={processing}
-                              maxLength="3"
+                              maxLength={3}
                             />
                           </div>
                         </div>
