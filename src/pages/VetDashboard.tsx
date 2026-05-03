@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -18,6 +19,20 @@ type Appointment = {
   motif: string;
   statut: string;
   notes_veterinaire: string | null;
+};
+
+const statutClass: Record<string, string> = {
+  en_attente: "bg-warning/15 text-warning border-warning/30",
+  confirme: "bg-success/15 text-success border-success/30",
+  "confirmé": "bg-success/15 text-success border-success/30",
+  annule: "bg-destructive/15 text-destructive border-destructive/30",
+  "annulé": "bg-destructive/15 text-destructive border-destructive/30",
+};
+
+const getStatutLabel = (statut: string) => {
+  if (statut.includes("confirm")) return "Confirmé";
+  if (statut.includes("annul")) return "Annulé";
+  return "En attente";
 };
 
 const VetDashboard = () => {
@@ -50,6 +65,42 @@ const VetDashboard = () => {
 
   useEffect(() => {
     fetchAppointments();
+
+    // Real-time subscription for rendez_vous changes
+    const subscription = supabase
+      .channel('vet_rendez_vous_changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'rendez_vous'
+        },
+        (payload) => {
+          if (payload.eventType === 'UPDATE') {
+            // Update the specific appointment in state
+            setAppointments(prev => prev.map(apt => 
+              apt.id === payload.new.id ? { ...apt, ...payload.new } : apt
+            ));
+            
+            // Update notes draft if changed
+            if (payload.new.notes_veterinaire !== payload.old.notes_veterinaire) {
+              setNotesDraft(prev => ({
+                ...prev,
+                [payload.new.id]: payload.new.notes_veterinaire || ""
+              }));
+            }
+          } else if (payload.eventType === 'INSERT') {
+            // Add new appointment
+            setAppointments(prev => [...prev, payload.new as Appointment]);
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
   const updateStatus = async (appointmentId: string, statut: "confirmé" | "annulé") => {
@@ -109,13 +160,20 @@ const VetDashboard = () => {
                         <TableCell>{new Date(a.date_rdv).toLocaleString("fr-FR")}</TableCell>
                         <TableCell>{a.motif}</TableCell>
                         <TableCell>
-                          <div className="flex gap-2">
-                            <Button size="sm" variant="outline" onClick={() => updateStatus(a.id, "confirmé")}>
-                              Confirmer
-                            </Button>
-                            <Button size="sm" variant="destructive" onClick={() => updateStatus(a.id, "annulé")}>
-                              Refuser
-                            </Button>
+                          <div className="flex flex-col gap-2">
+                            <Badge variant="outline" className={`${statutClass[a.statut] || statutClass.en_attente} font-semibold w-fit`}>
+                              {getStatutLabel(a.statut)}
+                            </Badge>
+                            {a.statut === "en_attente" && (
+                              <div className="flex gap-2">
+                                <Button size="sm" variant="outline" onClick={() => updateStatus(a.id, "confirmé")}>
+                                  Confirmer
+                                </Button>
+                                <Button size="sm" variant="destructive" onClick={() => updateStatus(a.id, "annulé")}>
+                                  Refuser
+                                </Button>
+                              </div>
+                            )}
                           </div>
                         </TableCell>
                         <TableCell className="min-w-[280px] space-y-2">

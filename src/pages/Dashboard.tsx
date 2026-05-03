@@ -64,17 +64,42 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (!user) return;
-    supabase
-      .from("rendez_vous")
-      .select("*, veterinaires(nom, prenom, specialite)")
-      .eq("maitre_id", user.id)
-      .order("date_rdv", { ascending: true })
-      .then(({ data, error }) => {
-        if (error) toast.error(error.message);
-        setRdvs((data as any) || []);
-        setLoading(false);
-      });
 
+    // Initial fetch
+    const fetchRdvs = async () => {
+      const { data, error } = await supabase
+        .from("rendez_vous")
+        .select("*, veterinaires(nom, prenom, specialite)")
+        .eq("maitre_id", user.id)
+        .order("date_rdv", { ascending: true });
+
+      if (error) toast.error(error.message);
+      setRdvs((data as any) || []);
+    };
+
+    fetchRdvs();
+
+    // Real-time subscription for status updates
+    const subscription = supabase
+      .channel('rendez_vous_changes')
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'rendez_vous',
+          filter: `maitre_id=eq.${user.id}`
+        },
+        (payload) => {
+          // Update the specific appointment in state
+          setRdvs(prev => prev.map(rdv => 
+            rdv.id === payload.new.id ? { ...rdv, ...payload.new } : rdv
+          ));
+        }
+      )
+      .subscribe();
+
+    // Fetch animal count
     supabase
       .from("animaux")
       .select("id", { count: "exact", head: true })
@@ -86,6 +111,12 @@ const Dashboard = () => {
         }
         setAnimalCount(count ?? 0);
       });
+
+    setLoading(false);
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, [user]);
 
   const downloadCarnet = (url: string) => window.open(url, "_blank");
