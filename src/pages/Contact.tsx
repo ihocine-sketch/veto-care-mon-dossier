@@ -84,7 +84,7 @@ export default function Contact() {
             animate={{ opacity: 1, y: 0 }}
             className="text-4xl md:text-5xl font-bold text-gray-900 mb-3"
           >
-            Veto-Care
+            Veto-Care Clinique Vétérinaire
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -126,9 +126,7 @@ export default function Contact() {
                 <div>
                   <h3 className="font-bold text-gray-900 mb-2">Adresse</h3>
                   <p className="text-gray-600 text-sm leading-relaxed font-medium">
-                    123 Rue de la Santé
-                    <br />
-                    75000 Paris, France
+                    Tizi Ouzou, Algérie
                   </p>
                 </div>
               </div>
@@ -153,14 +151,14 @@ export default function Contact() {
                   <h3 className="font-bold text-gray-900 mb-2">Téléphone</h3>
                   <p className="text-gray-600 text-sm font-medium">
                     <a
-                      href="tel:+33123456789"
+                      href="tel:+213XXXXXXXX"
                       className="hover:text-blue-600 transition-colors font-semibold"
                     >
-                      +33 (1) 23 45 67 89
+                      +213 XX XX XX XX
                     </a>
                   </p>
                   <p className="text-gray-500 text-xs mt-2 font-medium">
-                    Appel d'urgence 24/7: +33 (1) 98 76 54 32
+                    Appel d'urgence 24/7
                   </p>
                 </div>
               </div>
@@ -315,7 +313,7 @@ export default function Contact() {
             <Card className="overflow-hidden border-0 shadow-xl">
               <div className="aspect-video w-full bg-gray-200">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2624.9916256465156!2d2.3522219!3d48.8566140!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e66e1f06e2b70f%3A0x40b82c3688c9460!2s123%20Rue%20de%20la%20Sant%C3%A9%2C%2075000%20Paris!5e0!3m2!1sfr!2sfr!4v1234567890"
+                  src="https://www.google.com/maps?q=Tizi%20Ouzou%2C%20Algeria&output=embed"
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}
@@ -347,7 +345,7 @@ export default function Contact() {
               Se connecter
             </Button>
             <Button
-              onClick={() => (window.location.href = "tel:+33123456789")}
+              onClick={() => (window.location.href = "tel:+213XXXXXXXX")}
               className="border-2 border-white text-white hover:bg-white/10 font-medium px-8 py-2.5 rounded-lg transition-all"
             >
               Nous appeler

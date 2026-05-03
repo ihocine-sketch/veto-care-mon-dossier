@@ -11,7 +11,7 @@ export const Footer = () => {
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-primary shadow-soft">
                 <PawPrint className="h-5 w-5 text-primary-foreground" />
               </div>
-              <span className="font-display text-xl font-semibold">Veto-Care</span>
+              <span className="font-display text-xl font-semibold">Veto-Care Clinique Vétérinaire</span>
             </Link>
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
               L'extranet pensé pour les maîtres et leurs animaux. Soins, suivi et carnets de santé en un seul endroit.
@@ -31,9 +31,9 @@ export const Footer = () => {
           <div>
             <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-foreground">Cabinet</h4>
             <ul className="space-y-3 text-sm text-muted-foreground">
-              <li className="flex items-start gap-2"><MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary" /> 12 rue des Tilleuls, 75011 Paris</li>
-              <li className="flex items-center gap-2"><Phone className="h-4 w-4 text-primary" /> +33 1 23 45 67 89</li>
-              <li className="flex items-center gap-2"><Mail className="h-4 w-4 text-primary" /> contact@veto-care.fr</li>
+              <li className="flex items-start gap-2"><MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary" /> Tizi Ouzou, Algérie</li>
+              <li className="flex items-center gap-2"><Phone className="h-4 w-4 text-primary" /> +213 XX XX XX XX</li>
+              <li className="flex items-center gap-2"><Mail className="h-4 w-4 text-primary" /> contact@veto-care.com</li>
             </ul>
           </div>
 
