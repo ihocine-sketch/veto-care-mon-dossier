@@ -287,8 +287,6 @@ const Dashboard = () => {
                 </CardContent>
               </Card>
             </motion.div>
-            </Card>
-            </motion.div>
           </div>
 
           <motion.div
