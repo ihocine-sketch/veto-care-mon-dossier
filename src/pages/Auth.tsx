@@ -76,6 +76,29 @@ const Auth = () => {
       const { data: roleRow } = signedUserId
         ? await supabase.from("roles").select("role").eq("user_id", signedUserId).maybeSingle()
         : { data: null };
+      
+      // For signin, validate that selected role matches database role
+      if (mode === "signin" && roleRow?.role) {
+        const actualRole = roleRow.role as "admin" | "client" | "vet";
+        
+        if (actualRole !== selectedRole) {
+          let errorMessage = "";
+          if (selectedRole === "vet" && actualRole !== "vet") {
+            errorMessage = "Ce compte n'est pas un compte vétérinaire";
+          } else if (selectedRole === "admin" && actualRole !== "admin") {
+            errorMessage = "Ce compte n'est pas un compte administrateur";
+          } else if (selectedRole === "client" && actualRole !== "client") {
+            errorMessage = "Ce compte n'est pas un compte client";
+          } else {
+            errorMessage = "Le rôle sélectionné ne correspond pas au rôle de ce compte";
+          }
+          
+          toast.error(errorMessage);
+          setLoading(false);
+          return;
+        }
+      }
+      
       navigate(getDefaultDashboardPath((roleRow?.role as "admin" | "client" | "vet" | undefined) ?? role));
     } catch (e: any) {
       toast.error(e.message || "Une erreur est survenue");
