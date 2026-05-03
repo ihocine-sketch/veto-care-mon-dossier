@@ -82,15 +82,17 @@ const Auth = () => {
         const actualRole = roleRow.role as "admin" | "client" | "vet";
         
         if (actualRole !== selectedRole) {
-          let errorMessage = "";
+          // Immediately sign out the user
+          await supabase.auth.signOut();
+          
+          // Show specific error message about role mismatch
+          let errorMessage = "Les identifiants ne correspondent pas au rôle sélectionné.";
           if (selectedRole === "vet" && actualRole !== "vet") {
-            errorMessage = "Ce compte n'est pas un compte vétérinaire";
+            errorMessage = "Les identifiants ne correspondent pas à un compte vétérinaire.";
           } else if (selectedRole === "admin" && actualRole !== "admin") {
-            errorMessage = "Ce compte n'est pas un compte administrateur";
+            errorMessage = "Les identifiants ne correspondent pas à un compte administrateur.";
           } else if (selectedRole === "client" && actualRole !== "client") {
-            errorMessage = "Ce compte n'est pas un compte client";
-          } else {
-            errorMessage = "Le rôle sélectionné ne correspond pas au rôle de ce compte";
+            errorMessage = "Les identifiants ne correspondent pas à un compte client.";
           }
           
           toast.error(errorMessage);
