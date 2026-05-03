@@ -22,14 +22,13 @@ type Vet = {
 type Appointment = {
   id: string;
   nom_animal: string;
-  animal_id: string | null;
+  espece: string;
   date_rdv: string;
   statut: string;
   motif: string;
   maitre_id: string;
   veterinaire_id: string | null;
   veterinaires: { nom: string; prenom: string } | null;
-  animaux: { nom: string; espece: string } | null;
 };
 
 const AdminDashboard = () => {
@@ -64,20 +63,19 @@ const AdminDashboard = () => {
       // Fetch all appointments for admin
       console.log("Fetching appointments for admin user...");
       
-      // Query with proper joins using foreign keys
+      // Query matching actual table structure
       const { data: rdvData, error: rdvError } = await supabase
         .from("rendez_vous")
         .select(`
           id, 
           nom_animal,
-          animal_id,
+          espece,
           date_rdv, 
           statut, 
           motif,
           maitre_id,
           veterinaire_id,
-          veterinaires!left(nom, prenom),
-          animaux!left(nom, espece)
+          veterinaires!left(nom, prenom)
         `)
         .order("date_rdv", { ascending: false });
 
@@ -325,10 +323,10 @@ const AdminDashboard = () => {
                           <TableCell>
                             <div>
                               <div className="font-medium">
-                                {a.animaux?.nom || a.nom_animal || 'Animal non spécifié'}
+                                {a.nom_animal || 'Animal non spécifié'}
                               </div>
                               <div className="text-sm text-muted-foreground">
-                                {a.animaux?.espece || 'Espèce non spécifiée'}
+                                {a.espece || 'Espèce non spécifiée'}
                               </div>
                             </div>
                           </TableCell>
