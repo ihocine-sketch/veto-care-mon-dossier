@@ -23,9 +23,14 @@ export const Navbar = () => {
   }, []);
 
   const handleLogout = async () => {
-    await signOut();
-    toast.success(t('nav.loggedOut'));
-    navigate("/auth");
+    try {
+      await signOut();
+      toast.success(t('nav.loggedOut'));
+    } catch {
+      toast.error("Erreur lors de la déconnexion");
+    } finally {
+      navigate("/auth", { replace: true });
+    }
   };
 
   const linkClass = ({ isActive }: { isActive: boolean }) =>
