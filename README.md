@@ -51,8 +51,15 @@ Les **données non-structurées** sont les carnets de santé des animaux upload�
 - **Frontend** : React + TypeScript + Tailwind CSS
 - **Backend/BaaS** : Supabase (PostgreSQL + Auth + Storage + RLS)
 - **Déploiement** : Vercel (CI/CD automatique)
-- **Vibe Coding** : Lovable.dev + Cursor AI
+- **Vibe Coding** : Lovable.dev + Cursor 
 
 ## 🔐 Identifiants de Test
-- **Email** : test@veto-care.com
-- **Mot de passe** : Test1234!
+- **Client**:
+**Email** : test@veto-care.com
+**Mot de passe** : Test1234!@@@@@
+- **Vétérinaire** :
+**Email** : vet@veto-care.com
+**Mot de passe** : Vet@2026#Secure
+- **Admin** :
+**Email** : admin@veto-care.com
+**Mot de passe** : Admin@VetoCare2026!
